@@ -1,0 +1,208 @@
+---
+title: "HW 1"
+author: "Shijie An"
+format: docx
+editor: visual
+---
+
+# Homework 1
+
+### Use the jcpd-calls-for-service.csv file found on Canvas for the following exercise. The file contains data on the service calls received by the Jersey City NJ police department.
+
+## Part 1 - Reading and Manipulating Data
+
+1.  Read the data from the file into a data frame called jcpd
+
+    ```{r}
+    # jcpd <- read.csv("D:/CU TC/hudk 4050 data mining/HUDK_4050_data_mining_HW/jcpd-calls-for-service.csv")
+    # path <- paste("D:/CU TC/hudk 4050 data mining/", 
+    #               "HUDK_4050_data_mining_HW/jcpd-calls-for-service.csv", 
+    #               sep = "")
+    # jcpd <- read.csv(path)
+    path2 <- paste(getwd(), 
+                   "/jcpd-calls-for-service.csv", 
+                   sep = "")
+    # path2 <- "jcpd-calls-for-service.csv"
+    jcpd <- read.csv(path2)
+    ```
+
+2.  Find the number of rows and columns in the data and inspect the data by printing out the first and last few rows
+
+    ```{r}
+    ## 22 variables (columns), 107331 rows
+    summary(jcpd)
+    jcpd[1, ]
+    tail(jcpd, n = 1)
+    ```
+
+3.  How many missing values are there? How many rows are there with missing values?
+
+    ```{r}
+    ## num of missing values
+    sum(is.na(jcpd))
+    ## num of rows with missing values
+    sum(!complete.cases(jcpd))
+    ```
+
+4.  Find which columns have the missing values. Hint: Use the which() function.
+
+    ```{r}
+    ## num of columns with missing values
+    which(is.na(jcpd))
+    ```
+
+5.  Notice that the column names have spaces in them. This is not a valid column name in R. So, replace all the spaces in the names with an underscore to comply with the snake_case convention. Hint: The names() function returns column names.
+
+    ```{r}
+
+    ```
+
+6.  Replace the missing values in the column geo_count with the number 1
+
+    ```{r}
+    i <- 1
+    num = ""
+    for(num in jcpd$geo.count) {
+        if(num == 0) {
+            jcpd$geo.count[i] = 1
+       } 
+       i <- i + 1
+    }
+    jcpd$geo.count
+    ```
+
+7.  Remove all the remaining missing values from the data frame
+
+    ```{r}
+
+    ```
+
+8.  Check to see if there are any duplicate rows and if there are any remove them using the pipe operator and the dplyr function distinct()
+
+    ```{r}
+
+    ```
+
+9.  Sort the data by descending call type
+
+    ```{r}
+
+    ```
+
+10. Create a new data frame called jcpd911 by filtering the original dataset for the 911 calls. Print out the first six rows and check if the filtering worked. How many 911 calls were there?
+
+    ```{r}
+
+    ```
+
+11. Create a new variable (column) called dispatch_duration in the jcpd dataset by subtracting time_received from time_dispatched. Hint: You also need to convert the format of time.received and time.dispatched using the strptime() command and then subtract.
+
+    ```{r}
+
+    ```
+
+12. Now check if there are missing values in the newly created column and also check for dispatch durations that are negative or zero.  This is garbage data so remove these rows.
+
+    ```{r}
+
+    ```
+
+13. Find the average (mean) dispatch duration using the new variable (column) you created above
+
+    ```{r}
+
+    ```
+
+14. Find the average (mean) dispatch duration by call type
+
+    ```{r}
+
+    ```
+
+15. How many rows contain the word GUNSHOTS in the call code description column.  Hint: Use the stringr package in tidyverse. Use the str_detect function in stringr. Use help to learn about the function.
+
+    ```{r}
+
+    ```
+
+16. Now create a data frame called jcpd_gunshots that has just the rows that contain the word GUNSHOTS in the call code description
+
+    ```{r}
+
+    ```
+
+## Part 2 - Plotting
+
+#### Use ggplot2 for all the questions
+
+1.  Plot a histogram of dispatch duration. What can you infer from the histogram?
+
+    ```{r}
+
+    ```
+
+2.  Draw a bar chart of the count of calls by call type.
+
+    ```{r}
+
+    ```
+
+3.  Draw a bar chart of the proportion of calls by call type
+
+    ```{r}
+
+    ```
+
+4.  Create new column called call_month in the jcpd data frame and store the month extracted from the time_received column. Plot the number of calls by month as a line graph.
+
+    ```{r}
+
+    ```
+
+5.  Plot a box and whiskers plot of the dispatch duration by call type. Flip the coordinates so the call type appears on the Y axis. Give the plot a title - "Box plot of dispatch duration by call type"
+
+```{r}
+
+```
+
+## Part 3 - Joins
+
+#### Use dplyr for all joins
+
+1.  Load the library nycflights13 after installing it.
+
+```{r}
+
+```
+
+2.  What is the primary key of the planes table?
+
+3.  Add full airline name from the airlines data frame to the flights data frame and create a new data frame called flights_with_names.
+
+```{r}
+
+```
+
+4.  Add the destination latitude and longitude by joining the flights_with_names data frame and the airports data frame
+
+```{r}
+
+```
+
+5.  Compute the average delay by destination in the flights data frame and store in a new data frame called delays.  Now join the latitude and longitude information from the airports data frame to the delays data frame.
+
+```{r}
+
+```
+
+6.  Create a data frame called top_dest_delay that has the destinations with top five delay times
+
+```{r}
+
+```
+
+7.  Now filter the flights table to contain only records for the top five destinations you found in the previous question and create a new data frame called flight_delay_top. Hint: You can use a semi_join to do this
+
+```{r}
+
+```
