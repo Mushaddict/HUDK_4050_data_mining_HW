@@ -23,7 +23,7 @@ editor: visual
                    "/jcpd-calls-for-service.csv", 
                    sep = "")
     # path2 <- "jcpd-calls-for-service.csv"
-    jcpd <- read.csv(path2)
+    jcpd <- read.csv(path2) 
     ```
 
 2.  Find the number of rows and columns in the data and inspect the data by printing out the first and last few rows
