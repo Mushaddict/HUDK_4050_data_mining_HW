@@ -86,7 +86,9 @@ editor: visual
 9.  Sort the data by descending call type
 
     ```{r}
-
+    positions <- order(jcpd$call.type)
+    jcpd[positions, ]
+    # jcpd <- jcpd[positions, ]
     ```
 
 10. Create a new data frame called jcpd911 by filtering the original dataset for the 911 calls. Print out the first six rows and check if the filtering worked. How many 911 calls were there?
