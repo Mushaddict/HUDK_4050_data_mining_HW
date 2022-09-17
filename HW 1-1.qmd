@@ -31,8 +31,9 @@ editor: visual
     ```{r}
     ## 22 variables (columns), 107331 rows
     summary(jcpd)
-    jcpd[1, ]
-    tail(jcpd, n = 1)
+    # jcpd[1, ]
+    head(jcpd)
+    tail(jcpd)
     ```
 
 3.  How many missing values are there? How many rows are there with missing values?
@@ -47,90 +48,166 @@ editor: visual
 4.  Find which columns have the missing values. Hint: Use the which() function.
 
     ```{r}
-    ## num of columns with missing values
-    which(is.na(jcpd))
+    ## the address of num of columns with missing values
+    missing <- which(is.na(jcpd)) 
+    # so if we have the location, we will use this location to devide the row num. 
+    # we take the floor of deviation, and plus 1, so we can get col. 
+    # since we have 107331 cols, we will use the location devided by 107331 and + 1. 
+    missingCol <- floor(missing / 107331) + 1
+    missingCol
+    unique(missingCol)
     ```
 
 5.  Notice that the column names have spaces in them. This is not a valid column name in R. So, replace all the spaces in the names with an underscore to comply with the snake_case convention. Hint: The names() function returns column names.
 
     ```{r}
-
+    old_name <- colnames(jcpd)
+    new_name <- gsub("[.]", "_", old_name)
+    names(jcpd) <- new_name
     ```
 
 6.  Replace the missing values in the column geo_count with the number 1
 
     ```{r}
-    i <- 1
-    num = ""
-    for(num in jcpd$geo.count) {
-        if(num == 0) {
-            jcpd$geo.count[i] = 1
-       } 
-       i <- i + 1
-    }
-    jcpd$geo.count
+    # num = ""
+    # i <- 1
+    # for(num in jcpd$geo_count) {
+    #     if(is.na(num)) {
+    #         jcpd$geo.count[i] = 1
+    #    }
+    #    i <- i + 1
+    # }
+    # jcpd$geo_count
+      jcpd$geo_count[is.na(jcpd$geo_count)] <- 1
+      jcpd$geo_count[is.na(jcpd$geo_count)]
+      
     ```
 
 7.  Remove all the remaining missing values from the data frame
 
     ```{r}
-
+    nomissing <- na.omit(jcpd)
+    nomissing
     ```
 
 8.  Check to see if there are any duplicate rows and if there are any remove them using the pipe operator and the dplyr function distinct()
 
     ```{r}
-
+    library(dplyr)
+    sum(duplicated(jcpd))
+    jcpd %>% 
+      distinct(.keep_all = TRUE)
     ```
 
 9.  Sort the data by descending call type
 
     ```{r}
-    positions <- order(jcpd$call.type)
-    jcpd[positions, ]
-    # jcpd <- jcpd[positions, ]
+    library(dplyr)
+    jcpd %>% 
+      arrange(desc(jcpd$call_type))
     ```
 
 10. Create a new data frame called jcpd911 by filtering the original dataset for the 911 calls. Print out the first six rows and check if the filtering worked. How many 911 calls were there?
 
     ```{r}
+    jcpd911 <-  jcpd %>% 
+      filter(call_type == 911)
+    head(jcpd911)
 
     ```
 
 11. Create a new variable (column) called dispatch_duration in the jcpd dataset by subtracting time_received from time_dispatched. Hint: You also need to convert the format of time.received and time.dispatched using the strptime() command and then subtract.
 
     ```{r}
-
+    receive <- strftime(jcpd$time_received, "%y-%m-%d %H:%M:%S")
+    dispatch <- strftime(jcpd$time_dispatched, "%y-%m-%d %H:%M:%S")
+    new_receive <- strptime(receive, "%y-%m-%d %H:%M:%S")
+    new_dispatch <- strptime(dispatch, "%y-%m-%d %H:%M:%S")
+    dispatch_duration <- new_dispatch - new_receive
+    # dispatch_duration
+    jcpd <- jcpd %>%
+      mutate(dispatch_duration)
     ```
 
 12. Now check if there are missing values in the newly created column and also check for dispatch durations that are negative or zero.  This is garbage data so remove these rows.
 
     ```{r}
-
+    sum(is.na(jcpd$dispatch_duration))
+    delete <- which(jcpd$dispatch_duration <= 0)
+    jcpd <- jcpd[-c(delete), ]
+    jcpd
     ```
 
 13. Find the average (mean) dispatch duration using the new variable (column) you created above
 
     ```{r}
-
+    mean <- mean(jcpd$dispatch_duration)
+    mean
     ```
 
 14. Find the average (mean) dispatch duration by call type
 
     ```{r}
+    unique(jcpd$call_type)
+    # I will use filter to calculate the differnt mean for different call type
+    SI <- jcpd %>%
+      filter(call_type == "SI")
+    SI_mean <- mean(SI$dispatch_duration)
 
+    PH <- jcpd %>%
+      filter(call_type == "PH")
+    PH_mean <- mean(PH$dispatch_duration)
+
+    C911 <- jcpd %>%
+      filter(call_type == "911")
+    mean_911 <- mean(C911$dispatch_duration)
+
+    MVS <- jcpd %>%
+      filter(call_type == "MVS")
+    MVS_mean <- mean(MVS$dispatch_duration)
+
+    STA <- jcpd %>%
+      filter(call_type == "STA")
+    STA_mean <- mean(STA$dispatch_duration)
+
+    IC <- jcpd %>%
+      filter(call_type == "IC")
+    IC_mean <- mean(IC$dispatch_duration)
+    # i <- 1
+    # si <- ph <- c911 <- mvs <- sta <- ic <- c()
+    # for(char in jcpd$call_type) {
+    #    switch(
+    #     char, 
+    #     "SI" <- append(si, jcpd$dispatch_duration[i]), 
+    #     "PH" <- append(ph, jcpd$dispatch_duration[i]),
+    #     "911" <- append(c911, jcpd$dispatch_duration[i]), 
+    #     "MVS" <- append(mvs, jcpd$dispatch_duration[i]), 
+    #     "STA" <- append(sta, jcpd$dispatch_duration[i]), 
+    #     "IC" <- append(ic, jcpd$dispatch_duration[i])
+    #   )
+    #   i <- i + 1
+    # }
+    # mean(si)
+    # mean(ph)
+    # mean(c911)
+    # mean(mvs)
+    # mean(sta)
+    # mean(ic)
     ```
 
 15. How many rows contain the word GUNSHOTS in the call code description column.  Hint: Use the stringr package in tidyverse. Use the str_detect function in stringr. Use help to learn about the function.
 
     ```{r}
-
+    library(stringr)
+    sum(str_detect(jcpd$call_code_description, "GUNSHOTS") == TRUE)
     ```
 
 16. Now create a data frame called jcpd_gunshots that has just the rows that contain the word GUNSHOTS in the call code description
 
     ```{r}
-
+    jcpd_gunshots_row <- which(str_detect(jcpd$call_code_description, "GUNSHOTS") == TRUE)
+    jcpd_gunshots <- jcpd[jcpd_gunshots_row, ]
+    jcpd_gunshots
     ```
 
 ## Part 2 - Plotting
