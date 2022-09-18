@@ -201,6 +201,8 @@ editor: visual
 1.  Plot a histogram of dispatch duration. What can you infer from the histogram?
 
     ```{r}
+    library(dplyr)
+    library(ggplot2)
 
     ```
 
