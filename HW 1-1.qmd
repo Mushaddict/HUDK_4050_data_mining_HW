@@ -203,30 +203,75 @@ editor: visual
     ```{r}
     library(dplyr)
     library(ggplot2)
+    ggplot(jcpd, aes(x = dispatch_duration)) +
+      geom_histogram(bins = 50, col = "black") + 
+      scale_y_log10() + 
+      xlab("Dispath_Duration") + 
+      ggtitle("Histogram of dispatch_duration")
+
 
     ```
+
+    It can be inferred that the histogram plot the frequency and counts the time that each number appears. It showed that 60 appear the most of times, it reaches to 40000 times. and the max number appear one time and is so big that reaches to 3000.
 
 2.  Draw a bar chart of the count of calls by call type.
 
     ```{r}
+    count <- jcpd %>% 
+      group_by(call_type)
+
+    ggplot(count, aes(x = call_type)) + 
+      geom_bar(col = "black")
 
     ```
 
 3.  Draw a bar chart of the proportion of calls by call type
 
     ```{r}
-
+    # jcpd_test %>% 
+    #   group_by(call_type) %>% 
+    #   mutate(freq = )
+    ggplot(count, aes(x = call_type)) +
+      geom_bar(aes(y = (..count..) / sum(..count..)))
     ```
 
 4.  Create new column called call_month in the jcpd data frame and store the month extracted from the time_received column. Plot the number of calls by month as a line graph.
 
     ```{r}
 
+    call_month <- strftime(jcpd$time_received, "%m")
+
+    jcpd <- jcpd %>% 
+      mutate(call_month)
+
+    # num_call <- jcpd %>%
+    #   group_by(call_month) %>%
+    #   summarize()
+
+    # ggplot
+
+    # ggplot(num_call, aes(x = call_month)) +
+    #   geom_bar()
+    # made line 跑不了，只有bar能计算频数
+
+    table <- as.data.frame(table(jcpd$call_month))
+    ggplot(table, aes(x = Var1, y = Freq, group = 1)) + 
+      geom_line() + 
+      xlab("Month") + 
+      ylab("Frequency") + 
+      ggtitle("number of calls by month")
     ```
 
 5.  Plot a box and whiskers plot of the dispatch duration by call type. Flip the coordinates so the call type appears on the Y axis. Give the plot a title - "Box plot of dispatch duration by call type"
 
 ```{r}
+count_sum <- jcpd %>% 
+  group_by(call_type) %>% 
+  summarize(dispatch_duration)
+
+ggplot(count_sum, aes(x = dispatch_duration, y = call_type)) + 
+  geom_boxplot() + 
+  ggtitle("Box plot of dispatch duration by call type")
 
 ```
 
