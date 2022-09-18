@@ -149,50 +149,34 @@ editor: visual
 
     ```{r}
     unique(jcpd$call_type)
+    library(dplyr)
     # I will use filter to calculate the differnt mean for different call type
-    SI <- jcpd %>%
-      filter(call_type == "SI")
-    SI_mean <- mean(SI$dispatch_duration)
-
-    PH <- jcpd %>%
-      filter(call_type == "PH")
-    PH_mean <- mean(PH$dispatch_duration)
-
-    C911 <- jcpd %>%
-      filter(call_type == "911")
-    mean_911 <- mean(C911$dispatch_duration)
-
-    MVS <- jcpd %>%
-      filter(call_type == "MVS")
-    MVS_mean <- mean(MVS$dispatch_duration)
-
-    STA <- jcpd %>%
-      filter(call_type == "STA")
-    STA_mean <- mean(STA$dispatch_duration)
-
-    IC <- jcpd %>%
-      filter(call_type == "IC")
-    IC_mean <- mean(IC$dispatch_duration)
-    # i <- 1
-    # si <- ph <- c911 <- mvs <- sta <- ic <- c()
-    # for(char in jcpd$call_type) {
-    #    switch(
-    #     char, 
-    #     "SI" <- append(si, jcpd$dispatch_duration[i]), 
-    #     "PH" <- append(ph, jcpd$dispatch_duration[i]),
-    #     "911" <- append(c911, jcpd$dispatch_duration[i]), 
-    #     "MVS" <- append(mvs, jcpd$dispatch_duration[i]), 
-    #     "STA" <- append(sta, jcpd$dispatch_duration[i]), 
-    #     "IC" <- append(ic, jcpd$dispatch_duration[i])
-    #   )
-    #   i <- i + 1
-    # }
-    # mean(si)
-    # mean(ph)
-    # mean(c911)
-    # mean(mvs)
-    # mean(sta)
-    # mean(ic)
+    # SI <- jcpd %>%
+    #   filter(call_type == "SI")
+    # SI_mean <- mean(SI$dispatch_duration)
+    # 
+    # PH <- jcpd %>%
+    #   filter(call_type == "PH")
+    # PH_mean <- mean(PH$dispatch_duration)
+    # 
+    # C911 <- jcpd %>%
+    #   filter(call_type == "911")
+    # mean_911 <- mean(C911$dispatch_duration)
+    # 
+    # MVS <- jcpd %>%
+    #   filter(call_type == "MVS")
+    # MVS_mean <- mean(MVS$dispatch_duration)
+    # 
+    # STA <- jcpd %>%
+    #   filter(call_type == "STA")
+    # STA_mean <- mean(STA$dispatch_duration)
+    # 
+    # IC <- jcpd %>%
+    #   filter(call_type == "IC")
+    # IC_mean <- mean(IC$dispatch_duration)
+    jcpd %>% 
+      group_by(call_type) %>% 
+      summarize(mean(dispatch_duration))
     ```
 
 15. How many rows contain the word GUNSHOTS in the call code description column.  Hint: Use the stringr package in tidyverse. Use the str_detect function in stringr. Use help to learn about the function.
