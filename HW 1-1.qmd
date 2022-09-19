@@ -1,7 +1,7 @@
 ---
 title: "HW 1"
 author: "Shijie An"
-format: docx
+format: html
 editor: visual
 ---
 
@@ -53,6 +53,7 @@ editor: visual
     # so if we have the location, we will use this location to devide the row num. 
     # we take the floor of deviation, and plus 1, so we can get col. 
     # since we have 107331 cols, we will use the location devided by 107331 and + 1. 
+    # missingCol <- floor(missing / nrow(jcpd)) + 1
     missingCol <- floor(missing / 107331) + 1
     missingCol
     unique(missingCol)
@@ -64,6 +65,7 @@ editor: visual
     old_name <- colnames(jcpd)
     new_name <- gsub("[.]", "_", old_name)
     names(jcpd) <- new_name
+    colnames(jcpd)
     ```
 
 6.  Replace the missing values in the column geo_count with the number 1
@@ -282,37 +284,55 @@ ggplot(count_sum, aes(x = dispatch_duration, y = call_type)) +
 1.  Load the library nycflights13 after installing it.
 
 ```{r}
-
+# install.packages("nycflights13")
+library("nycflights13")
+planes
 ```
 
 2.  What is the primary key of the planes table?
 
+    tailnum is the primary key of the planes table
+
 3.  Add full airline name from the airlines data frame to the flights data frame and create a new data frame called flights_with_names.
 
 ```{r}
-
+flights_with_names <- full_join(nycflights13::airlines, nycflights13::flights, by = "carrier")
+flights_with_names
 ```
 
 4.  Add the destination latitude and longitude by joining the flights_with_names data frame and the airports data frame
 
 ```{r}
-
+join_lat_lon <- flights_with_names %>% 
+  left_join(airports, by = c("origin" = "faa"))
+join_lat_lon
 ```
 
 5.  Compute the average delay by destination in the flights data frame and store in a new data frame called delays.  Now join the latitude and longitude information from the airports data frame to the delays data frame.
 
 ```{r}
+flights <- flights
+sum(is.na(flights$arr_delay))
+flights$arr_delay[is.na(flights$arr_delay)] <- 0
 
+delays <- flights %>% 
+  group_by(dest) %>% 
+  summarize(flights_delay = mean(arr_delay))
+delays
 ```
 
 6.  Create a data frame called top_dest_delay that has the destinations with top five delay times
 
 ```{r}
-
+top_dest_delay <- flights %>% 
+  arrange(desc(arr_delay)) %>% 
+  head(n = 5)
+top_dest_delay
 ```
 
 7.  Now filter the flights table to contain only records for the top five destinations you found in the previous question and create a new data frame called flight_delay_top. Hint: You can use a semi_join to do this
 
 ```{r}
-
+top_dest_delay <- semi_join(flights, top_dest_delay, by = "dest")
+top_dest_delay
 ```
