@@ -12,59 +12,99 @@ editor: visual
 1.  Load the College.csv file on Canvas into a dataframe called college (or give it any name you want). A description of the dataset can be found at [[https://www.rdocumentation.org/packages/ISLR2/versions/1.3-1/topics/College]{.underline}](https://www.rdocumentation.org/packages/ISLR2/versions/1.3-1/topics/College)
 
 ```{r}
-
+library(leaps)
+library(caret)
+library(tidyverse)
+library(lars)
+library(ISLR2)
+library(gam)
+college <- read.csv("College.csv")
 ```
 
 2.  Check if there are any missing values. Replace any missing values with the mean value for the column rounded up to the nearest integer. Hint: Lookup the ceiling function and use it.
 
 ```{r}
-
+missing <- which(is.na(college)) 
+missingCol <- floor(missing / nrow(college)) + 1
+missingCol
+college$PhD[is.na(college$PhD)] <- ceiling(mean(college$PhD, na.rm = TRUE))
+college$Grad.Rate[is.na(college$Grad.Rate)] <- ceiling(
+  mean(college$Grad.Rate, na.rm = TRUE))
 ```
 
 3.  Remove the college name column from the dataframe as it is not useful in prediction
 
 ```{r}
-
+college <- college[, -1]
+colnames(college)
 ```
 
 4.  Split the dataset into 80% training and 20% test。
 
 ```{r}
-
+intrain <- createDataPartition(college$Top10perc, p = 0.8, list = FALSE)
+train1 <- college[intrain, ]
+test1 <- college[-intrain, ]
 ```
 
 5.  Fit a linear multiple regression model to the training set to predict graduation rate using all the other features/variables. What variables are significant at the p = 0.001 level? Predict the graduation rate using the test dataset and report the root mean squared error (RMSE) for the test dataset.
 
 ```{r}
+reg_model <- train(Grad.Rate ~ . , data = train1, method ="lm")
+summary(reg_model)
 
+# testprediction1 <- predict(reg_model, newdata = train1, method = "lm")
+# postResample(pred = testprediction1, obs = train1$Grad.Rate)
+## I used top10perc as a dataset to split, and got a R-squared = 0.4515 and RSE = 13.01 on 605 degrees of freedom. I got Outstate and perc.alumni, intercept are with ***, which is in the interval of p <= 0.001
+testpredictions <- predict(reg_model, newdata = test1, method = "lm")
+postResample(pred = testpredictions, obs = test1$Grad.Rate)
 ```
 
 6.  Perform backward subset selection using the leaps library. Which model is best according to BIC? Are the variables chosen by the subset selection different from the list of statistically significant variables from fitting the linear regression model above? If so, which ones are different?
 
 ```{r}
-
+regfit_bwd <- regsubsets(Grad.Rate ~ ., data = train1, nvmax = 18, method = "backward")
+reg_summary <- summary(regfit_bwd)
+reg_summary
+which.min(reg_summary$bic)
+## in the last problem, I got my statistically significant variables are Outstate and perc.alumni. And for this, I got 7 bic, which are Apps, top25Perc, P.Undergrad, Outstate, Room.Board, perc.alumni, Expand. It got outstete and perc.alumni as similar. 
 ```
 
 7.  Fit a ridge regression model on the training set for predicting graduation rate using all the predictors, with *λ* chosen by 5-fold repeated cross-validation with 5 repeats. Predict graduation rate using the test dataset and report the test root mean squared error (RMSE). Report the value of *λ* used in the model.
 
 ```{r}
 
+ridge_fit1 <- train(Grad.Rate ~ ., data = train1, method = "ridge", 
+                   preProcess = c("scale", "center"))
+
+ridge_fit1
 ```
 
 8.  Run the same ridge regression model above but this time use a grid of lamdas to search over. Use a grid of 50 values ranging from λ = 0.001 to λ = 10000. Report the λ that was chosen.
 
 ```{r}
-
+ridge_grid <- data.frame(lambda = seq(0.001, 10000, length = 50))
+ridgefit2 <- train(Grad.Rate ~ ., data = train1, method = "ridge",
+                  tuneGrid = ridge_grid, preProcess = c("scale", "center"))
+ridgefit2
+## lambda was chosen to 0.001
 ```
 
 9.  Fit a Generalized Additive local regression (LOESS) model on the training set for predicting graduation rate using all the predictors. Do not specify a span so caret can choose a span. Report the span chosen by caret. Predict graduation rate in the test dataset and report the test root mean squared error (RMSE).
 
 ```{r}
-
+loess_model <- train(Grad.Rate ~ ., data = train1, method = "gamLoess")
+# loess_model2 <- train(Grad.Rate ~ ., span = 0.3, data = train1, method = "gamLoess")
+# summary(loess_model)
+loess_model
+prediction <- predict(loess_model, newdata =  test1)
+RMSE(prediction, test1$Grad.Rate)
 ```
 
 10. Fit a Generalized Additive Spline regression model on the training set for predicting graduation rate using all the predictors. Do not specify a degree of freedom and let caret choose it. Report the degree of freedom chosen by caret. Predict graduation rate in the test dataset and report the test root mean squared error (RMSE).
 
 ```{r}
-
+gam_spline_model <- train(Grad.Rate ~ ., data = train1, method = "gamSpline")
+prediction <- predict(gam_spline_model, newdata = test1)
+RMSE(prediction, test1$Grad.Rate)
 ```
