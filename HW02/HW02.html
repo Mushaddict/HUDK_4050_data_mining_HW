@@ -1,0 +1,4094 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Shijie An">
+
+<title>HW02</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="HW02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="HW02_files/libs/quarto-html/quarto.js"></script>
+<script src="HW02_files/libs/quarto-html/popper.min.js"></script>
+<script src="HW02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="HW02_files/libs/quarto-html/anchor.min.js"></script>
+<link href="HW02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="HW02_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="HW02_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="HW02_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="HW02_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HW02</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Shijie An </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="homework-2" class="level1">
+<h1>Homework 2</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaps)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages
+───────────────────────────────────────
+tidyverse 1.3.2 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+✔ readr   2.1.2      ✔ forcats 0.5.2 
+✔ purrr   0.3.4      
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ purrr::lift()   masks caret::lift()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded lars 1.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: splines
+Loading required package: foreach
+
+Attaching package: 'foreach'
+
+The following objects are masked from 'package:purrr':
+
+    accumulate, when
+
+Loaded gam 1.20.2</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Load the College.csv file on Canvas into a dataframe called college (or give it any name you want). A description of the dataset can be found at <a href="https://www.rdocumentation.org/packages/ISLR2/versions/1.3-1/topics/College"><u>https://www.rdocumentation.org/packages/ISLR2/versions/1.3-1/topics/College</u></a></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>college <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"College.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Check if there are any missing values. Replace any missing values with the mean value for the column rounded up to the nearest integer. Hint: Lookup the ceiling function and use it.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>missing <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(college)) </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>missingCol <span class="ot">&lt;-</span> <span class="fu">floor</span>(missing <span class="sc">/</span> <span class="fu">nrow</span>(college)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>missingCol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 14 14 14 19 19</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>college<span class="sc">$</span>PhD[<span class="fu">is.na</span>(college<span class="sc">$</span>PhD)] <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">mean</span>(college<span class="sc">$</span>PhD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>college<span class="sc">$</span>Grad.Rate[<span class="fu">is.na</span>(college<span class="sc">$</span>Grad.Rate)] <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(college<span class="sc">$</span>Grad.Rate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Remove the college name column from the dataframe as it is not useful in prediction</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>college <span class="ot">&lt;-</span> college[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(college)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Private"     "Apps"        "Accept"      "Enroll"      "Top10perc"  
+ [6] "Top25perc"   "F.Undergrad" "P.Undergrad" "Outstate"    "Room.Board" 
+[11] "Books"       "Personal"    "PhD"         "Terminal"    "S.F.Ratio"  
+[16] "perc.alumni" "Expend"      "Grad.Rate"  </code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>Split the dataset into 80% training and 20% test。</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>intrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(college<span class="sc">$</span>Top10perc, <span class="at">p =</span> <span class="fl">0.8</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>train1 <span class="ot">&lt;-</span> college[intrain, ]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> college[<span class="sc">-</span>intrain, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="5" type="1">
+<li>Fit a linear multiple regression model to the training set to predict graduation rate using all the other features/variables. What variables are significant at the p = 0.001 level? Predict the graduation rate using the test dataset and report the root mean squared error (RMSE) for the test dataset.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>reg_model <span class="ot">&lt;-</span> <span class="fu">train</span>(Grad.Rate <span class="sc">~</span> . , <span class="at">data =</span> train1, <span class="at">method =</span><span class="st">"lm"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = .outcome ~ ., data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-53.548  -7.147  -0.404   6.975  49.362 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 32.8706293  5.3406512   6.155 1.37e-09 ***
+PrivateYes   4.1184526  1.8330915   2.247 0.025017 *  
+Apps         0.0014330  0.0004952   2.894 0.003947 ** 
+Accept      -0.0010398  0.0009859  -1.055 0.291991    
+Enroll       0.0013598  0.0024086   0.565 0.572577    
+Top10perc    0.0285367  0.0797002   0.358 0.720431    
+Top25perc    0.1569323  0.0615656   2.549 0.011048 *  
+F.Undergrad -0.0002604  0.0004157  -0.627 0.531169    
+P.Undergrad -0.0014725  0.0004055  -3.632 0.000306 ***
+Outstate     0.0011538  0.0002655   4.346 1.62e-05 ***
+Room.Board   0.0015543  0.0006701   2.320 0.020698 *  
+Books       -0.0012446  0.0031022  -0.401 0.688408    
+Personal    -0.0015809  0.0008847  -1.787 0.074448 .  
+PhD          0.1504330  0.0624201   2.410 0.016249 *  
+Terminal    -0.1570464  0.0690811  -2.273 0.023354 *  
+S.F.Ratio    0.1787299  0.1829464   0.977 0.328983    
+perc.alumni  0.2906975  0.0558560   5.204 2.67e-07 ***
+Expend      -0.0004651  0.0001683  -2.764 0.005886 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.7 on 605 degrees of freedom
+Multiple R-squared:  0.4724,    Adjusted R-squared:  0.4576 
+F-statistic: 31.87 on 17 and 605 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># testprediction1 &lt;- predict(reg_model, newdata = train1, method = "lm")</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># postResample(pred = testprediction1, obs = train1$Grad.Rate)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="do">## I used top10perc as a dataset to split, and got a R-squared = 0.4515 and RSE = 13.01 on 605 degrees of freedom. I got Outstate and perc.alumni, intercept are with ***, which is in the interval of p &lt;= 0.001</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>testpredictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg_model, <span class="at">newdata =</span> test1, <span class="at">method =</span> <span class="st">"lm"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(<span class="at">pred =</span> testpredictions, <span class="at">obs =</span> test1<span class="sc">$</span>Grad.Rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      RMSE   Rsquared        MAE 
+13.1853090  0.3900248 10.0148954 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the rest root mean squared error (RMSE) is 12.4563567</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="6" type="1">
+<li>Perform backward subset selection using the leaps library. Which model is best according to BIC? Are the variables chosen by the subset selection different from the list of statistically significant variables from fitting the linear regression model above? If so, which ones are different?</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>regfit_bwd <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(Grad.Rate <span class="sc">~</span> ., <span class="at">data =</span> train1, <span class="at">nvmax =</span> <span class="dv">18</span>, <span class="at">method =</span> <span class="st">"backward"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>reg_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(regfit_bwd)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>reg_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Subset selection object
+Call: regsubsets.formula(Grad.Rate ~ ., data = train1, nvmax = 18, 
+    method = "backward")
+17 Variables  (and intercept)
+            Forced in Forced out
+PrivateYes      FALSE      FALSE
+Apps            FALSE      FALSE
+Accept          FALSE      FALSE
+Enroll          FALSE      FALSE
+Top10perc       FALSE      FALSE
+Top25perc       FALSE      FALSE
+F.Undergrad     FALSE      FALSE
+P.Undergrad     FALSE      FALSE
+Outstate        FALSE      FALSE
+Room.Board      FALSE      FALSE
+Books           FALSE      FALSE
+Personal        FALSE      FALSE
+PhD             FALSE      FALSE
+Terminal        FALSE      FALSE
+S.F.Ratio       FALSE      FALSE
+perc.alumni     FALSE      FALSE
+Expend          FALSE      FALSE
+1 subsets of each size up to 17
+Selection Algorithm: backward
+          PrivateYes Apps Accept Enroll Top10perc Top25perc F.Undergrad
+1  ( 1 )  " "        " "  " "    " "    " "       " "       " "        
+2  ( 1 )  " "        " "  " "    " "    " "       "*"       " "        
+3  ( 1 )  " "        " "  " "    " "    " "       "*"       " "        
+4  ( 1 )  " "        " "  " "    " "    " "       "*"       " "        
+5  ( 1 )  " "        "*"  " "    " "    " "       "*"       " "        
+6  ( 1 )  " "        "*"  " "    " "    " "       "*"       " "        
+7  ( 1 )  " "        "*"  " "    " "    " "       "*"       " "        
+8  ( 1 )  " "        "*"  " "    " "    " "       "*"       " "        
+9  ( 1 )  " "        "*"  " "    " "    " "       "*"       " "        
+10  ( 1 ) "*"        "*"  " "    " "    " "       "*"       " "        
+11  ( 1 ) "*"        "*"  " "    " "    " "       "*"       " "        
+12  ( 1 ) "*"        "*"  "*"    " "    " "       "*"       " "        
+13  ( 1 ) "*"        "*"  "*"    " "    " "       "*"       " "        
+14  ( 1 ) "*"        "*"  "*"    " "    " "       "*"       "*"        
+15  ( 1 ) "*"        "*"  "*"    "*"    " "       "*"       "*"        
+16  ( 1 ) "*"        "*"  "*"    "*"    " "       "*"       "*"        
+17  ( 1 ) "*"        "*"  "*"    "*"    "*"       "*"       "*"        
+          P.Undergrad Outstate Room.Board Books Personal PhD Terminal S.F.Ratio
+1  ( 1 )  " "         "*"      " "        " "   " "      " " " "      " "      
+2  ( 1 )  " "         "*"      " "        " "   " "      " " " "      " "      
+3  ( 1 )  " "         "*"      " "        " "   " "      " " " "      " "      
+4  ( 1 )  "*"         "*"      " "        " "   " "      " " " "      " "      
+5  ( 1 )  "*"         "*"      " "        " "   " "      " " " "      " "      
+6  ( 1 )  "*"         "*"      " "        " "   " "      " " " "      " "      
+7  ( 1 )  "*"         "*"      "*"        " "   " "      " " " "      " "      
+8  ( 1 )  "*"         "*"      "*"        " "   " "      " " "*"      " "      
+9  ( 1 )  "*"         "*"      "*"        " "   " "      "*" "*"      " "      
+10  ( 1 ) "*"         "*"      "*"        " "   " "      "*" "*"      " "      
+11  ( 1 ) "*"         "*"      "*"        " "   "*"      "*" "*"      " "      
+12  ( 1 ) "*"         "*"      "*"        " "   "*"      "*" "*"      " "      
+13  ( 1 ) "*"         "*"      "*"        " "   "*"      "*" "*"      "*"      
+14  ( 1 ) "*"         "*"      "*"        " "   "*"      "*" "*"      "*"      
+15  ( 1 ) "*"         "*"      "*"        " "   "*"      "*" "*"      "*"      
+16  ( 1 ) "*"         "*"      "*"        "*"   "*"      "*" "*"      "*"      
+17  ( 1 ) "*"         "*"      "*"        "*"   "*"      "*" "*"      "*"      
+          perc.alumni Expend
+1  ( 1 )  " "         " "   
+2  ( 1 )  " "         " "   
+3  ( 1 )  "*"         " "   
+4  ( 1 )  "*"         " "   
+5  ( 1 )  "*"         " "   
+6  ( 1 )  "*"         "*"   
+7  ( 1 )  "*"         "*"   
+8  ( 1 )  "*"         "*"   
+9  ( 1 )  "*"         "*"   
+10  ( 1 ) "*"         "*"   
+11  ( 1 ) "*"         "*"   
+12  ( 1 ) "*"         "*"   
+13  ( 1 ) "*"         "*"   
+14  ( 1 ) "*"         "*"   
+15  ( 1 ) "*"         "*"   
+16  ( 1 ) "*"         "*"   
+17  ( 1 ) "*"         "*"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.min</span>(reg_summary<span class="sc">$</span>bic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## in the last problem, I got my statistically significant variables are Outstate and perc.alumni. And for this, I got 7 bic, which are Apps, top25Perc, P.Undergrad, Outstate, Room.Board, perc.alumni, Expand. It got outstete and perc.alumni as similar. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="7" type="1">
+<li>Fit a ridge regression model on the training set for predicting graduation rate using all the predictors, with <em>λ</em> chosen by 5-fold repeated cross-validation with 5 repeats. Predict graduation rate using the test dataset and report the test root mean squared error (RMSE). Report the value of <em>λ</em> used in the model.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ridge_fit1 <span class="ot">&lt;-</span> <span class="fu">train</span>(Grad.Rate <span class="sc">~</span> ., <span class="at">data =</span> train1, <span class="at">method =</span> <span class="st">"ridge"</span>, </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">preProcess =</span> <span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>ridge_fit1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ridge Regression 
+
+623 samples
+ 17 predictor
+
+Pre-processing: scaled (17), centered (17) 
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 623, 623, 623, 623, 623, 623, ... 
+Resampling results across tuning parameters:
+
+  lambda  RMSE      Rsquared   MAE     
+  0e+00   13.26651  0.4087495  9.913159
+  1e-04   13.26540  0.4088254  9.912524
+  1e-01   13.03396  0.4289179  9.785501
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was lambda = 0.1.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the value of λ is best fit when λ = 0.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="8" type="1">
+<li>Run the same ridge regression model above but this time use a grid of lamdas to search over. Use a grid of 50 values ranging from λ = 0.001 to λ = 10000. Report the λ that was chosen.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ridge_grid <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lambda =</span> <span class="fu">seq</span>(<span class="fl">0.001</span>, <span class="dv">10000</span>, <span class="at">length =</span> <span class="dv">50</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ridgefit2 <span class="ot">&lt;-</span> <span class="fu">train</span>(Grad.Rate <span class="sc">~</span> ., <span class="at">data =</span> train1, <span class="at">method =</span> <span class="st">"ridge"</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tuneGrid =</span> ridge_grid, <span class="at">preProcess =</span> <span class="fu">c</span>(<span class="st">"scale"</span>, <span class="st">"center"</span>))</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>ridgefit2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ridge Regression 
+
+623 samples
+ 17 predictor
+
+Pre-processing: scaled (17), centered (17) 
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 623, 623, 623, 623, 623, 623, ... 
+Resampling results across tuning parameters:
+
+  lambda      RMSE      Rsquared   MAE      
+      0.0010  13.25318  0.4070477   9.800318
+    204.0826  44.27854  0.3732784  34.682995
+    408.1642  44.76711  0.3730717  35.066214
+    612.2458  44.93275  0.3730025  35.196157
+    816.3274  45.01610  0.3729678  35.261531
+   1020.4091  45.06628  0.3729469  35.300884
+   1224.4907  45.09981  0.3729330  35.327173
+   1428.5723  45.12379  0.3729231  35.345978
+   1632.6539  45.14180  0.3729157  35.360096
+   1836.7355  45.15582  0.3729099  35.371086
+   2040.8171  45.16704  0.3729052  35.379885
+   2244.8987  45.17622  0.3729014  35.387089
+   2448.9803  45.18388  0.3728983  35.393094
+   2653.0620  45.19036  0.3728956  35.398178
+   2857.1436  45.19592  0.3728933  35.402536
+   3061.2252  45.20074  0.3728913  35.406314
+   3265.3068  45.20495  0.3728896  35.409621
+   3469.3884  45.20868  0.3728880  35.412539
+   3673.4700  45.21198  0.3728867  35.415134
+   3877.5516  45.21494  0.3728854  35.417455
+   4081.6332  45.21761  0.3728843  35.419545
+   4285.7149  45.22002  0.3728833  35.421436
+   4489.7965  45.22221  0.3728824  35.423156
+   4693.8781  45.22422  0.3728816  35.424726
+   4897.9597  45.22605  0.3728809  35.426165
+   5102.0413  45.22774  0.3728802  35.427489
+   5306.1229  45.22930  0.3728795  35.428712
+   5510.2045  45.23074  0.3728789  35.429844
+   5714.2861  45.23208  0.3728784  35.430895
+   5918.3678  45.23333  0.3728778  35.431874
+   6122.4494  45.23450  0.3728774  35.432787
+   6326.5310  45.23559  0.3728769  35.433642
+   6530.6126  45.23661  0.3728765  35.434443
+   6734.6942  45.23757  0.3728761  35.435196
+   6938.7758  45.23847  0.3728757  35.435905
+   7142.8574  45.23932  0.3728754  35.436573
+   7346.9390  45.24013  0.3728750  35.437204
+   7551.0207  45.24089  0.3728747  35.437801
+   7755.1023  45.24161  0.3728744  35.438366
+   7959.1839  45.24229  0.3728742  35.438903
+   8163.2655  45.24294  0.3728739  35.439412
+   8367.3471  45.24356  0.3728736  35.439897
+   8571.4287  45.24415  0.3728734  35.440359
+   8775.5103  45.24471  0.3728732  35.440799
+   8979.5919  45.24525  0.3728729  35.441220
+   9183.6736  45.24576  0.3728727  35.441621
+   9387.7552  45.24625  0.3728725  35.442005
+   9591.8368  45.24672  0.3728723  35.442373
+   9795.9184  45.24717  0.3728721  35.442726
+  10000.0000  45.24760  0.3728720  35.443064
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was lambda = 0.001.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="do">## lambda was chosen to 0.001</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="9" type="1">
+<li>Fit a Generalized Additive local regression (LOESS) model on the training set for predicting graduation rate using all the predictors. Do not specify a span so caret can choose a span. Report the span chosen by caret. Predict graduation rate in the test dataset and report the test root mean squared error (RMSE).</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>loess_model <span class="ot">&lt;-</span> <span class="fu">train</span>(Grad.Rate <span class="sc">~</span> ., <span class="at">data =</span> train1, <span class="at">method =</span> <span class="st">"gamLoess"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+25</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 29.65</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 29.65</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.535</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 120</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 191</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 110</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 191</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4308.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20052</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 12.565</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+12</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 12.565</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.927</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 276.94</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+8124</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7377.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+7398</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7377.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+7425</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7377.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 6210.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2613</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2580</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2613</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 30166</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.69</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.31</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1.53</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1.53</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1.53</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.535</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4219.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4288</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4219.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10962</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2954.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2580</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2954.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2700</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2954.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 20192</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 19972</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 19972</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.925</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7755</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+300</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+300</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+350</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+300</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+300</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 377.44</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1848.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6180</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 5902.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 5902.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 30166</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.315</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 10</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 13.57</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 13.57</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.43</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 10</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 13.57</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.925</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7755</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 11017</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.927</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1848.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2493.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20051</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 20192</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 19411</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 19411</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 19873</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 19411</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7705</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 280.06</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4307.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2613.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20046</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2580</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2613.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.315</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 276.94</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 6210.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 11017</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2493.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20051</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 29082</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+30017</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 29082</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 45915</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.315</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.535</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009.4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 110</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 110.6</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7705</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4308.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+8124</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7453.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10962</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6180</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 5902.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 5902.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20048</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 15096</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+28938</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 27514</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 27514</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+30017</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 27514</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+63</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 60.295</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.705</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 60.295</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.55</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.45</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 1495</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1406.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1406.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1406.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.927</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.315</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.7755</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+3.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.7755</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.7755</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1880</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2492.4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 45914</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 10</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 24.61</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 24.61</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 14</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 24.61</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 16</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 24.61</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 10</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 24.61</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 276.94</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20052</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 11.56</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1848.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10962</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 43125</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 45702</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 43125</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1785</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+27.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.722</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.722</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1785</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4308.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20052</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20292</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.69</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.31</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1725</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1725</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10221</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 9356.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 9356.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10962</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 9356.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 15096</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 19988</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 15096</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 13309</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+30</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 32.665</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+25</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 32.665</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 32.665</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 11.56</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 276.94</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1880</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 6210.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 30166</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.69</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.31</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4308.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+10962</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 10272</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1848.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20292</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 45915</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.315</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7705</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+21836</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 11017</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(P.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+8124</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7453.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.69</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 63.31</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 11.56</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+27.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.724</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.724</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7765</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 276.94</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+8124</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 7453.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 6392</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 6210.7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20052</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, : eval
+31643</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+upperlimit 30166</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(F.Undergrad, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 42926</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 40572</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 40572</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 45702</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 40572</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.46</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 11.56</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+250</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 280.06</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4307.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20293</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 45914</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+63</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 60.28</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 3.72</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval
+64</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+upperlimit 60.28</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.535</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 2009.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7705</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+4913</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4308.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2492.4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+lowerlimit 9.55</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+eval 103</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+upperlimit 100.45</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(PhD, span = 0.5, degree = 1)"]], z, w, span = 0.5, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 1495</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1306</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1306</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1306</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 1400</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 1306</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+27.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.724</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+28.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 27.724</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2.7765</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, : eval
+24</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 24.625</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Terminal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1725</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+2.5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 3.1725</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1880</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, : eval
+1780</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 1889</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Room.Board, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+2340</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 2492.4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, : eval 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+lowerlimit 0.685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(perc.alumni, span = 0.5, degree = 1)"]], z, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, : eval
+96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 95.47</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top10perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+9</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 12.565</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, : eval
+12</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+lowerlimit 12.565</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Top25perc, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 35</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 43.415</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Enroll, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+20100</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20052</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 26330</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 15171</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Accept, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 48094</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 20292</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Apps, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 3365</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 3523.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 3186</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 3523.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 56233</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : upperlimit 45912</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 3480</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 3523.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Expend, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations
+
+Warning in lo.wam(x, z, wz, fit$smooth, which, fit$smooth.frame, bf.maxit, :
+lo.wam convergence not obtained in 30 iterations</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb865"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb865-1"><a href="#cb865-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loess_model2 &lt;- train(Grad.Rate ~ ., span = 0.3, data = train1, method = "gamLoess")</span></span>
+<span id="cb865-2"><a href="#cb865-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(loess_model)</span></span>
+<span id="cb865-3"><a href="#cb865-3" aria-hidden="true" tabindex="-1"></a>loess_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized Additive Model using LOESS 
+
+623 samples
+ 17 predictor
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 623, 623, 623, 623, 623, 623, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  15.68654  0.3417258  10.36953
+
+Tuning parameter 'span' was held constant at a value of 0.5
+Tuning
+ parameter 'degree' was held constant at a value of 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb867"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb867-1"><a href="#cb867-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the span chosen by caret is 0.5. </span></span>
+<span id="cb867-2"><a href="#cb867-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(loess_model, <span class="at">newdata =</span>  test1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : eval 96</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : lowerlimit 98.85</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Books, span = 0.5, degree = 1)"]], z, w, span =
+0.5, : extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, : eval
+39.8</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 28.931</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(S.F.Ratio, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, : eval
+6800</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 4936.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Personal, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, : eval
+21700</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+upperlimit 20189</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in gam.lo(data[["lo(Outstate, span = 0.5, degree = 1)"]], z, w, :
+extrapolation not allowed with blending</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb880"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb880-1"><a href="#cb880-1" aria-hidden="true" tabindex="-1"></a><span class="fu">RMSE</span>(prediction, test1<span class="sc">$</span>Grad.Rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12.59831</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb882"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb882-1"><a href="#cb882-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the rest root mean squared error (RMSE) is 13.17063</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="10" type="1">
+<li>Fit a Generalized Additive Spline regression model on the training set for predicting graduation rate using all the predictors. Do not specify a degree of freedom and let caret choose it. Report the degree of freedom chosen by caret. Predict graduation rate in the test dataset and report the test root mean squared error (RMSE).</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb883"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb883-1"><a href="#cb883-1" aria-hidden="true" tabindex="-1"></a>gam_spline_model <span class="ot">&lt;-</span> <span class="fu">train</span>(Grad.Rate <span class="sc">~</span> ., <span class="at">data =</span> train1, <span class="at">method =</span> <span class="st">"gamSpline"</span>)</span>
+<span id="cb883-2"><a href="#cb883-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(gam_spline_model, <span class="at">newdata =</span> test1)</span>
+<span id="cb883-3"><a href="#cb883-3" aria-hidden="true" tabindex="-1"></a><span class="fu">RMSE</span>(prediction, test1<span class="sc">$</span>Grad.Rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12.8421</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb885"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb885-1"><a href="#cb885-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the rest root mean squared error (RMSE) is 12.41093</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
