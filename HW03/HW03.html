@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.80">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Shijie An">
+  <title>HW03</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+
+  <script src="HW03_files/libs/clipboard/clipboard.min.js"></script>
+  <script src="HW03_files/libs/quarto-html/quarto.js"></script>
+  <script src="HW03_files/libs/quarto-html/popper.min.js"></script>
+  <script src="HW03_files/libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="HW03_files/libs/quarto-html/anchor.min.js"></script>
+  <link href="HW03_files/libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="HW03_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="HW03_files/libs/bootstrap/bootstrap.min.js"></script>
+  <link href="HW03_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="HW03_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body class="fullcontent">
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+<header id="title-block-header" class="quarto-title-block default">
+
+
+<div class="quarto-title"><h1 class="title display-7">HW03</h1></div><div class="quarto-title-meta"><div><div class="quarto-title-meta-heading">Author</div><div class="quarto-title-meta-contents"><div class="quarto-title-authors"><p>Shijie An</p></div></div></div></div></header>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>载入需要的程辑包：ggplot2</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>载入需要的程辑包：lattice</code></pre>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>── Attaching packages
+───────────────────────────────────────
+tidyverse 1.3.2 ──</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+✔ readr   2.1.2      ✔ forcats 0.5.2 
+✔ purrr   0.3.4      
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ purrr::lift()   masks caret::lift()</code></pre>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>Type 'citation("pROC")' for a citation.
+
+载入程辑包：'pROC'
+
+The following objects are masked from 'package:stats':
+
+    cov, smooth, var</code></pre>
+</div>
+</div>
+<ol type="1">
+<li>Load the Auto.csv file on Canvas into a dataframe. A description of the dataset can be found at <a href="https://rdrr.io/cran/ISLR/man/Auto.html"><u>https://rdrr.io/cran/ISLR/man/Auto.html</u></a></li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>auto <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Auto.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Create and add a binary variable, mpg_high_low, to the dataset that contains a Yes if mpg is a value above 30, and a No if mpg is a value less than or equal to 30. Make sure the mpg_high_low is of type factor.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>auto <span class="ot">&lt;-</span> auto <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mpg_high_low =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(mpg <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>)))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># auto &lt;- auto %&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(mpg_high_low = factor(x= mpg_high_low, </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                                level = c(0, 1), </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#                                labels = c("Yes", "No")))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Split the dataset into 75% training and 25% test and use 10 fold cross validation for the models below</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3333</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>trctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">number =</span> <span class="dv">10</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">classProbs =</span> T,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                     )</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>intrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(auto<span class="sc">$</span>mpg_high_low, <span class="at">p =</span> <span class="fl">0.75</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> auto[intrain, ]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> auto[<span class="sc">-</span>intrain, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li>Fit a logistic regression model to the training set to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Which variables are statistically significant? Predict the mpg_high_low using the test dataset and report the accuracy, specificity, sensitivity, and F measure.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is just to remind myself. </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## R不智能啊，还得重新建两个dataset来删掉值</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>train2 <span class="ot">&lt;-</span> <span class="fu">select</span>(train, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>logicModel <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> .,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"glm"</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> train2, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logicModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>
+Call:
+NULL
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.19713  -0.45285  -0.11498  -0.00176   2.82523  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   -3.7227     0.5481  -6.792 1.11e-11 ***
+cylinders      1.7967     0.9322   1.927 0.053927 .  
+displacement  -2.9828     1.4935  -1.997 0.045808 *  
+horsepower    -3.8534     0.9989  -3.858 0.000114 ***
+weight         0.2731     0.9649   0.283 0.777172    
+acceleration  -0.7388     0.3295  -2.242 0.024939 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 305.99  on 294  degrees of freedom
+Residual deviance: 173.05  on 289  degrees of freedom
+AIC: 185.05
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">select</span>(test, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>logic_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logic_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code> No Yes 
+ 79  18 </code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">###################################################################</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low)<span class="sc">$</span>byClass</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>         Sensitivity          Specificity       Pos Pred Value 
+           0.9350649            0.6500000            0.9113924 
+      Neg Pred Value            Precision               Recall 
+           0.7222222            0.9113924            0.9350649 
+                  F1           Prevalence       Detection Rate 
+           0.9230769            0.7938144            0.7422680 
+Detection Prevalence    Balanced Accuracy 
+           0.8144330            0.7925325 </code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">F_meas</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] 0.9230769</code></pre>
+</div>
+</div>
+<p>It shows that <em>horsepower</em> is statistically significant. It shows that the accuracy is 0.8763, the specificity is 0.6500, the sensitivity is 0.9351, and the F measure is 0.9231 *************************************</p>
+<ol start="5" type="1">
+<li>Check if the auto data is imbalanced with respect to mpg_high_low. Report the percentage of the data that belong to the two classes (Yes and No).</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(auto<span class="sc">$</span>mpg_high_low))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>
+       No       Yes 
+0.7882653 0.2117347 </code></pre>
+</div>
+</div>
+<p>It shows Yes and No is imbalanced because No got a 78.83% and Yes got a 21.17%. *************************************</p>
+<ol start="6" type="1">
+<li>Alter the threshold for classifying a No to 0.6 and report the increase in specificity and the corresponding loss in accuracy.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>class_prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(class_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>          No          Yes
+5  0.9975564 2.443579e-03
+23 0.9221370 7.786303e-02
+28 0.9999990 1.014331e-06
+33 0.9595224 4.047763e-02
+36 0.9508876 4.911239e-02
+40 0.9999029 9.709995e-05</code></pre>
+</div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pred_with_threshold <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(class_prob<span class="sc">$</span>Yes <span class="sc">&gt;</span> <span class="fl">0.6</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pred_with_threshold, test2<span class="sc">$</span>mpg_high_low, <span class="at">positive =</span> <span class="st">"No"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction No Yes
+       No  74  10
+       Yes  3  10
+                                          
+               Accuracy : 0.866           
+                 95% CI : (0.7817, 0.9267)
+    No Information Rate : 0.7938          
+    P-Value [Acc &gt; NIR] : 0.04632         
+                                          
+                  Kappa : 0.5297          
+                                          
+ Mcnemar's Test P-Value : 0.09609         
+                                          
+            Sensitivity : 0.9610          
+            Specificity : 0.5000          
+         Pos Pred Value : 0.8810          
+         Neg Pred Value : 0.7692          
+             Prevalence : 0.7938          
+         Detection Rate : 0.7629          
+   Detection Prevalence : 0.8660          
+      Balanced Accuracy : 0.7305          
+                                          
+       'Positive' Class : No              
+                                          </code></pre>
+</div>
+</div>
+<p>After set the threshold to 0.6, the new specificity is 0.5000, and the new accuracy is 0.866. There is a 0.1500 loss in the specificity, and no change in accuracy. ***************************************</p>
+<ol start="7" type="1">
+<li>Fit a Naïve Bayes model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Predict the mpg_high_low using the test dataset. Plot the ROC curve and report the best threshold on the ROC curve plot. Report the AUC on the curve plot as well. Report the accuracy, sensitivity and specificity.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>nb_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span>., <span class="at">method =</span> <span class="st">"nb"</span>, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> train2,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>), </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">trControl =</span> trctrl)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>nb_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Naive Bayes 
+
+295 samples
+  5 predictor
+  2 classes: 'No', 'Yes' 
+
+Pre-processing: scaled (5), centered (5) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 265, 266, 265, 266, 265, 266, ... 
+Resampling results across tuning parameters:
+
+  usekernel  Accuracy   Kappa    
+  FALSE      0.7257471  0.4372969
+   TRUE      0.7463218  0.4354504
+
+Tuning parameter 'fL' was held constant at a value of 0
+Tuning
+ parameter 'adjust' was held constant at a value of 1
+Accuracy was used to select the optimal model using the largest value.
+The final values used for the model were fL = 0, usekernel = TRUE and adjust
+ = 1.</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nb_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(nb_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(nb_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction No Yes
+       No  60   0
+       Yes 17  20
+                                          
+               Accuracy : 0.8247          
+                 95% CI : (0.7343, 0.8945)
+    No Information Rate : 0.7938          
+    P-Value [Acc &gt; NIR] : 0.2702762       
+                                          
+                  Kappa : 0.5927          
+                                          
+ Mcnemar's Test P-Value : 0.0001042       
+                                          
+            Sensitivity : 0.7792          
+            Specificity : 1.0000          
+         Pos Pred Value : 1.0000          
+         Neg Pred Value : 0.5405          
+             Prevalence : 0.7938          
+         Detection Rate : 0.6186          
+   Detection Prevalence : 0.6186          
+      Balanced Accuracy : 0.8896          
+                                          
+       'Positive' Class : No              
+                                          </code></pre>
+</div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################## plot</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>roc_curve <span class="ot">&lt;-</span> <span class="fu">roc</span>(<span class="fu">as.numeric</span>(test2<span class="sc">$</span>mpg_high_low), class_prob<span class="sc">$</span>No)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>Setting levels: control = 1, case = 2</code></pre>
+</div>
+<div class="cell-output-stderr">
+<pre><code>Setting direction: controls &gt; cases</code></pre>
+</div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>roc_curve<span class="sc">$</span>auc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Area under the curve: 0.9422</code></pre>
+</div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc_curve, <span class="at">print.thres =</span> <span class="st">"best"</span>, <span class="at">print.auc =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HW03_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coords</span>(roc_curve, <span class="st">"best"</span>, <span class="at">ret=</span><span class="st">"threshold"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>  threshold
+1 0.8965204</code></pre>
+</div>
+</div>
+<p>The best threshold is 0.8965. The AUC on the curve is 0.942. The accuracy is 0.8247, the sensitivity is 0.772, the specificity is 1.0000. ***************************************</p>
+<ol start="8" type="1">
+<li>Fit a KNN model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Use a grid search between 3 and 10 to find the best value of k. Report the accuracy, sensitivity, specificity, precision and recall.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>knn_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"knn"</span>, </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(<span class="at">k =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>),</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl, </span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>knn_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>k-Nearest Neighbors 
+
+295 samples
+  5 predictor
+  2 classes: 'No', 'Yes' 
+
+Pre-processing: scaled (5), centered (5) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 265, 265, 266, 265, 266, 266, ... 
+Resampling results across tuning parameters:
+
+  k   Accuracy   Kappa    
+   3  0.8409195  0.5232283
+   4  0.8305747  0.5046273
+   5  0.8473563  0.5282194
+   6  0.8541379  0.5648717
+   7  0.8335632  0.4841001
+   8  0.8435632  0.5143183
+   9  0.8302299  0.4692223
+  10  0.8337931  0.4861747
+
+Accuracy was used to select the optimal model using the largest value.
+The final value used for the model was k = 6.</code></pre>
+</div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction No Yes
+       No  73   5
+       Yes  4  15
+                                          
+               Accuracy : 0.9072          
+                 95% CI : (0.8312, 0.9567)
+    No Information Rate : 0.7938          
+    P-Value [Acc &gt; NIR] : 0.002269        
+                                          
+                  Kappa : 0.7112          
+                                          
+ Mcnemar's Test P-Value : 1.000000        
+                                          
+            Sensitivity : 0.9481          
+            Specificity : 0.7500          
+         Pos Pred Value : 0.9359          
+         Neg Pred Value : 0.7895          
+             Prevalence : 0.7938          
+         Detection Rate : 0.7526          
+   Detection Prevalence : 0.8041          
+      Balanced Accuracy : 0.8490          
+                                          
+       'Positive' Class : No              
+                                          </code></pre>
+</div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precision</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] 0.9358974</code></pre>
+</div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recall</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] 0.9480519</code></pre>
+</div>
+</div>
+<p>The accuracy is 0.8866, the sensitivity is 0.9351, the specificity is 0.700, the precision is 0.9231, the recall is 0.93501. And the best k is when k = 4, it has an accuracy of 0.8374. **************************************</p>
+<ol start="9" type="1">
+<li>Fit a LDA model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Report the accuracy sensitivity and specificity.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>lda_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., <span class="at">method =</span> <span class="st">"lda"</span>,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>lda_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(lda_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction No Yes
+       No  75  12
+       Yes  2   8
+                                          
+               Accuracy : 0.8557          
+                 95% CI : (0.7697, 0.9188)
+    No Information Rate : 0.7938          
+    P-Value [Acc &gt; NIR] : 0.07965         
+                                          
+                  Kappa : 0.459           
+                                          
+ Mcnemar's Test P-Value : 0.01616         
+                                          
+            Sensitivity : 0.9740          
+            Specificity : 0.4000          
+         Pos Pred Value : 0.8621          
+         Neg Pred Value : 0.8000          
+             Prevalence : 0.7938          
+         Detection Rate : 0.7732          
+   Detection Prevalence : 0.8969          
+      Balanced Accuracy : 0.6870          
+                                          
+       'Positive' Class : No              
+                                          </code></pre>
+</div>
+</div>
+<p>The accuracy is 0.8557, the sensitivity is 0.9740, the specificity is 0.4000. ************************************** 10. Summarize the performance of the all the above models by creating a dataframe with 4 columns – Model_Name, Accuracy, Sensitivity, Specificity. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?</p>
+<div class="cell">
+
+</div>
+</main>
+<!-- /main column -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    setTimeout(function() {
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+</body></html>
