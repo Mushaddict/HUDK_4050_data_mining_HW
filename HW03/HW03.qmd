@@ -3,6 +3,7 @@ title: "HW03"
 author: "Shijie An"
 format: html
 editor: visual
+output: html_document
 ---
 
 ```{r setup}

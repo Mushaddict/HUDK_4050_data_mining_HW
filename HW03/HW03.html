@@ -176,8 +176,9 @@ The following objects are masked from 'package:stats':
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"glm"</span>, </span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>),</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> train2, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logicModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">trControl =</span> trctrl, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logicModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>
 Call:
@@ -310,12 +311,12 @@ Prediction No Yes
 
 Pre-processing: scaled (5), centered (5) 
 Resampling: Cross-Validated (10 fold) 
-Summary of sample sizes: 265, 266, 265, 266, 265, 266, ... 
+Summary of sample sizes: 266, 265, 265, 266, 265, 265, ... 
 Resampling results across tuning parameters:
 
   usekernel  Accuracy   Kappa    
-  FALSE      0.7257471  0.4372969
-   TRUE      0.7463218  0.4354504
+  FALSE      0.7125287  0.4024104
+   TRUE      0.7529885  0.4353970
 
 Tuning parameter 'fL' was held constant at a value of 0
 Tuning
@@ -399,21 +400,21 @@ Prediction No Yes
 
 Pre-processing: scaled (5), centered (5) 
 Resampling: Cross-Validated (10 fold) 
-Summary of sample sizes: 265, 265, 266, 265, 266, 266, ... 
+Summary of sample sizes: 265, 266, 266, 266, 265, 266, ... 
 Resampling results across tuning parameters:
 
   k   Accuracy   Kappa    
-   3  0.8409195  0.5232283
-   4  0.8305747  0.5046273
-   5  0.8473563  0.5282194
-   6  0.8541379  0.5648717
-   7  0.8335632  0.4841001
-   8  0.8435632  0.5143183
-   9  0.8302299  0.4692223
-  10  0.8337931  0.4861747
+   3  0.8447126  0.5509912
+   4  0.8510345  0.5650502
+   5  0.8444828  0.5342613
+   6  0.8377011  0.5093450
+   7  0.8342529  0.5009136
+   8  0.8239080  0.4850821
+   9  0.8172414  0.4522895
+  10  0.8375862  0.4965235
 
 Accuracy was used to select the optimal model using the largest value.
-The final value used for the model was k = 6.</code></pre>
+The final value used for the model was k = 4.</code></pre>
 </div>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_fit, <span class="at">newdata =</span> test2)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
