@@ -141,6 +141,7 @@ confusionMatrix(lda_pred, test2$mpg_high_low)
 
 The accuracy is 0.8557, the sensitivity is 0.9740, the specificity is 0.4000. 
 **************************************
+
 10. Summarize the performance of the all the above models by creating a dataframe with 4 columns -- Model_Name, Accuracy, Sensitivity, Specificity. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?
 
 ```{r}
