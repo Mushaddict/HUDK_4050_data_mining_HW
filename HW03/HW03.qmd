@@ -3,7 +3,6 @@ title: "HW03"
 author: "Shijie An"
 format: html
 editor: visual
-output: html_document
 ---
 
 ```{r setup}
@@ -49,7 +48,7 @@ test <- auto[-intrain, ]
 
 4.  Fit a logistic regression model to the training set to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Which variables are statistically significant? Predict the mpg_high_low using the test dataset and report the accuracy, specificity, sensitivity, and F measure.
 ```{r}
-## This is a function to print all the accuracy, specificity, and sensitivity. 
+## This is a function to print all the accuracy, specificity, and sensitivity from confusionMatrix 
 call_ass <- function(cm) {
   print(paste("The accuracy is ", cm$overall["Accuracy"]))
   print(paste("The specificity is ", cm$byClass["Specificity"]))
@@ -73,8 +72,8 @@ test2 <- select(test, -c(mpg, year, origin, name))
 logic_pred <- predict(logicModel, newdata = test2)
 summary(logic_pred)
 ###################################################################
-lcm <- confusionMatrix(logic_pred, test2$mpg_high_low)
-call_ass(lcm)
+l_cm <- confusionMatrix(logic_pred, test2$mpg_high_low)
+call_ass(l_cm)
 print(paste("The F measure is ", F_meas(logic_pred, test2$mpg_high_low))) 
 print("It shows that horsepower is statistically significant")
 ```
@@ -84,12 +83,11 @@ print("It shows that horsepower is statistically significant")
 5.  Check if the auto data is imbalanced with respect to mpg_high_low. Report the percentage of the data that belong to the two classes (Yes and No).
 
 ```{r}
-prop.table(table(auto$mpg_high_low))
-
+pt<- prop.table(table(auto$mpg_high_low))
+print(paste("It shows Yes and No is imbalanced because No get a ", 
+            round(pt[1] * 100, digits = 2), 
+            "% and Yes get a ", round(pt[2] * 100, digits = 2), "%."))
 ```
-
-It shows Yes and No is imbalanced because No got a 78.83% and Yes got a 21.17%.
-*************************************
 
 6.  Alter the threshold for classifying a No to 0.6 and report the increase in specificity and the corresponding loss in accuracy.
 
@@ -97,12 +95,12 @@ It shows Yes and No is imbalanced because No got a 78.83% and Yes got a 21.17%.
 class_prob <- predict(logicModel, newdata = test2, type = "prob")
 head(class_prob)
 pred_with_threshold <- as.factor(ifelse(class_prob$Yes > 0.6, "Yes", "No"))
-tcm <- confusionMatrix(pred_with_threshold, test2$mpg_high_low, positive = "No")
-call_ass(tcm)
+lt_cm <- confusionMatrix(pred_with_threshold, test2$mpg_high_low, positive = "No")
+call_ass(lt_cm)
 print(paste("There is a loss of accurarcy of ", 
-            lcm$overall["Accuracy"] - tcm$overall["Accuracy"]))
+            l_cm$overall["Accuracy"] - lt_cm$overall["Accuracy"]))
 print(paste("There is a loss of specificity of ", 
-            lcm$byClass["Specificity"] - tcm$byClass["Specificity"]))
+            l_cm$byClass["Specificity"] - lt_cm$byClass["Specificity"]))
 ```
 
 
@@ -160,8 +158,37 @@ call_ass(lda_cm)
 ```
 
 
-10. Summarize the performance of the all the above models by creating a dataframe with 4 columns -- Model_Name, Accuracy, Sensitivity, Specificity. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?
+10. Summarize the performance of the all the above models by creating a dataframe with 4 columns -- *Model_Name*, *Accuracy*, *Sensitivity*, *Specificity*. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?
 
 ```{r}
+# row1 <- c("Logistic Regression", l_cm$overall["Accuracy"], 
+#           l_cm$byClass["Sensitivity"], l_cm$byClass["Specificity"])
+# row2 <- c("Logistic Regression t = 0.6", lt_cm$overall["Accuracy"], 
+#           lt_cm$byClass["Sensitivity"], lt_cm$byClass["Specificity"])
+# row3 <- c("Naïve Bayes model", nb_cm$overall["Accuracy"], 
+#           nb_cm$byClass["Sensitivity"], nb_cm$byClass["Specificity"])
+# row4 <- c("KNN model", k_cm$overall["Accuracy"], 
+#           k_cm$byClass["Sensitivity"], k_cm$byClass["Specificity"])
+# row5 <- c("Lda model", lda_cm$overall["Accuracy"], 
+#           lda_cm$byClass["Sensitivity"], lda_cm$byClass["Specificity"])
+
+acc <- function(cm){
+  cm$overall["Accuracy"]
+}
+sens <- function(cm) {
+  cm$byClass["Sensitivity"]
+}
+spec <- function(cm) {
+  cm$byClass["Specificity"]
+}
+
+Model_Name = c("Logistirc Regression", "Logistic Regression t=0.6", 
+                        "Naïve Bayes model","KNN model","Lda model")
+Accurarcy = c(acc(l_cm), acc(lt_cm), acc(nb_cm), acc(k_cm), acc(lda_cm))
+Sensitivity = c(sens(l_cm), sens(lt_cm), sens(nb_cm), sens(k_cm), sens(lda_cm))
+Specificity = c(spec(l_cm), spec(lt_cm), spec(nb_cm), spec(k_cm), spec(lda_cm))
+df <- data.frame(Model_Name, Accurarcy, Sensitivity, Specificity)
+df
+print("KNN model has the best Accurarcy of 0.8969, and Naive Bayes have the best Specificity of 1.00")
 
 ```

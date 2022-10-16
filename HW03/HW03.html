@@ -157,28 +157,38 @@ The following objects are masked from 'package:stats':
 </ol>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3333</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>trctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">number =</span> <span class="dv">10</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">classProbs =</span> T,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                     )</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>intrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(auto<span class="sc">$</span>mpg_high_low, <span class="at">p =</span> <span class="fl">0.75</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> auto[intrain, ]</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> auto[<span class="sc">-</span>intrain, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 fold cross validations </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>trctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">number =</span> <span class="dv">10</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">classProbs =</span> T,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                     )</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># separate data</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>intrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(auto<span class="sc">$</span>mpg_high_low, <span class="at">p =</span> <span class="fl">0.75</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> auto[intrain, ]</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> auto[<span class="sc">-</span>intrain, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
-<li>Fit a logistic regression model to the training set to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Which variables are statistically significant? Predict the mpg_high_low using the test dataset and report the accuracy, specificity, sensitivity, and F measure.</li>
+<li>Fit a logistic regression model to the training set to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Which variables are statistically significant? Predict the mpg_high_low using the test dataset and report the accuracy, specificity, sensitivity, and F measure. ::: {.cell}</li>
 </ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is a function to print all the accuracy, specificity, and sensitivity from confusionMatrix </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>call_ass <span class="ot">&lt;-</span> <span class="cf">function</span>(cm) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The accuracy is "</span>, cm<span class="sc">$</span>overall[<span class="st">"Accuracy"</span>]))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The specificity is "</span>, cm<span class="sc">$</span>byClass[<span class="st">"Specificity"</span>]))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The sensitivity is "</span>, cm<span class="sc">$</span>byClass[<span class="st">"Sensitivity"</span>]))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is just to remind myself. </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## R不智能啊，还得重新建两个dataset来删掉值</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>train2 <span class="ot">&lt;-</span> <span class="fu">select</span>(train, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>logicModel <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> .,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"glm"</span>, </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> train2, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">trControl =</span> trctrl, </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logicModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## This is just to remind myself. </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">## R不智能啊，还得重新建两个dataset来删掉值</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>train2 <span class="ot">&lt;-</span> <span class="fu">select</span>(train, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>logicModel <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> .,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"glm"</span>, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> train2, </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">trControl =</span> trctrl, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logicModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>
 Call:
@@ -207,50 +217,49 @@ AIC: 185.05
 
 Number of Fisher Scoring iterations: 8</code></pre>
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">select</span>(test, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>logic_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logic_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">select</span>(test, <span class="sc">-</span><span class="fu">c</span>(mpg, year, origin, name))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>logic_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(logic_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code> No Yes 
  79  18 </code></pre>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">###################################################################</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low)<span class="sc">$</span>byClass</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">###################################################################</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>l_cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">call_ass</span>(l_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>         Sensitivity          Specificity       Pos Pred Value 
-           0.9350649            0.6500000            0.9113924 
-      Neg Pred Value            Precision               Recall 
-           0.7222222            0.9113924            0.9350649 
-                  F1           Prevalence       Detection Rate 
-           0.9230769            0.7938144            0.7422680 
-Detection Prevalence    Balanced Accuracy 
-           0.8144330            0.7925325 </code></pre>
+<pre><code>[1] "The accuracy is  0.876288659793814"
+[1] "The specificity is  0.65"
+[1] "The sensitivity is  0.935064935064935"</code></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">F_meas</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The F measure is "</span>, <span class="fu">F_meas</span>(logic_pred, test2<span class="sc">$</span>mpg_high_low))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>[1] 0.9230769</code></pre>
+<pre><code>[1] "The F measure is  0.923076923076923"</code></pre>
+</div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"It shows that horsepower is statistically significant"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "It shows that horsepower is statistically significant"</code></pre>
 </div>
 </div>
-<p>It shows that <em>horsepower</em> is statistically significant. It shows that the accuracy is 0.8763, the specificity is 0.6500, the sensitivity is 0.9351, and the F measure is 0.9231 *************************************</p>
 <ol start="5" type="1">
 <li>Check if the auto data is imbalanced with respect to mpg_high_low. Report the percentage of the data that belong to the two classes (Yes and No).</li>
 </ol>
 <div class="cell">
-<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(auto<span class="sc">$</span>mpg_high_low))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pt<span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(auto<span class="sc">$</span>mpg_high_low))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"It shows Yes and No is imbalanced because No get a "</span>, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">round</span>(pt[<span class="dv">1</span>] <span class="sc">*</span> <span class="dv">100</span>, <span class="at">digits =</span> <span class="dv">2</span>), </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"% and Yes get a "</span>, <span class="fu">round</span>(pt[<span class="dv">2</span>] <span class="sc">*</span> <span class="dv">100</span>, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">"%."</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>
-       No       Yes 
-0.7882653 0.2117347 </code></pre>
+<pre><code>[1] "It shows Yes and No is imbalanced because No get a  78.83 % and Yes get a  21.17 %."</code></pre>
 </div>
 </div>
-<p>It shows Yes and No is imbalanced because No got a 78.83% and Yes got a 21.17%. *************************************</p>
 <ol start="6" type="1">
 <li>Alter the threshold for classifying a No to 0.6 and report the increase in specificity and the corresponding loss in accuracy.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>class_prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(class_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>class_prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(logicModel, <span class="at">newdata =</span> test2, <span class="at">type =</span> <span class="st">"prob"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(class_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>          No          Yes
 5  0.9975564 2.443579e-03
@@ -260,48 +269,34 @@ Detection Prevalence    Balanced Accuracy
 36 0.9508876 4.911239e-02
 40 0.9999029 9.709995e-05</code></pre>
 </div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pred_with_threshold <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(class_prob<span class="sc">$</span>Yes <span class="sc">&gt;</span> <span class="fl">0.6</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pred_with_threshold, test2<span class="sc">$</span>mpg_high_low, <span class="at">positive =</span> <span class="st">"No"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pred_with_threshold <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(class_prob<span class="sc">$</span>Yes <span class="sc">&gt;</span> <span class="fl">0.6</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>lt_cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_with_threshold, test2<span class="sc">$</span>mpg_high_low, <span class="at">positive =</span> <span class="st">"No"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">call_ass</span>(lt_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
-Prediction No Yes
-       No  74  10
-       Yes  3  10
-                                          
-               Accuracy : 0.866           
-                 95% CI : (0.7817, 0.9267)
-    No Information Rate : 0.7938          
-    P-Value [Acc &gt; NIR] : 0.04632         
-                                          
-                  Kappa : 0.5297          
-                                          
- Mcnemar's Test P-Value : 0.09609         
-                                          
-            Sensitivity : 0.9610          
-            Specificity : 0.5000          
-         Pos Pred Value : 0.8810          
-         Neg Pred Value : 0.7692          
-             Prevalence : 0.7938          
-         Detection Rate : 0.7629          
-   Detection Prevalence : 0.8660          
-      Balanced Accuracy : 0.7305          
-                                          
-       'Positive' Class : No              
-                                          </code></pre>
+<pre><code>[1] "The accuracy is  0.865979381443299"
+[1] "The specificity is  0.5"
+[1] "The sensitivity is  0.961038961038961"</code></pre>
+</div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"There is a loss of accurarcy of "</span>, </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>            l_cm<span class="sc">$</span>overall[<span class="st">"Accuracy"</span>] <span class="sc">-</span> lt_cm<span class="sc">$</span>overall[<span class="st">"Accuracy"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "There is a loss of accurarcy of  0.0103092783505154"</code></pre>
+</div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"There is a loss of specificity of "</span>, </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            l_cm<span class="sc">$</span>byClass[<span class="st">"Specificity"</span>] <span class="sc">-</span> lt_cm<span class="sc">$</span>byClass[<span class="st">"Specificity"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "There is a loss of specificity of  0.15"</code></pre>
 </div>
 </div>
-<p>After set the threshold to 0.6, the new specificity is 0.5000, and the new accuracy is 0.866. There is a 0.1500 loss in the specificity, and no change in accuracy. ***************************************</p>
 <ol start="7" type="1">
 <li>Fit a Naïve Bayes model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Predict the mpg_high_low using the test dataset. Plot the ROC curve and report the best threshold on the ROC curve plot. Report the AUC on the curve plot as well. Report the accuracy, sensitivity and specificity.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>nb_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span>., <span class="at">method =</span> <span class="st">"nb"</span>, </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> train2,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>), </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">trControl =</span> trctrl)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>nb_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>nb_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span>., <span class="at">method =</span> <span class="st">"nb"</span>, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> train2,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>), </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">trControl =</span> trctrl)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>nb_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>Naive Bayes 
 
@@ -325,72 +320,56 @@ Accuracy was used to select the optimal model using the largest value.
 The final values used for the model were fL = 0, usekernel = TRUE and adjust
  = 1.</code></pre>
 </div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nb_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(nb_fit, <span class="at">newdata =</span> test2)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(nb_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>nb_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(nb_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>nb_cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(nb_pred, test2<span class="sc">$</span>mpg_high_low)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">call_ass</span>(nb_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
-Prediction No Yes
-       No  60   0
-       Yes 17  20
-                                          
-               Accuracy : 0.8247          
-                 95% CI : (0.7343, 0.8945)
-    No Information Rate : 0.7938          
-    P-Value [Acc &gt; NIR] : 0.2702762       
-                                          
-                  Kappa : 0.5927          
-                                          
- Mcnemar's Test P-Value : 0.0001042       
-                                          
-            Sensitivity : 0.7792          
-            Specificity : 1.0000          
-         Pos Pred Value : 1.0000          
-         Neg Pred Value : 0.5405          
-             Prevalence : 0.7938          
-         Detection Rate : 0.6186          
-   Detection Prevalence : 0.6186          
-      Balanced Accuracy : 0.8896          
-                                          
-       'Positive' Class : No              
-                                          </code></pre>
+<pre><code>[1] "The accuracy is  0.824742268041237"
+[1] "The specificity is  1"
+[1] "The sensitivity is  0.779220779220779"</code></pre>
 </div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################## plot</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>roc_curve <span class="ot">&lt;-</span> <span class="fu">roc</span>(<span class="fu">as.numeric</span>(test2<span class="sc">$</span>mpg_high_low), class_prob<span class="sc">$</span>No)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">######################################################## plot</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>roc_curve <span class="ot">&lt;-</span> <span class="fu">roc</span>(<span class="fu">as.numeric</span>(test2<span class="sc">$</span>mpg_high_low), class_prob<span class="sc">$</span>No)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stderr">
 <pre><code>Setting levels: control = 1, case = 2</code></pre>
 </div>
 <div class="cell-output-stderr">
 <pre><code>Setting direction: controls &gt; cases</code></pre>
 </div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>roc_curve<span class="sc">$</span>auc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>roc_curve<span class="sc">$</span>auc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>Area under the curve: 0.9422</code></pre>
 </div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc_curve, <span class="at">print.thres =</span> <span class="st">"best"</span>, <span class="at">print.auc =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="HW03_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The auc is "</span>, roc_curve<span class="sc">$</span>auc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "The auc is  0.942207792207792"</code></pre>
 </div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coords</span>(roc_curve, <span class="st">"best"</span>, <span class="at">ret=</span><span class="st">"threshold"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc_curve, <span class="at">print.thres =</span> <span class="st">"best"</span>, <span class="at">print.auc =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="HW03_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coords</span>(roc_curve, <span class="st">"best"</span>, <span class="at">ret=</span><span class="st">"threshold"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>  threshold
 1 0.8965204</code></pre>
 </div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The best roc_curve is "</span>, <span class="fu">coords</span>(roc_curve, <span class="st">"best"</span>, <span class="at">ret=</span><span class="st">"threshold"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "The best roc_curve is  0.89652039803271"</code></pre>
 </div>
-<p>The best threshold is 0.8965. The AUC on the curve is 0.942. The accuracy is 0.8247, the sensitivity is 0.772, the specificity is 1.0000. ***************************************</p>
+</div>
 <ol start="8" type="1">
 <li>Fit a KNN model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Use a grid search between 3 and 10 to find the best value of k. Report the accuracy, sensitivity, specificity, precision and recall.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode" id="cb38"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>knn_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"knn"</span>, </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(<span class="at">k =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>),</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl, </span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>knn_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>knn_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"knn"</span>, </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(<span class="at">k =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>),</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl, </span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">preProcess=</span><span class="fu">c</span>(<span class="st">'scale'</span>, <span class="st">'center'</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>knn_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
 <pre><code>k-Nearest Neighbors 
 
@@ -416,89 +395,87 @@ Resampling results across tuning parameters:
 Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was k = 4.</code></pre>
 </div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_fit, <span class="at">newdata =</span> test2)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(knn_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>k_cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">call_ass</span>(k_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
-Prediction No Yes
-       No  73   5
-       Yes  4  15
-                                          
-               Accuracy : 0.9072          
-                 95% CI : (0.8312, 0.9567)
-    No Information Rate : 0.7938          
-    P-Value [Acc &gt; NIR] : 0.002269        
-                                          
-                  Kappa : 0.7112          
-                                          
- Mcnemar's Test P-Value : 1.000000        
-                                          
-            Sensitivity : 0.9481          
-            Specificity : 0.7500          
-         Pos Pred Value : 0.9359          
-         Neg Pred Value : 0.7895          
-             Prevalence : 0.7938          
-         Detection Rate : 0.7526          
-   Detection Prevalence : 0.8041          
-      Balanced Accuracy : 0.8490          
-                                          
-       'Positive' Class : No              
-                                          </code></pre>
+<pre><code>[1] "The accuracy is  0.907216494845361"
+[1] "The specificity is  0.75"
+[1] "The sensitivity is  0.948051948051948"</code></pre>
 </div>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">precision</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The precision is "</span>, <span class="fu">precision</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>[1] 0.9358974</code></pre>
+<pre><code>[1] "The precision is  0.935897435897436"</code></pre>
 </div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recall</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"The recall is "</span>, <span class="fu">recall</span>(knn_pred, test2<span class="sc">$</span>mpg_high_low)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>[1] 0.9480519</code></pre>
+<pre><code>[1] "The recall is  0.948051948051948"</code></pre>
+</div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"The best k is when k = 4, it has an accuracy of 0.8374"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "The best k is when k = 4, it has an accuracy of 0.8374"</code></pre>
 </div>
 </div>
-<p>The accuracy is 0.8866, the sensitivity is 0.9351, the specificity is 0.700, the precision is 0.9231, the recall is 0.93501. And the best k is when k = 4, it has an accuracy of 0.8374. **************************************</p>
 <ol start="9" type="1">
 <li>Fit a LDA model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Report the accuracy sensitivity and specificity.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode" id="cb46"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>lda_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., <span class="at">method =</span> <span class="st">"lda"</span>,</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>lda_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_fit, <span class="at">newdata =</span> test2)</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(lda_pred, test2<span class="sc">$</span>mpg_high_low)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>lda_fit <span class="ot">&lt;-</span> <span class="fu">train</span>(mpg_high_low <span class="sc">~</span> ., <span class="at">method =</span> <span class="st">"lda"</span>,</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> train2, </span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> trctrl)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>lda_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_fit, <span class="at">newdata =</span> test2)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>lda_cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(lda_pred, test2<span class="sc">$</span>mpg_high_low)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">call_ass</span>(lda_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-stdout">
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
-Prediction No Yes
-       No  75  12
-       Yes  2   8
-                                          
-               Accuracy : 0.8557          
-                 95% CI : (0.7697, 0.9188)
-    No Information Rate : 0.7938          
-    P-Value [Acc &gt; NIR] : 0.07965         
-                                          
-                  Kappa : 0.459           
-                                          
- Mcnemar's Test P-Value : 0.01616         
-                                          
-            Sensitivity : 0.9740          
-            Specificity : 0.4000          
-         Pos Pred Value : 0.8621          
-         Neg Pred Value : 0.8000          
-             Prevalence : 0.7938          
-         Detection Rate : 0.7732          
-   Detection Prevalence : 0.8969          
-      Balanced Accuracy : 0.6870          
-                                          
-       'Positive' Class : No              
-                                          </code></pre>
+<pre><code>[1] "The accuracy is  0.855670103092783"
+[1] "The specificity is  0.4"
+[1] "The sensitivity is  0.974025974025974"</code></pre>
 </div>
 </div>
-<p>The accuracy is 0.8557, the sensitivity is 0.9740, the specificity is 0.4000. ************************************** 10. Summarize the performance of the all the above models by creating a dataframe with 4 columns – Model_Name, Accuracy, Sensitivity, Specificity. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?</p>
+<ol start="10" type="1">
+<li>Summarize the performance of the all the above models by creating a dataframe with 4 columns – <em>Model_Name</em>, <em>Accuracy</em>, <em>Sensitivity</em>, <em>Specificity</em>. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?</li>
+</ol>
 <div class="cell">
-
+<div class="sourceCode" id="cb61"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row1 &lt;- c("Logistic Regression", l_cm$overall["Accuracy"], </span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co">#           l_cm$byClass["Sensitivity"], l_cm$byClass["Specificity"])</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co"># row2 &lt;- c("Logistic Regression t = 0.6", lt_cm$overall["Accuracy"], </span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="co">#           lt_cm$byClass["Sensitivity"], lt_cm$byClass["Specificity"])</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="co"># row3 &lt;- c("Naïve Bayes model", nb_cm$overall["Accuracy"], </span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="co">#           nb_cm$byClass["Sensitivity"], nb_cm$byClass["Specificity"])</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="co"># row4 &lt;- c("KNN model", k_cm$overall["Accuracy"], </span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="co">#           k_cm$byClass["Sensitivity"], k_cm$byClass["Specificity"])</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="co"># row5 &lt;- c("Lda model", lda_cm$overall["Accuracy"], </span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="co">#           lda_cm$byClass["Sensitivity"], lda_cm$byClass["Specificity"])</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="cf">function</span>(cm){</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>  cm<span class="sc">$</span>overall[<span class="st">"Accuracy"</span>]</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>sens <span class="ot">&lt;-</span> <span class="cf">function</span>(cm) {</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>  cm<span class="sc">$</span>byClass[<span class="st">"Sensitivity"</span>]</span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="cf">function</span>(cm) {</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>  cm<span class="sc">$</span>byClass[<span class="st">"Specificity"</span>]</span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>Model_Name <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Logistirc Regression"</span>, <span class="st">"Logistic Regression t=0.6"</span>, </span>
+<span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Naïve Bayes model"</span>,<span class="st">"KNN model"</span>,<span class="st">"Lda model"</span>)</span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a>Accurarcy <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">acc</span>(l_cm), <span class="fu">acc</span>(lt_cm), <span class="fu">acc</span>(nb_cm), <span class="fu">acc</span>(k_cm), <span class="fu">acc</span>(lda_cm))</span>
+<span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a>Sensitivity <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">sens</span>(l_cm), <span class="fu">sens</span>(lt_cm), <span class="fu">sens</span>(nb_cm), <span class="fu">sens</span>(k_cm), <span class="fu">sens</span>(lda_cm))</span>
+<span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a>Specificity <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">spec</span>(l_cm), <span class="fu">spec</span>(lt_cm), <span class="fu">spec</span>(nb_cm), <span class="fu">spec</span>(k_cm), <span class="fu">spec</span>(lda_cm))</span>
+<span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(Model_Name, Accurarcy, Sensitivity, Specificity)</span>
+<span id="cb61-28"><a href="#cb61-28" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>                 Model_Name Accurarcy Sensitivity Specificity
+1      Logistirc Regression 0.8762887   0.9350649        0.65
+2 Logistic Regression t=0.6 0.8659794   0.9610390        0.50
+3         Naïve Bayes model 0.8247423   0.7792208        1.00
+4                 KNN model 0.9072165   0.9480519        0.75
+5                 Lda model 0.8556701   0.9740260        0.40</code></pre>
+</div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"KNN model has the best Accurarcy of 0.8969, and Naive Bayes have the best Specificity of 1.00"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>[1] "KNN model has the best Accurarcy of 0.8969, and Naive Bayes have the best Specificity of 1.00"</code></pre>
+</div>
 </div>
 </main>
 <!-- /main column -->
