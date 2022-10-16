@@ -34,10 +34,13 @@ auto <- auto %>%
 
 ```{r}
 set.seed(3333)
+# 10 fold cross validations 
 trctrl <- trainControl(method = "cv",
                      number = 10,
                      classProbs = T,
                      )
+
+# separate data
 intrain <- createDataPartition(auto$mpg_high_low, p = 0.75, list = FALSE)
 train <- auto[intrain, ]
 test <- auto[-intrain, ]
@@ -45,6 +48,14 @@ test <- auto[-intrain, ]
 ```
 
 4.  Fit a logistic regression model to the training set to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Which variables are statistically significant? Predict the mpg_high_low using the test dataset and report the accuracy, specificity, sensitivity, and F measure.
+```{r}
+## This is a function to print all the accuracy, specificity, and sensitivity. 
+call_ass <- function(cm) {
+  print(paste("The accuracy is ", cm$overall["Accuracy"]))
+  print(paste("The specificity is ", cm$byClass["Specificity"]))
+  print(paste("The sensitivity is ", cm$byClass["Sensitivity"]))
+}
+```
 
 ```{r}
 ## This is just to remind myself. 
@@ -62,13 +73,13 @@ test2 <- select(test, -c(mpg, year, origin, name))
 logic_pred <- predict(logicModel, newdata = test2)
 summary(logic_pred)
 ###################################################################
-confusionMatrix(logic_pred, test2$mpg_high_low)$byClass
-F_meas(logic_pred, test2$mpg_high_low)
+lcm <- confusionMatrix(logic_pred, test2$mpg_high_low)
+call_ass(lcm)
+print(paste("The F measure is ", F_meas(logic_pred, test2$mpg_high_low))) 
+print("It shows that horsepower is statistically significant")
 ```
 
-It shows that *horsepower* is statistically significant. 
-It shows that the accuracy is 0.8763, the specificity is 0.6500, the sensitivity is 0.9351, and the F measure is 0.9231
-*************************************
+
 
 5.  Check if the auto data is imbalanced with respect to mpg_high_low. Report the percentage of the data that belong to the two classes (Yes and No).
 
@@ -86,10 +97,14 @@ It shows Yes and No is imbalanced because No got a 78.83% and Yes got a 21.17%.
 class_prob <- predict(logicModel, newdata = test2, type = "prob")
 head(class_prob)
 pred_with_threshold <- as.factor(ifelse(class_prob$Yes > 0.6, "Yes", "No"))
-confusionMatrix(pred_with_threshold, test2$mpg_high_low, positive = "No")
+tcm <- confusionMatrix(pred_with_threshold, test2$mpg_high_low, positive = "No")
+call_ass(tcm)
+print(paste("There is a loss of accurarcy of ", 
+            lcm$overall["Accuracy"] - tcm$overall["Accuracy"]))
+print(paste("There is a loss of specificity of ", 
+            lcm$byClass["Specificity"] - tcm$byClass["Specificity"]))
 ```
-After set the threshold to 0.6, the new specificity is 0.5000, and the new accuracy is 0.866. There is a 0.1500 loss in the specificity, and no change in accuracy. 
-***************************************
+
 
 7.  Fit a Naïve Bayes model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Predict the mpg_high_low using the test dataset. Plot the ROC curve and report the best threshold on the ROC curve plot. Report the AUC on the curve plot as well. Report the accuracy, sensitivity and specificity.
 
@@ -100,15 +115,18 @@ nb_fit <- train(mpg_high_low ~., method = "nb",
                 trControl = trctrl)
 nb_fit
 nb_pred <- predict(nb_fit, newdata = test2)
-confusionMatrix(nb_pred, test2$mpg_high_low)
+nb_cm <- confusionMatrix(nb_pred, test2$mpg_high_low)
+call_ass(nb_cm)
 ######################################################## plot
 roc_curve <- roc(as.numeric(test2$mpg_high_low), class_prob$No)
 roc_curve$auc
+print(paste("The auc is ", roc_curve$auc))
+
 plot(roc_curve, print.thres = "best", print.auc = T)
 coords(roc_curve, "best", ret="threshold")
+print(paste("The best roc_curve is ", coords(roc_curve, "best", ret="threshold")))
 ```
-The best threshold is 0.8965. The AUC on the curve is 0.942. The accuracy is 0.8247, the sensitivity is 0.772, the specificity is 1.0000. 
-***************************************
+
 
 8.  Fit a KNN model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Use a grid search between 3 and 10 to find the best value of k. Report the accuracy, sensitivity, specificity, precision and recall.
 
@@ -122,12 +140,13 @@ knn_fit <- train(mpg_high_low ~ .,
                  )
 knn_fit
 knn_pred <- predict(knn_fit, newdata = test2)
-confusionMatrix(knn_pred, test2$mpg_high_low)
-precision(knn_pred, test2$mpg_high_low)
-recall(knn_pred, test2$mpg_high_low)
+k_cm <- confusionMatrix(knn_pred, test2$mpg_high_low)
+call_ass(k_cm)
+print(paste("The precision is ", precision(knn_pred, test2$mpg_high_low)))
+print(paste("The recall is ", recall(knn_pred, test2$mpg_high_low)))
+print("The best k is when k = 4, it has an accuracy of 0.8374")
 ```
-The accuracy is 0.8866, the sensitivity is 0.9351, the specificity is 0.700, the precision is 0.9231, the recall is 0.93501. And the best k is when k = 4, it has an accuracy of 0.8374. 
-**************************************
+
 
 9.  Fit a LDA model to the training data to predict mpg_high_low using all the other features/variables except mpg, year, origin, and name. Report the accuracy sensitivity and specificity.
 
@@ -136,11 +155,10 @@ lda_fit <- train(mpg_high_low ~ ., method = "lda",
                  data = train2, 
                  trControl = trctrl)
 lda_pred <- predict(lda_fit, newdata = test2)
-confusionMatrix(lda_pred, test2$mpg_high_low)
+lda_cm <- confusionMatrix(lda_pred, test2$mpg_high_low)
+call_ass(lda_cm)
 ```
 
-The accuracy is 0.8557, the sensitivity is 0.9740, the specificity is 0.4000. 
-**************************************
 
 10. Summarize the performance of the all the above models by creating a dataframe with 4 columns -- Model_Name, Accuracy, Sensitivity, Specificity. The data frame should contain one row for each model you built above with each of the columns filled in with the appropriate metric. Print out the dataframe. Which model performed the best from an accuracy point of view and which model performed best from a specificity point of view without adjusting for the threshold?
 
