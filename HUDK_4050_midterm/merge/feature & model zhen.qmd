@@ -1,0 +1,493 @@
+---
+title: "modeling"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(dplyr) 
+library(readxl)
+library(ggplot2)
+#install.packages("ggpubr")
+library(ggpubr)
+```
+
+# Reading data
+
+```{r}
+df_test_clean<-read.csv("output data/df_test_clean.csv")
+df_train_clean<-read.csv("output data/df_train_clean.csv")
+```
+
+# EDA & Feature engineering
+
+## Finance：
+
+"cohort"
+
+"cohort.term"
+
+"Marital.Status"
+
+"Adjusted.Gross.Income"
+
+"Parent.Adjusted.Gross.Income"
+
+"Father.s.Highest.Grade.Level"
+
+"Mother.s.Highest.Grade.Level"
+
+"Housing"
+
+"Loan"
+
+"Scholarship"
+
+"Work.Study"
+
+"Grant"
+
+### 1. **nominal level and ordinal level measures:**
+
+```{r}
+#| echo: true
+#| 
+df_train_clean$Dropout = factor(df_train_clean$Dropout,levels = c(0,1),labels = c("Grad", "dropout"))
+
+for(i in c("cohort.term","Marital.Status","Father.s.Highest.Grade.Level","Mother.s.Highest.Grade.Level","Housing")){
+###bar plot #######
+perc<-ggplot(data = df_train_clean, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = get(i), fill = Dropout)) +xlab(i)+geom_bar(alpha = 0.3)
+print(ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2))
+#####chi squire test#######
+table<-with(df_train_clean,table(Dropout,get(i)))
+print(chisq.test(table))
+}
+ 
+```
+
+**Main Results:**
+
+1.  Chi test shows that correlation between these five variables and dropout are all statistically significant.
+2.  According to those plots, spring enrollment's students have higher dropout rate than students who enrolled in fall.
+3.  Unknown group have higher dropout rate than other group
+
+**Left variables:**
+
+-   cohort.term,
+
+-   Marital.Status,
+
+-   Father.s.Highest.Grade.Level,
+
+-   Housing
+
+### 2. Ratio level measures:
+
+```{r}
+###########  Adjusted.Gross.Income, Parent.Adjusted.Gross.Income  
+
+###### abs
+df_train_clean$Adjusted.Gross.Income<-abs(df_train_clean$Adjusted.Gross.Income)
+df_train_clean$Parent.Adjusted.Gross.Income<-abs(df_train_clean$Parent.Adjusted.Gross.Income)
+
+###### add column of sum_income
+df_train_clean$sum_income<-df_train_clean$Adjusted.Gross.Income+df_train_clean$Parent.Adjusted.Gross.Income
+
+###normal distribution test
+ks.test(scale(df_train_clean$Adjusted.Gross.Income),"pnorm")
+qqnorm(df_train_clean$Adjusted.Gross.Income)
+
+ks.test(scale(df_train_clean$Parent.Adjusted.Gross.Income),"pnorm")
+qqnorm(df_train_clean$Parent.Adjusted.Gross.Income)
+
+ks.test(scale(df_train_clean$sum_income),"pnorm")
+qqnorm(df_train_clean$sum_income)
+
+####  Mann-Whitney U test
+wilcox.test(df_train_clean$Parent.Adjusted.Gross.Income~df_train_clean$Dropout)
+wilcox.test(df_train_clean$Adjusted.Gross.Income~df_train_clean$Dropout)
+wilcox.test(df_train_clean$sum_income~df_train_clean$Dropout)
+
+```
+
+**Main Results:**
+
+None of these three variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these three variables are significantly correlated with dropout.
+
+So all these three variables are left and could be further selected (Parent.Adjusted.Gross.Income and Adjusted.Gross.Income, or sum_income) in the model
+
+**Left variables:**
+
+-   Adjusted.Gross.Income, Parent.Adjusted.Gross.Income
+
+    or
+
+-   sum_income (newly generated)
+
+```{r}
+
+##### add a coulumn to calucate the total financial aid
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean$total_Loan[i]<-sum(df_train_clean[i,grep("\\.Loan", colnames(df_train_clean))])
+}
+
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean$total_Scholarship[i]<-sum(df_train_clean[i,grep("\\.Scholarship", colnames(df_train_clean))])
+}
+
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean$total_Work_Study[i]<-sum(df_train_clean[i,grep("\\.Work\\.Study", colnames(df_train_clean))])
+}
+
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean$total_Grant[i]<-sum(df_train_clean[i,grep("\\.Grant", colnames(df_train_clean))])
+}
+
+
+##### plot with log10
+for(i in c("total_Loan","total_Scholarship","total_Work_Study","total_Grant")){
+print(ggplot(df_train_clean, aes(x = log10(get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = df_train_clean, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+
+############  normal distribution test
+ks.test(scale(df_train_clean$total_Loan),"pnorm")
+qqnorm(df_train_clean$total_Loan)
+
+####  Mann-Whitney U test
+wilcox.test(df_train_clean$total_Loan~df_train_clean$Dropout)
+wilcox.test(df_train_clean$total_Scholarship~df_train_clean$Dropout)
+wilcox.test(df_train_clean$total_Work_Study~df_train_clean$Dropout)
+wilcox.test(df_train_clean$total_Grant~df_train_clean$Dropout)
+```
+
+**Main Results:**
+
+1.  None of these four variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these four variables are significantly correlated with dropout.
+
+2.  According to the plots, all these variables show a general negative correlation with dropout(Student receiving more funding showed a less proportion of dropouts).
+
+**Left variables:**
+
+-   total_Loan (newly generated)
+
+-   total_scholarship (newly generated)
+
+-   total_Work_Study (newly generated)
+
+-   total_Grant (newly generated)
+
+## Static:
+
+"State", "RegistrationDate", "Gender","BirthYear", "BirthMonth"
+
+"Hispanic", "AmericanIndian", "Asian", "Black", "NativeHawaiian", "White", "TwoOrMoreRace"
+
+"HSDip", "HSDipYr" ,"HSGPAUnwtd", "EnrollmentStatus"
+
+"NumColCredAttemptTransfer" ,"NumColCredAcceptTransfer" ,"CumLoanAtEntry"
+
+"HighDeg" ,"MathPlacement" ,"EngPlacement"
+
+"GatewayMathStatus" ,"GatewayEnglishStatus"
+
+### 1. **nominal level and ordinal level measures:**
+
+```{r}
+##################State##################
+## majority of students in this dataset are from NJ, so add a coulumn to mark whether the student is from another state
+for (i in 1:nrow(df_train_clean)){
+  if( df_train_clean$State[i]=="NJ"){
+    df_train_clean$state_NJ[i]<-1
+  }
+  else
+    df_train_clean$state_NJ[i]<-0
+}
+
+table<-with(df_train_clean,table(Dropout,state_NJ))
+print(chisq.test(table))
+
+
+################################   gender  ################################ 
+perc<-ggplot(data = df_train_clean, mapping = aes(x = Gender, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = Gender, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+table<-with(df_train_clean,table(Dropout,Gender))
+print(chisq.test(table))
+
+
+########  "HSDip","EnrollmentStatus"  ##################
+for(i in c("HSDip", "EnrollmentStatus")){
+###bar plot #######
+perc<-ggplot(data = df_train_clean, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = get(i), fill = Dropout)) +xlab(i)+geom_bar(alpha = 0.3)
+print(ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2))
+###chi squire test#######
+table<-with(df_train_clean,table(Dropout,get(i)))
+print(chisq.test(table))
+}
+
+################   "NumColCredAttemptTransfer","NumColCredAcceptTransfer"########
+for(i in c( "NumColCredAttemptTransfer","NumColCredAcceptTransfer")){
+print(ggplot(df_train_clean, aes(x =get(i), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+}
+
+#######"CumLoanAtEntry","HighDeg" ,"MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus"########
+for(i in c( "CumLoanAtEntry","HighDeg" ,"MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus")){
+###bar plot #######
+perc<-ggplot(data = df_train_clean, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = get(i), fill = Dropout)) +xlab(i)+geom_bar(alpha = 0.3)
+print(ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2))
+###chi squire test#######
+table<-with(df_train_clean,table(Dropout,get(i)))
+print(chisq.test(table))
+}
+
+```
+
+**Left variables:**
+
+-   "state_NJ" (newly generated)
+
+-   "HSDip", "EnrollmentStatus"
+
+-   "NumColCredAttemptTransfer", "NumColCredAcceptTransfer"
+
+-   "CumLoanAtEntry","HighDeg" ,"MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus
+
+```{r}
+################################   race  ################################ #
+for (i in 1:nrow(df_train_clean)){
+  if (df_train_clean$Asian[i]==1 |df_train_clean$White[i]==1){
+    df_train_clean$race[i]<-1
+  }
+  else 
+    df_train_clean$race[i]<-0
+}
+table<-with(df_train_clean,table(Dropout,race))
+print(chisq.test(table))
+
+perc<-ggplot(data = df_train_clean, mapping = aes(x = race, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = race, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+```
+
+**Main Results:**
+
+When divided into two groups( white&Asian and others ), the correlation is not significant ar 0.001 level
+
+**Left variables:**
+
+-   "Hispanic"
+
+-   "AmericanIndian"
+
+-   "Asian"
+
+-   "Black"
+
+-   "NativeHawaiian"
+
+-   "White"
+
+-   "TwoOrMoreRace"
+
+## Progress：
+
+```{r}
+#######################generate cohort year ############################
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean[i,"cohort_year"]<-substring((df_train_clean[i,"cohort"]),1,4)
+}
+
+for (i in 1:nrow(df_train_clean)){
+  if (df_train_clean$Asian[i]==1 |df_train_clean$White[i]==1){
+    df_train_clean$race[i]<-1
+  }
+  else 
+    df_train_clean$race[i]<-0
+}
+
+#######################generate enrollment age ############################
+df_train_clean<-df_train_clean[-which(is.na(df_train_clean[,"BirthYear"]),arr.ind = TRUE),]
+
+for (i in 1:nrow(df_train_clean)){
+  df_train_clean[i,"enrollment_age"]<-as.numeric(df_train_clean[i,"cohort_year"])-as.numeric(df_train_clean[i,"BirthYear"])
+}
+
+print(ggplot(df_train_clean, aes(x =enrollment_age, fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+
+
+###### first term Major
+col_Major1<-grep("Major1", colnames(df_train_clean))
+
+df_train_clean[,col_Major1][is.na(df_train_clean[,col_Major1])] <- "0"
+
+for (i in 1:nrow(df_train_clean)){
+  if (df_train_clean[i,"cohort.term"]==1){
+    df_train_clean[i,"first_term_Major"]<-df_train_clean[i,paste("Major1","Fall",df_train_clean[i,"cohort_year"],sep="_")]
+  }
+  else if(df_train_clean[i,"cohort.term"]==3){
+    if(df_train_clean[i,paste("Major1","Fall",df_train_clean[i,"cohort_year"],sep="_")]>0){
+      df_train_clean[i,"first_term_Major"]<-df_train_clean[i,paste("Major1","Fall",df_train_clean[i,"cohort_year"],sep="_")]
+    }
+    else
+      df_train_clean[i,"first_term_Major"]<-df_train_clean[i,paste("Major1","Spring",as.numeric(df_train_clean[i,"cohort_year"])+1,sep="_")]
+  }
+}
+
+##plot
+perc<-ggplot(data = df_train_clean, mapping = aes(x = first_term_Major, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x =first_term_Major, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+###################### major 2 ##############################
+col_major2<-grep("Major2", colnames(df_train_clean))
+df_train_clean[,col_major2][is.na(df_train_clean[,col_major2])] <- "-2"
+df_train_clean[,"Major2"]=0
+for (i in 1:nrow(df_train_clean)){
+  for (j in col_major2){
+    if(df_train_clean[i,j]>0){
+      df_train_clean[i,"Major2"]=1
+    }
+  }
+}
+##plot
+perc<-ggplot(data = df_train_clean, mapping = aes(x = Major2, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = Major2, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+
+###################### TransferIntent  ##############################
+col_TransferIntent<-grep("TransferIntent", colnames(df_train_clean))
+df_train_clean[,col_TransferIntent][is.na(df_train_clean[,col_TransferIntent])] <- "-2"
+df_train_clean[,"TransferIntent"]=0
+for (i in 1:nrow(df_train_clean)){
+  for (j in col_major2){
+    if(df_train_clean[i,j]>0){
+      df_train_clean[i,"TransferIntent"]=1
+    }
+  }
+}
+##plot
+perc<-ggplot(data = df_train_clean, mapping = aes(x = TransferIntent, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_train_clean, mapping=aes(x = TransferIntent, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+
+```
+
+**Main Results:**
+
+When divided into two groups( white&Asian and others ), the correlation is not significant ar 0.001 level
+
+**Left variables:**
+
+-   enrollment_age
+
+-   first_term_Major
+
+-   Major2
+
+-   TransferIntent
+
+-   complete_DevMath
+
+-   complete_DevEnglish
+
+-   final_GPA
+
+-   
+
+-   
+
+-   
+
+    -   **几点备注：**
+
+**1.complete 放入模型？？**
+
+# Model:
+
+1\. 多重共线性的现象？
+
+回归系数与常识相反
+
+某些重要的自变量的 t t t值低（ t t t值越低，越不能拒绝 β = 0 \\beta=0 β=0的原假设），即某些重要的自变量不能通过回归系数的显著性检验
+
+本不显著的自变量却呈现出显著性
+
+VIF
+
+LASSO,REGID
+
+2.  看一下系数，显著性是否合理
+
+-   
+
+    -   
+
+        -   "state_NJ" (newly generated)
+
+        -   "HSDip", "EnrollmentStatus"
+
+        -   "NumColCredAttemptTransfer", "NumColCredAcceptTransfer"
+
+        -   "CumLoanAtEntry","HighDeg" ,"MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus
+
+```{r}
+df<-df_train_clean[,c("Dropout","cohort.term","Marital.Status","Housing","Adjusted.Gross.Income","Parent.Adjusted.Gross.Income","sum_income","Father.s.Highest.Grade.Level", "Hispanic","AmericanIndian","Asian","Black","NativeHawaiian","White","TwoOrMoreRace","total_Loan","total_Scholarship" ,"total_Work_Study" ,"total_Grant","state_NJ","HSDip","EnrollmentStatus","NumColCredAttemptTransfer", "NumColCredAcceptTransfer","CumLoanAtEntry","MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus","complete_DevMath","complete_DevEnglish","final_GPA","first_term_Major","enrollment_age","Major2","TransferIntent")]
+
+which(is.na(df),arr.ind = TRUE)
+df
+
+for (i in c("Marital.Status","Housing","Father.s.Highest.Grade.Level","Hispanic","AmericanIndian","Asian","Black","NativeHawaiian","White","TwoOrMoreRace","state_NJ","HSDip","EnrollmentStatus","CumLoanAtEntry","MathPlacement" ,"EngPlacement","GatewayMathStatus","GatewayEnglishStatus","complete_DevMath","complete_DevEnglish","first_term_Major","Major2","TransferIntent")){
+  df[,i]<- as.factor(df[,i])
+}
+
+#####################去掉
+library(caret)
+nearZeroVar(df)
+colnames(df)[nearZeroVar(df)]
+colnames(df)
+df<-df[,-nearZeroVar(df)]
+
+```
+
+**Logistic Regression**
+
+```{r}
+set.seed(12345)
+intrain<-createDataPartition(df$Dropout,p=0.75,list=FALSE)
+train1<- df[intrain,]
+test1 <- df[-intrain,]
+trctrl <- trainControl(method = "cv", number = 10)
+
+
+
+logitmodel<-train(Dropout ~.-sum_income,method="glm", preProcess=c('scale','center'),data=train1,family=binomial(link='logit'),trControl=trctrl)
+
+summary(logitmodel)
+
+
+library(car)
+vif(logitmodel$finalModel)
+
+
+predict(logitmodel, newdata = test1, type="prob")
+
+prediction_logit <- predict(logitmodel, newdata=test1)
+confusionMatrix(prediction_logit,test1$Dropout)
+
+```

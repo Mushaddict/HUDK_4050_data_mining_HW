@@ -1,0 +1,320 @@
+---
+title: "EDA-STRUCTURE"
+format: html
+editor: visual
+---
+
+```{r}
+library(dplyr)
+library(readr)
+library(tidyverse)
+library(ggplot2)
+library(mlbench)
+library(caret)
+library(dlookr)
+#install.packages("ggpubr")
+library(ggpubr)
+```
+
+```{r}
+test <- read_csv("output data/df_test_clean.csv")
+train <- read_csv("output data/df_train_clean.csv")
+```
+
+# Finance
+
+"cohort", "cohort.term", "Marital.Status", "Adjusted.Gross.Income", "Parent.Adjusted.Gross.Income", "Father.s.Highest.Grade.Level", "Mother.s.Highest.Grade.Level", "Housing", "Loan", "Scholarship", "Work.Study", "Grant"
+
+## 关于Finance的data cleaning (lxc):
+
+Campus columns in all data files are empty as well, which has been removed.
+
+The first few columns before the scholarship columns are the demographic, which all have around 15% to 17% missing values. Directly removing them will miss a lot of information, especially when some of those students have scholarship records. Marital status, income, and information from the family are actually some private information some students might prefer not to answer. So it is reasonable that those columns will have a few missing values. Following an existing variable in parents highest graduate level columns of "Unknown", we transformed those NA values in such columns that have string value into "Unknown". And cleaned the income columns NA values into 0.
+
+Most of the columns are different kinds of scholarship in each year, and more than half of the data in these columns are NA data, which based on a function calculated the percentage of NA in the columns. In the real situation, not every student in school will apply or receive a scholarship, and there are not any "0" in these scholarship columns. Thus, we assume that the NA columns actually means students did not receive that scholarship. And we clean the NA into 0 in that situation.
+
+Address columns are removed except the state, because those information are too specific, which might not be helpful for analytics. Similar situations in both the testing and training data set, so we apply same strategy for them.
+
+## Nominal & Ordinal variables
+
+### (xz):
+
+```{r}
+#| echo: true
+#| 
+train$Dropout = factor(train$Dropout,levels = c(0,1),labels = c("Grad", "dropout"))
+
+for(i in c("cohort.term","Marital.Status","Father.s.Highest.Grade.Level","Mother.s.Highest.Grade.Level","Housing")){
+###bar plot #######
+perc<-ggplot(data = train, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(train, mapping=aes(x = get(i), fill = Dropout)) +xlab(i)+geom_bar(alpha = 0.3)
+print(ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2))
+#####chi squire test#######
+table<-with(train,table(Dropout,get(i)))
+print(chisq.test(table))
+}
+```
+
+**Main Results:**
+
+1.  Chi test shows that correlation between these five variables and dropout are all statistically significant.
+2.  According to those plots, spring enrollment's students have higher dropout rate than students who enrolled in fall.
+3.  Unknown group have higher dropout rate than other group
+
+### Marital.Status
+
+### (yyx)
+
+```{r}
+#Check the distribution of Marital Status
+ggplot(data.frame(train$Marital.Status), aes(x=train$Marital.Status)) +
+  geom_bar()
+```
+
+```{r}
+#Count the total number of each label
+Divorced <- nrow(train[train$Marital.Status == 'Divorced', ])
+Married <- nrow(train[train$Marital.Status == 'Married', ])
+Separated <- nrow(train[train$Marital.Status == 'Separated', ])
+Single <- nrow(train[train$Marital.Status == 'Single', ])
+Unknown <- nrow(train[train$Marital.Status == 'Unknown', ])
+
+Total <- Divorced + Married + Separated + Single + Unknown
+Total
+```
+
+```{r}
+#Calculate the percentage of each label
+Divorced/Total
+Married/Total
+Separated/Total
+Single/Total
+Unknown/Total
+```
+
+To check the distribution of Marital Status, I drew a plot and calculate the percentage of each label in Marital Status. Based on the result, we can find that the percentage of Single is the largest, which has a large difference with Divorced, the smallest percentage. As the percentage of Single is larger than the total of rest labels, we can conclude that the majority of Marital Status is Single.
+
+```{r}
+#Marital.Status and Dropout
+test_3 <- chisq.test(table(train$Marital.Status, train$Dropout))
+test_3
+```
+
+To test the relationship between Dropout and Gender, I did chi-square test. From the result, we can find that the p-value is smaller than 2.2e-16, which is much smaller than 0.05. Thus, the relationship between Gender and Dropout is significant.
+
+### Housing
+
+### (yyx)
+
+```{r}
+#Check the distribution of Housing
+ggplot(data.frame(train$Housing), aes(x=train$Housing)) +
+  geom_bar()
+```
+
+```{r}
+#Housinng and Dropout
+test_4 <- chisq.test(table(train$Housing, train$Dropout))
+test_4
+```
+
+To test the relationship between Dropout and Housing, I did chi-square test. From the result, we can find that the p-value \< 2.2e-16, which is much smaller than 0.05. Thus, the relationship between Housing and Dropout is significant.
+
+### Father.s.Highest.Grade.Level and Mother.s.Highest.Grade.Level
+
+### (lxc):
+
+Distinguish the parent's highest degree level between accepted higher education and not accepted higher education.
+
+```{r}
+train$mother[train$Mother.s.Highest.Grade.Level == "College"] <- 2
+train$mother[train$Mother.s.Highest.Grade.Level == "High School"] <-1
+train$mother[train$Mother.s.Highest.Grade.Level == "Middle School"] <- 1
+train$mother[train$Mother.s.Highest.Grade.Level == "Unknown"] <- -999
+sum(is.na(train$mother))
+
+train$father[train$Father.s.Highest.Grade.Level == "College"] <- 2
+train$father[train$Father.s.Highest.Grade.Level == "High School"] <-1
+train$father[train$Father.s.Highest.Grade.Level == "Middle School"] <- 1
+train$father[train$Father.s.Highest.Grade.Level == "Unknown"] <- -999
+sum(is.na(train$father))
+```
+
+### Main results
+
+缺少对father and mother highest grade level的结论
+
+### Involved variables
+
+-   cohort.term,
+
+-   Marital.Status,
+
+-   Father.s.Highest.Grade.Level,
+
+-   Housing
+
+## Interval& Ratio variables
+
+### Scholarship (lxc)
+
+这我不会改成variable, 但是大概意思是we used to methods to combining the scholarship. The first one is to add the four types of scholarship that students have received together to see the overall funds they received from school, which is the "sum" column. But loan is the one that students need to pay back after they graduation, while the other three kinds of funds does not require a repayment, so based on such difference we have the other grouping method that puts loan in one group, and scholarship, work/study aid, grant fund are in the other group.
+
+```{r}
+###### Scholarship
+train$sum <- rowSums(train[ , c(11:34)])
+train$loan <- rowSums(train[ , c(11,15,19,23,27,31)])
+train$scholarship <- rowSums(train[,c(12:14,16:18,20:22,24:26,28:30)])
+#write.csv(train,file="/Users/xinchangliu/Dropbox/Mac/Desktop/filter.csv",row.names = FALSE)
+```
+
+### Adjusted.Gross.Income and Parent.Adjusted.Gross.Income (xz)
+
+```{r}
+###########  Adjusted.Gross.Income, Parent.Adjusted.Gross.Income  
+
+###### abs
+train$Adjusted.Gross.Income<-abs(train$Adjusted.Gross.Income)
+train$Parent.Adjusted.Gross.Income<-abs(train$Parent.Adjusted.Gross.Income)
+
+###### add column of sum_income
+train$sum_income<-train$Adjusted.Gross.Income+train$Parent.Adjusted.Gross.Income
+
+###normal distribution test
+ks.test(scale(train$Adjusted.Gross.Income),"pnorm")
+qqnorm(train$Adjusted.Gross.Income)
+
+ks.test(scale(train$Parent.Adjusted.Gross.Income),"pnorm")
+qqnorm(train$Parent.Adjusted.Gross.Income)
+
+ks.test(scale(train$sum_income),"pnorm")
+qqnorm(train$sum_income)
+
+####  Mann-Whitney U test
+wilcox.test(train$Parent.Adjusted.Gross.Income~train$Dropout)
+wilcox.test(train$Adjusted.Gross.Income~train$Dropout)
+wilcox.test(train$sum_income~train$Dropout)
+```
+
+### **Main Results:**
+
+None of these three variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these three variables are significantly correlated with dropout.
+
+So all these three variables are left and could be further selected (Parent.Adjusted.Gross.Income and Adjusted.Gross.Income, or sum_income) in the model
+
+### **Involved variables:**
+
+-   Adjusted.Gross.Income, Parent.Adjusted.Gross.Income
+
+    or
+
+-   sum_income (newly generated)
+
+### (xz)
+
+```{r}
+##### add a coulumn to calucate the total financial aid
+for (i in 1:nrow(train)){
+  train$total_Loan[i]<-sum(train[i,grep("\\.Loan", colnames(train))])
+}
+
+for (i in 1:nrow(train)){
+  train$total_Scholarship[i]<-sum(train[i,grep("\\.Scholarship", colnames(train))])
+}
+
+for (i in 1:nrow(train)){
+  train$total_Work_Study[i]<-sum(train[i,grep("\\.Work\\.Study", colnames(train))])
+}
+
+for (i in 1:nrow(train)){
+  train$total_Grant[i]<-sum(train[i,grep("\\.Grant", colnames(train))])
+}
+
+
+##### plot with log10
+for(i in c("total_Loan","total_Scholarship","total_Work_Study","total_Grant")){
+print(ggplot(train, aes(x = log10(get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+
+############  normal distribution test
+ks.test(scale(train$total_Loan),"pnorm")
+qqnorm(train$total_Loan)
+
+####  Mann-Whitney U test
+wilcox.test(train$total_Loan~train$Dropout)
+wilcox.test(train$total_Scholarship~train$Dropout)
+wilcox.test(train$total_Work_Study~train$Dropout)
+wilcox.test(train$total_Grant~train$Dropout)
+```
+
+### **Main Results:**
+
+1.  None of these four variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these four variables are significantly correlated with dropout.
+
+2.  According to the plots, all these variables show a general negative correlation with dropout(Student receiving more funding showed a less proportion of dropouts).
+
+### **Involved variables:**
+
+-   total_Loan (newly generated)
+
+-   total_scholarship (newly generated)
+
+-   total_Work_Study (newly generated)
+
+-   total_Grant (newly generated)
+
+LXY的版本放在最后：
+
+The numerical variables we have are: Adjusted_income, Parent.Adjusted.Gross.Income, BirthYear, NumColCredAttempTransfer,NumColcredAccepTransfer, and final_GPA.
+
+```{r}
+test_id <- test[,1] #test里的id
+train_id <- train[,1] #train里的id
+dropput_train <- train[,1:2] #train里的id和dropoutlabel
+df <- bind_rows(select(train,-Dropout),test)
+
+train <- left_join(dropput_train, df, by="StudentID")
+
+train %>% group_by(Adjusted.Gross.Income) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+train %>% group_by(Parent.Adjusted.Gross.Income) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+
+# Change train dataset
+train$overall_income <- apply(select(train,c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income)), 1, sum)
+train$overall_income <- abs(train$overall_income)
+train <- train %>% select(-c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income))
+
+# Change big dataset (which contains test and train)
+df$overall_income <- apply(select(df,c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income)), 1, sum)
+df$overall_income <- abs(df$overall_income)
+df <- df %>% select(-c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income))
+```
+
+According to the table, each income variable has half of the values = 0, we decide to add these two together as an overall income.
+
+```{r}
+#compute statistics of all numerical variables in dataset
+data_desciption <- describe(train[,-1]) #without studentID
+# Check skewness speicifcally
+data_desciption %>% select(described_variables, skewness) %>% filter (!is.na(skewness)) %>% arrange(desc(abs(skewness)))
+```
+
+Based on the data desciption table, we can see that overall_income has a large positive skewness.
+
+```{r}
+sum(train$overall_income==0)
+plot_normality(train,overall_income)
+```
+
+Based on the plots, we can see that after log transformation, the distribution of is less skewed. As a result, we may need to do the log transformation on overall_income
+
+```{r}
+df$overall_income <- log(df$overall_income)
+df$overall_income[df$overall_income=="-Inf"] <- 0 
+```
+
+# Static
+
+# progress
+
+The `echo: false` option disables the printing of code (only output is displayed).

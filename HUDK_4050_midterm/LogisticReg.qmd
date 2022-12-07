@@ -1,0 +1,159 @@
+---
+title: "logisticReg"
+format: html
+editor: visual
+---
+
+## load packages and read data
+
+```{r}
+library(tidyverse)
+library(caret)
+library(ggplot2)
+library(GGally)
+library(ISLR2)
+library(pROC)
+library(car)
+
+set.seed(12345)
+train <- read.csv("output data/train_AFTER_EDA.csv")
+train$Dropout <- factor(ifelse(train$Dropout == 1, "Yes", "No"))
+train <- train %>% select(-c(StudentID,cohort))
+```
+
+## call Confusion Matrix to get F1
+
+```{r}
+call <- function(cm) {
+  print(cm$byClass["Sensitivity"])
+  print(cm$byClass["Specificity"])
+  print(cm$byClass["Precision"])
+  print(cm$byClass["Recall"])
+  print(cm$byClass["F1"])
+  print(cm$overall["Accuracy"])
+}
+```
+
+## set 10 cross validation and partition
+
+```{r}
+trctrl <- trainControl(method = "cv", number = 10, classProbs = T)
+intrain <- createDataPartition(train$Dropout, p = 0.75, list = FALSE)
+trainModel <- train[intrain, ]
+testModel <- train[-intrain, ]
+```
+
+## step 1 try logistic regression for all variables
+
+```{r}
+logicModel <- train(Dropout ~., 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl,
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(logic_pred, testModel$Dropout)
+call(cm)
+```
+
+## step 2 delete some variables that can nearly linear
+
+Because there are many warnings in the console, so I decided to use some ways to eliminate some of the variables.
+
+```{r}
+colnames(trainModel[nearZeroVar(trainModel)])
+```
+
+By finding variables that may have var tends to have zero, we want to delete those variables and run again the model. We want to delete `total_Scholarship`, `total_Work_Study`.
+
+```{r}
+logicModel <- train(Dropout ~. -total_Scholarship -total_Work_Study , 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl,
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(logic_pred, testModel$Dropout)
+call(cm)
+
+```
+
+## step 3 variance inflation factor 这里没用了 最好就是上面了
+
+We can also use `vif()` to find the variance-inflation factor that affect the model. So we want to drop some variables that has a high vif value, which is x \> 10.
+
+```{r}
+vifvalue <- vif(logicModel$finalModel)
+which(vifvalue > 10)
+```
+
+So we try to delete those vif \> 10 variables.
+
+```{r}
+logicModel <- train(Dropout ~. -total_Scholarship -total_Work_Study -Marital.Status -Housing -RegistrationDate -cohort_year -first_term_Major1 - final_majorOne -race, 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl,
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(logic_pred, testModel$Dropout)
+call(cm)
+```
+
+But it doesn't work.
+
+## step 4 use lasso regression
+
+```{r}
+lasso <- train(Dropout ~., 
+                    method = "glmnet", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl,
+                    tuneGrid = expand.grid(alpha = 1, lambda = 1))
+#alpha = 1 = lasso
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(logic_pred, testModel$Dropout)
+call(cm)
+```
+
+But it doesn't work.
+
+## step 5 use ridge regression
+
+```{r}
+ridge <- train(Dropout ~., 
+                    method = "glmnet", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl,
+                   tuneGrid = expand.grid(alpha = 0, lambda = 1))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(logic_pred, testModel$Dropout)
+call(cm)
+```
+
+It doesn't work.
+
+## step 6 submit
+
+```{r}
+df_test_clean <- read.csv("output data/test_AFTER_EDA.csv")
+test_pred <- predict(logicModel, newdata = df_test_clean)
+df_test_clean <- df_test_clean %>% 
+  mutate(Dropout = test_pred) %>%
+  mutate(Dropout = ifelse(Dropout == "Yes", 1, 0))
+submission <- data.frame(
+     StudentID = df_test_clean$StudentID, 
+     Dropout = df_test_clean$Dropout
+ )
+write.csv(submission, "submission2.csv")
+```

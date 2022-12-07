@@ -1,0 +1,301 @@
+---
+title: "logicModel"
+format: html
+editor: visual
+---
+
+## initial
+
+```{r library}
+library(tidyverse)
+library(caret)
+library(ggplot2)
+library(GGally)
+library(ISLR2)
+library(pROC)
+```
+
+## read train
+
+```{r}
+train <- read.csv("output data/df_train_clean.csv")
+colnames(train)
+## change na to 0
+train[is.na(train)] <- 0
+sum(is.na(train))
+
+```
+
+## plot data
+
+```{r}
+df <- train %>%
+  mutate(Dropout = factor(Dropout)) %>% 
+  select(Dropout, X2012.Grant)
+
+# mu <- df %>%
+#   group_by(Dropout) %>%
+#   summarize(grp.mean = mean(final_GPA))
+
+train %>% ggplot(aes(x = X2017.Grant, fill = factor(Dropout))) +
+  geom_density(alpha = .4) 
+```
+
+## Call Confusion Matrix's value
+
+```{r}
+call <- function(cm) {
+  print(cm$byClass["Sensitivity"])
+  print(cm$byClass["Specificity"])
+  print(cm$byClass["Precision"])
+  print(cm$byClass["Recall"])
+  print(cm$byClass["F1"])
+  print(cm$overall["Accuracy"])
+}
+```
+
+## 1. select all work.study, loan, scholarship, and grant
+
+```{r}
+subtrain <- train %>%
+  select(Dropout, contains(c("Work.Study", "Loan", "Scholarship", "Grant"))) %>% 
+  mutate(Dropout = factor(ifelse(Dropout == 1, "Yes", "No")))
+colnames(subtrain)
+ggcorr(subtrain)
+ggpairs(subtrain, columns = 1:3, ggplot2::aes(color = factor(Dropout)))
+cor <- cor(subtrain)
+cor[1, ]
+```
+
+### set 10 cross validation and partition
+
+```{r}
+trctrl <- trainControl(method = "cv", number = 10, classProbs = T)
+intrain <- createDataPartition(subtrain$Dropout, p = 0.75, list = FALSE)
+trainModel <- subtrain[intrain, ]
+testModel <- subtrain[-intrain, ]
+```
+
+### logistic regression
+
+```{r}
+logicModel <- train(Dropout ~ ., 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl, 
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+# logic_pred <- ifelse(logic_pred > 0.5, 1, 0)
+summary(logic_pred)
+cm <- confusionMatrix(factor(logic_pred), factor(testModel$Dropout))
+call(cm)
+```
+
+#### logistic regression select ed
+
+```{r}
+subtrain <- subtrain %>%
+  select(Dropout, X2014.Loan, X2015.Loan, X2016.Loan, X2017.Loan, CumLoanAtEntry, X2017.Scholarship, X2016.Grant, X2017.Grant)
+intrain <- createDataPartition(subtrain$Dropout, p = 0.75, list = FALSE)
+trainModel <- subtrain[intrain, ]
+testModel <- subtrain[-intrain, ]
+logicModel <- train(Dropout ~ ., 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl, 
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+cm <- confusionMatrix(factor(logic_pred), factor(testModel$Dropout))
+cm$byClass
+cm$overall
+```
+
+### Naive Bayes
+
+```{r}
+nb_fit <- train(factor(Dropout) ~ ., 
+                method = "nb", 
+                data = trainModel, 
+                preProcess = c("scale", "center"), 
+                trControl = trctrl)
+nb_pred <- predict(nb_fit, newdata = testModel)
+nb_cm <- confusionMatrix(nb_pred, testModel$Dropout)
+call(nb_cm)
+```
+
+### KNN fit
+
+```{r}
+knn_fit <- train(Dropout ~ .,
+                 data = trainModel,
+                 method = "knn",
+                 # tuneGrid = knnG,
+                 trControl = trctrl,
+                 preProcess=c('scale', 'center')
+                 )
+```
+
+### LDA model
+
+```{r}
+lda_fit <- train(Dropout ~ ., method = "lda",
+                 data = trainModel, 
+                 trControl = trctrl)
+lda_pred <- predict(lda_fit, newdata = testModel)
+lda_cm <- confusionMatrix(lda_pred, testModel$Dropout)
+call(lda_cm)
+
+```
+
+## 2. Final's data
+
+```{r}
+# subtrain <- train %>%
+#   select(Dropout, complete_DevMath, complete_DevEnglish, 
+#          final_Complete1, final_Complete2, 
+#          final_CompleteCIP1, final_CompleteCIP2, final_GPA) %>%
+#   mutate(Dropout = factor(ifelse(Dropout == 1, "Yes", "No")), 
+#          complete_DevMath = factor(complete_DevMath), 
+#          complete_DevEnglish = factor(complete_DevEnglish), 
+#          final_Complete1 = factor(final_Complete1), 
+#          final_Complete2 = factor(final_Complete2), 
+#          final_CompleteCIP1 = factor(floor(final_CompleteCIP1)), 
+#          final_CompleteCIP2 = factor(floor(final_CompleteCIP2)))
+
+## 试试不factor那么多的
+## final_Complete2 和 final_CompleteCIP2 是constant，就不要了
+subtrain <- train %>%
+  select(Dropout, complete_DevMath, complete_DevEnglish, 
+         final_Complete1, final_CompleteCIP1, final_GPA) %>%
+  mutate(Dropout = factor(ifelse(Dropout == 1, "Yes", "No")), 
+         final_CompleteCIP1 = floor(final_CompleteCIP1))
+
+# subtrain %>%
+#   select(-final_CompleteCIP1) %>%
+#   ggpairs()
+
+```
+
+### set 10 cross validation and partition
+
+```{r}
+trctrl <- trainControl(method = "cv", number = 10, classProbs = T)
+intrain <- createDataPartition(subtrain$Dropout, p = 0.75, list = FALSE)
+trainModel <- subtrain[intrain, ]
+testModel <- subtrain[-intrain, ]
+```
+
+### logistic regression
+
+```{r}
+logicModel <- train(Dropout ~ ., 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl, 
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+# logic_pred <- ifelse(logic_pred > 0.5, 1, 0)
+summary(logic_pred)
+cm <- confusionMatrix(factor(logic_pred), factor(testModel$Dropout))
+call(cm)
+```
+
+### Naive Bayes
+
+```{r}
+nb_fit <- train(Dropout ~ ., 
+                method = "nb", 
+                data = trainModel, 
+                preProcess = c("scale", "center"), 
+                trControl = trctrl)
+nb_pred <- predict(nb_fit, newdata = testModel)
+nb_cm <- confusionMatrix(nb_pred, testModel$Dropout)
+call(nb_cm)
+```
+
+### KNN fit
+
+```{r}
+knn_fit <- train(Dropout ~ .,
+                 data = trainModel,
+                 method = "knn",
+                 # tuneGrid = knnG,
+                 trControl = trctrl,
+                 preProcess=c('scale', 'center')
+                 )
+knn_pred <- predict(knn_fit, newdata = testModel)
+k_cm <- confusionMatrix(knn_pred, testModel$Dropout)
+call(k_cm)
+```
+
+### LDA model
+
+```{r}
+lda_fit <- train(Dropout ~ ., method = "lda",
+                 data = trainModel, 
+                 trControl = trctrl)
+lda_pred <- predict(lda_fit, newdata = testModel)
+lda_cm <- confusionMatrix(lda_pred, testModel$Dropout)
+call(lda_cm)
+
+```
+
+## 3. 282 variables test
+
+```{r}
+subtrain <- train %>%
+  mutate(Dropout = factor(ifelse(Dropout == 1, "Yes", "No"))) %>%
+  select(-State)
+```
+
+### set 10 cross validation and partition
+
+```{r}
+trctrl <- trainControl(method = "cv", number = 10, classProbs = T)
+intrain <- createDataPartition(subtrain$Dropout, p = 0.75, list = FALSE)
+trainModel <- subtrain[intrain, ]
+testModel <- subtrain[-intrain, ]
+```
+
+### logistic regression
+
+```{r}
+logicModel <- train(Dropout ~ ., 
+                    method = "glm", 
+                    preProcess = c("scale", "center"), 
+                    data = trainModel, 
+                    trControl = trctrl, 
+                    family = binomial(link = "logit"))
+summary(logicModel)
+logic_pred <- predict(logicModel, newdata = testModel)
+summary(logic_pred)
+cm <- confusionMatrix(factor(logic_pred), factor(testModel$Dropout))
+call(cm)
+```
+
+### df_test_clean
+
+```{r}
+## 要保证test的数据和跑模型的数据一致。
+df_test_clean <- read.csv("output data/df_test_clean.csv")
+df_test_clean[is.na(df_test_clean)] <- 0
+df_test_clean <- df_test_clean %>% select(-State)
+test_pred <- predict(logicModel, newdata = df_test_clean)
+df_test_clean <- df_test_clean %>% 
+  mutate(Dropout = test_pred) %>%
+  mutate(Dropout = ifelse(Dropout == "Yes", 1, 0))
+submission <- data.frame(
+     StudentID = df_test_clean$StudentID, 
+     Dropout = df_test_clean$Dropout
+ )
+write.csv(submission, "submission.csv")
+
+```
+
+## 

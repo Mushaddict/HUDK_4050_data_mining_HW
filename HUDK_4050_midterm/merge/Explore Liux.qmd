@@ -1,0 +1,194 @@
+---
+title: "Explore"
+author: "Xinchang Liu"
+format: html
+editor: visual
+---
+
+```{r}
+train<-read.csv("/Users/xinchangliu/Dropbox/Mac/Desktop/4050-midterm-project/output data/df_train_clean.csv")
+test<-read.csv("/Users/xinchangliu/Dropbox/Mac/Desktop/df_test_clean.csv")
+library(mlbench)
+library(caret)
+library(tidyverse)
+library(ggplot2)
+train$Dropout<-factor(train$Dropout)
+```
+
+Campus columns in all data files are empty as well, which has been removed.
+
+The first few columns before the scholarship columns are the demographic, which all have around 15% to 17% missing values. Directly removing them will miss a lot of information, especially when some of those students have scholarship records. Marital status, income, and information from the family are actually some private information some students might prefer not to answer. So it is reasonable that those columns will have a few missing values. Following an existing variable in parents highest graduate level columns of "Unknown", we transformed those NA values in such columns that have string value into "Unknown". And cleaned the income columns NA values into 0.
+
+Most of the columns are different kinds of scholarship in each year, and more than half of the data in these columns are NA data, which based on a function calculated the percentage of NA in the columns. In the real situation, not every student in school will apply or receive a scholarship, and there are not any "0" in these scholarship columns. Thus, we assume that the NA columns actually means students did not receive that scholarship. And we clean the NA into 0 in that situation.
+
+Address columns are removed except the state, because those informations are too speceific, which might not be helpful for analytics. Similar situations in both the testing and training data set, so we apply same strategy for them.
+
+### 这里上面的是Finance的data cleaning
+
+Final_GPA我直接用了xz的，所以没有写
+
+## State -- 一样
+
+When going through the excel file, we found a large amount of students come from New Jersey, which can assume that that record comes from a State University in New Jersey. but we are not sure about the proportion. Based on regular admission rule that splits the in-state students pool and out-state students pool, students are splited into in in-state group and out-state group. But percentages are too different that about 97% students are from in-state, which is assumed that would not have too much effect of final results.
+
+```{r}
+train$state<-ifelse(train$State == "NJ", 1, 0)
+train %>% count(state)
+```
+
+## Factor of Housing, HSDip, EnrollmentStatus, HighDeg
+
+Prepare for using variables in Logistic Regression
+
+```{r}
+train$Housing <- as.factor(train$Housing)
+train$HSDip <- as.factor(train$HSDip)
+train$EnrollmentStatus <- as.factor(train$EnrollmentStatus)
+train$HighDeg <- as.factor(train$HighDeg)
+```
+
+## Parent's education level
+
+Distinguish the parent's highest degree level between accepted higher education and not accepted higher education.
+
+```{r}
+train$mother[train$Mother.s.Highest.Grade.Level == "College"] <- 2
+train$mother[train$Mother.s.Highest.Grade.Level == "High School"] <-1
+train$mother[train$Mother.s.Highest.Grade.Level == "Middle School"] <- 1
+train$mother[train$Mother.s.Highest.Grade.Level == "Unknown"] <- -999
+sum(is.na(train$mother))
+
+train$father[train$Father.s.Highest.Grade.Level == "College"] <- 2
+train$father[train$Father.s.Highest.Grade.Level == "High School"] <-1
+train$father[train$Father.s.Highest.Grade.Level == "Middle School"] <- 1
+train$father[train$Father.s.Highest.Grade.Level == "Unknown"] <- -999
+sum(is.na(train$father))
+```
+
+## Races & last semester GPA
+
+Different races can have different learning preference based on cultural difference, so we have some exploration towards races. We merge the columns about the races into one column to intuitively represented races distribution of the data set. Two types of distinguish has been tried. The first one is directly separated by different races., the column name is "race". But the population of different races vary widely, so we need deeper research.
+
+We created a "df" which shows the average final GPA in students who drop out and students who did not drop out and find those two group of students has significantly different GPA performance that dropout students average GPA is only 2.2 but students did not drop out has a average GPA of almost 3.1. So we assume that academic performance is highly related with whether students will drop out.
+
+Combining GPA perofrmance based on final_GPA column with race, a bar chart of different races' average GPA has been created and shows that White and Asian has significantly higher average GPA, which represents a better academic performance. So the grouping method for putting Asian and White in one group while other races, who we assume the question is prefer not to answer is in the other group, with a column name "race2" .
+
+```{r}
+train$race[train$White == 1]<-1
+train$race[train$Asian == 1]<-2
+train$race[train$AmericanIndian == 1]<-3
+train$race[train$NativeHawaiian == 1]<-4
+train$race[train$Black == 1]<-5
+train$race[train$TwoOrMoreRace == 1]<-6
+train$race[train$race == "Unknown"]<-7
+train$race[is.na(train$race)]<-7
+sum(is.na(train$race))
+train$race <- factor(train$race,levels = c(1,2,3,4,5,6,7),
+                     labels = c("White","Asian","AmericanIndian","NativeHawaiian","Black",
+                                "TwoOrMoreRace","Unknown"))
+
+train$race2[train$White == 1]<-1
+train$race2[train$Asian == 1]<-1
+train$race2[train$AmericanIndian == 1]<-2
+train$race2[train$NativeHawaiian == 1]<-2
+train$race2[train$Black == 1]<-2
+train$race2[train$TwoOrMoreRace == 1]<-2
+train$race2[train$race == "Unknown"]<--999
+train$race2[is.na(train$race2)]<-2
+
+df1 <- train %>% group_by(Dropout) %>% count(race)
+df2 <- train %>% group_by(Dropout) %>% summarise_at(vars(final_GPA), list(name = mean))
+df2
+df <- train %>% group_by(race) %>% summarise(av = mean(final_GPA))
+df
+ggplot(aes(x = race, y = av), data = df) + geom_bar(stat = "identity")
+
+
+```
+
+## Age group by Birth year and cohort term
+
+By combining the column of Birth year and cohort term, we can get the age when students start their cohort term in the university. Different age people might have different cerebral function developed level, or deteriorated condition. Especially the students provided comes from a wide range of age group, from 15 to over 60 when they have their first cohort term. But the difference will be more distinguished in comparing different age group than comparing similar ages, so students are divided as different age group by 10 year difference, which is also the difference of generation.
+
+```{r}
+train<-subset(train, BirthYear != "NA")
+train$cohortyear <- substr(train$cohort,1,4)
+train$cohortyear <- as.numeric(train$cohortyear)
+train$age <- train$cohortyear - train$BirthYear
+#train$age <- as.factor(train$age)
+#write.csv(train,file="/Users/xinchangliu/Dropbox/Mac/Desktop/strange.csv",row.names = FALSE)
+train$agegroup[train$age>=15 & train$age<25] <- 1
+train$agegroup[train$age>=25 & train$age<35] <- 2
+train$agegroup[train$age>=35 & train$age<45] <- 3
+train$agegroup[train$age>=45 & train$age<55] <- 4
+train$agegroup[train$age>=55] <- 5
+
+```
+
+## Major fields
+
+```{r}
+major <- train[,grepl("Major1",names(train))]
+major[is.na(major)]=-1
+train[,grepl("Major1",names(train))]<-major
+
+train$final_majorOne <- -1
+major1 <- grep("Major1",colnames(train))
+for(i in 1:nrow(train)){
+  for(j in major1){
+    if(train[i,j]>=0){
+      train[i,"final_majorOne"]=train[i,j]
+    }
+  }
+}
+```
+
+Students might have different performance in different major fields because the workload type will be different; for example, Business students might focus on case study and exams, History majors student might spend most time on reading and paper, and Computer Science students learn programming a lot. Different content might have effects the academic performance or whether students will dropout based on different reasons, such as too stressful or the major is not what they want to learn.
+
+So based on the CIP (the classification of instructional programs), we catalog the majors students learning in their last semester with the related fields for further modeling.
+
+```{r}
+train$Major1[train$final_majorOne>=54] <- "History"
+train$Major1[train$final_majorOne<54 & train$final_majorOne>= 52] <- "Business"
+train$Major1[train$final_majorOne<52 & train$final_majorOne>= 51] <- "Health"
+train$Major1[train$final_majorOne<51 & train$final_majorOne>= 50] <- "Visual and Performancing Arts"
+train$Major1[train$final_majorOne<50 & train$final_majorOne>= 49] <- "Transprtation and materials moving"
+train$Major1[train$final_majorOne<49 & train$final_majorOne>= 48] <- "Preceision Production"
+train$Major1[train$final_majorOne<48 & train$final_majorOne>= 45] <- "Social Sciences"
+train$Major1[train$final_majorOne<45 & train$final_majorOne>= 43] <- "Security and Protective Services"
+train$Major1[train$final_majorOne<43 & train$final_majorOne>= 42] <- "Psychology"
+train$Major1[train$final_majorOne<42 & train$final_majorOne>= 40] <- "Physical Sciences"
+train$Major1[train$final_majorOne<40 & train$final_majorOne>= 38] <- "Philosophy and Religious Studies"
+train$Major1[train$final_majorOne<38 & train$final_majorOne>= 27] <- "Mathematics and Statistics"
+train$Major1[train$final_majorOne<27 & train$final_majorOne>= 26] <- "Biological and Biomeidical sciences"
+train$Major1[train$final_majorOne<26 & train$final_majorOne>= 24] <- "Other"
+train$Major1[train$final_majorOne<24 & train$final_majorOne>= 23] <-"English"
+train$Major1[train$final_majorOne<23 & train$final_majorOne>= 13] <-"Education"
+train$Major1[train$final_majorOne<13 & train$final_majorOne>= 11] <-"Computer Science"
+train$Major1[train$final_majorOne<11 & train$final_majorOne>= 9] <- "Communication"
+train$Major1[train$final_majorOne<9 & train$final_majorOne>= 5] <- "Culture"
+train$Major1[train$final_majorOne == 0] <- "Other"
+train$Major1[train$final_majorOne == -1] <- "Other"
+sum(is.na(train$Major1))
+
+```
+
+## Valid credit transfer
+
+Create a column of valid credit students transferred based on the overall credit they attempted to transfer.
+
+```{r}
+train$valid <- train$NumColCredAcceptTransfer/train$NumColCredAttemptTransfer
+train$valid[is.na(train$valid)]<-0
+```
+
+## Scholarship
+
+这我不会改成variable, 但是大概意思是we used two methods to combining the scholarship. The first one is to add the four types of scholarship that students have received together to see the overall funds they received from school, which is the "sum" column. But loan is the one that students need to pay back after they graduation, while the other three kinds of funds does not require a repayment, so based on such difference we have the other grouping method that puts loan in one group, and scholarship, work/study aid, grant fund are in the other group.
+
+```{r}
+train$sum <- rowSums(train[ , c(11:34)])
+train$loan <- rowSums(train[ , c(11,15,19,23,27,31)])
+train$scholarship <- rowSums(train[,c(12:14,16:18,20:22,24:26,28:30)])
+write.csv(train,file="/Users/xinchangliu/Dropbox/Mac/Desktop/filter.csv",row.names = FALSE)
+```

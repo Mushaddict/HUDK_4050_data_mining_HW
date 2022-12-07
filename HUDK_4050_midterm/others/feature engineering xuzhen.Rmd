@@ -1,0 +1,232 @@
+---
+title: "feature generation and model"
+author: "XU ZHEN"
+date: "2022-11-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr) 
+library(readxl)
+library(ggplot2)
+#install.packages("ggpubr")
+library(ggpubr)
+```
+
+## something we should notice
+1. level of measure: nominal level, ordinal level, interval level, ratio level
+2. standardized
+
+
+## Reading data
+
+```{r pressure}
+df_test_clean<-read.csv("output data/df_test_clean.csv")
+df_train_clean<-read.csv("output data/df_train_clean.csv")
+```
+
+
+#### level of measure: nominal level, ordinal level, interval level, ratio level, scholarship
+
+nominal level: cohort.term,Marital.Status
+
+ordinal level: Father.s.Highest.Grade.Level, Mother.s.Highest.Grade.Level,
+
+interval level:
+
+ratio level: Adjusted.Gross.Income, Parent.Adjusted.Gross.Income
+
+
+## finance
+#### cohort.term, Marital.Status, Father.s.Highest.Grade.Level, Mother.s.Highest.Grade.Level
+```{r}
+df_t<-df_train_clean
+
+df_t$Dropout = factor(df_t$Dropout,levels = c(0,1),labels = c("Grad", "dropout"))
+
+################################   cohort.term  ################################ 
+perc<-ggplot(data = df_t, mapping = aes(x = cohort.term, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_t, mapping=aes(x = cohort.term, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+################################   Marital.Status  ################################ 
+perc<-ggplot(data = df_t, mapping = aes(x = Marital.Status, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_t, mapping=aes(x = Marital.Status, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+################################   Father.s.Highest.Grade.Leve  ################################ 
+perc<-ggplot(data = df_t, mapping = aes(x = Father.s.Highest.Grade.Level, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_t, mapping=aes(x = Father.s.Highest.Grade.Level, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+################################   Mother.s.Highest.Grade.Level  ################################ 
+perc<-ggplot(data = df_t, mapping = aes(x = Mother.s.Highest.Grade.Level, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_t, mapping=aes(x = Mother.s.Highest.Grade.Level, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+```
+
+cohort term 可以放进去看一下！
+
+```{r}
+###############  Adjusted.Gross.Income, Parent.Adjusted.Gross.Income  ################################ 
+#######需要去掉离群点
+ggplot(df_t, aes(x = Adjusted.Gross.Income)) +geom_boxplot()
+ggplot(df_t, aes(x = log10(Adjusted.Gross.Income), fill = Dropout)) +geom_density(alpha = 0.3)
+#####标准化一下做相关性分析，检验正态分布，
+
+###normal distribution test
+
+###### add column
+df_t$Adjusted.Gross.Income<-abs(df_t$Adjusted.Gross.Income)
+df_t$Parent.Adjusted.Gross.Income<-abs(df_t$Parent.Adjusted.Gross.Income)
+
+ks.test(scale(df_t$Adjusted.Gross.Income),"pnorm")
+qqnorm(df_t$Adjusted.Gross.Income)
+
+ks.test(scale(df_t$Parent.Adjusted.Gross.Income),"pnorm")
+qqnorm(df_t$Parent.Adjusted.Gross.Income)
+
+###### add column
+df_t$sum_income<-df_t$Adjusted.Gross.Income+df_t$Parent.Adjusted.Gross.Income
+
+ks.test(scale(df_t$sum_income),"pnorm")
+qqnorm(df_t$sum_income)
+
+####  Mann-Whitney U test
+wilcox.test(df_t$Parent.Adjusted.Gross.Income~df_t$Dropout)
+wilcox.test(df_t$Adjusted.Gross.Income~df_t$Dropout)
+wilcox.test(df_t$sum_income~df_t$Dropout)
+
+
+```
+三个差异均显著，保留一个
+
+
+```{r}
+
+################################   scholarship     ################################ 
+##### add column
+
+for (i in 1:nrow(df_t)){
+  df_t$total_Loan[i]<-sum(df_t[i,grep("\\.Loan", colnames(df_t))])
+}
+
+for (i in 1:nrow(df_t)){
+  df_t$total_Scholarship[i]<-sum(df_t[i,grep("\\.Scholarship", colnames(df_t))])
+}
+
+for (i in 1:nrow(df_t)){
+  df_t$total_Work_Study[i]<-sum(df_t[i,grep("\\.Work\\.Study", colnames(df_t))])
+}
+
+for (i in 1:nrow(df_t)){
+  df_t$total_Grant[i]<-sum(df_t[i,grep("\\.Grant", colnames(df_t))])
+}
+
+
+
+##### plot
+ggplot(df_t, aes(x = log10(total_Loan), fill = Dropout)) +geom_density(alpha = 0.3)
+ggplot(df_t, aes(x = log10(total_Scholarship), fill = Dropout)) +geom_density(alpha = 0.3)
+ggplot(df_t, aes(x = log10(total_Work_Study), fill = Dropout)) +geom_density(alpha = 0.3)
+ggplot(df_t, aes(x = log10(total_Grant), fill = Dropout)) +geom_density(alpha = 0.3)
+
+
+ggplot(data = df_t, mapping = aes(x = log10(total_Loan), fill =Dropout)) + ylab("perc") + geom_histogram(position="fill",alpha = 0.3)
+
+ggplot(data = df_t, mapping = aes(x = total_Scholarship, fill =Dropout)) + ylab("perc") + geom_histogram(position="fill",alpha = 0.3)
+
+ggplot(data = df_t, mapping = aes(x = total_Work_Study, fill =Dropout)) + ylab("perc") + geom_histogram(position="fill",alpha = 0.3)
+
+ggplot(data = df_t, mapping = aes(x = total_Grant, fill =Dropout)) + ylab("perc") + geom_histogram(position="fill",alpha = 0.3)
+
+############  取一下log !!!!!
+
+ks.test(scale(df_t$total_Loan),"pnorm")
+qqnorm(df_t$total_Loan)
+
+####  Mann-Whitney U test
+wilcox.test(df_t$total_Loan~df_t$Dropout)
+wilcox.test(df_t$total_Scholarship~df_t$Dropout)
+wilcox.test(df_t$total_Work_Study~df_t$Dropout)
+wilcox.test(df_t$total_Grant~df_t$Dropout)
+
+```
+
+## static
+
+
+State"                          "RegistrationDate"              
+ [37] "Gender"                         "BirthYear"                     
+ [39] "BirthMonth"                     "Hispanic"                      
+ [41] "AmericanIndian"                 "Asian"                         
+ [43] "Black"                          "NativeHawaiian"                
+ [45] "White"                          "TwoOrMoreRace"                 
+ [47] "HSDip"                          "HSDipYr"                       
+ [49] "HSGPAUnwtd"                     "EnrollmentStatus"              
+ [51] "NumColCredAttemptTransfer"      "NumColCredAcceptTransfer"      
+ [53] "CumLoanAtEntry"                 "HighDeg"                       
+ [55] "MathPlacement"                  "EngPlacement"                  
+ [57] "GatewayMathStatus"              "GatewayEnglishStatus"     
+```{r}
+
+################################   gender  ################################ 
+perc<-ggplot(data = df_t, mapping = aes(x = Gender, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(df_t, mapping=aes(x = Gender, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+################################   race  ################################ #
+for (i in 1:nrow(df_t)){
+  if (df_t$Asian[i]==1 |df_t$White[i]==1){
+    df_t$race[i]<-1
+  }
+  else 
+    df_t$race[i]<-0
+}
+by(df_t$Dropout,df_t$race,summary)
+
+```
+## progress
+
+```{r}
+for (i in 1:nrow(df_t)){
+  df_t[i,"cohort_year"]<-substring((df_t[i,"cohort"]),1,4)
+}
+
+for (i in 1:nrow(df_t)){
+  if (df_t$Asian[i]==1 |df_t$White[i]==1){
+    df_t$race[i]<-1
+  }
+  else 
+    df_t$race[i]<-0
+}
+
+# ###### first term Major
+col_Major1<-grep("Major1", colnames(df_t))
+col_Major1
+colnames(df_t)
+df_t[,col_Major1][is.na(df_t[,col_Major1])] <- "0"
+
+for (i in 1:nrow(df_t)){
+  if (df_t[i,"cohort.term"]==1){
+    df_t[i,"first_term_Major"]<-df_t[i,paste("Major1","Fall",df_t[i,"cohort_year"],sep="_")]
+  }
+  else if(df_t[i,"cohort.term"]==3){
+    if(df_t[i,paste("Major1","Fall",df_t[i,"cohort_year"],sep="_")]>0){
+      df_t[i,"first_term_Major"]<-df_t[i,paste("Major1","Fall",df_t[i,"cohort_year"],sep="_")]
+    }
+    else
+      df_t[i,"first_term_Major"]<-df_t[i,paste("Major1","Spring",as.numeric(df_t[i,"cohort_year"])+1,sep="_")]
+  }
+}
+
+```
+

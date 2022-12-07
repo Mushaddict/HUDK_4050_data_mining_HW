@@ -1,0 +1,627 @@
+---
+title: "merge_and_clean"
+format: html
+editor: visual
+---
+
+# Required Packages
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(ggpubr)
+library(GGally)
+library(caret)
+library(ISLR2)
+```
+
+# 1. read files and merge
+
+## read dropout, test, financial, static, progress and test files
+
+```{r}
+df_label<-read.csv("Student Retention Challenge Data/DropoutTrainLabels.csv")
+df_test<-read.csv("Student Retention Challenge Data/Test Data/TestIDs.csv")
+
+## read financial files
+df_financial <- read_xlsx("Student Retention Challenge Data/Student Financial Aid Data/2011-2017_Cohorts_Financial_Aid_and_Fafsa_Data.xlsx")
+## change colname and prepare for joining
+names(df_financial)[1]="StudentID"
+df_financial$StudentID <- as.numeric(df_financial$StudentID)
+
+## read static file
+static_data <- lapply(Sys.glob("Student Retention Challenge Data/Student Static Data/*.csv"), read.csv)
+## merge static data
+df_static<-static_data%>%bind_rows
+##  remove repeated column
+df_static <- df_static %>% select(-c(Cohort, CohortTerm))
+
+## read progress file
+## Delete static variables & Mark semester and year for variables.
+read_sp_file<-function(year,term,filename){
+  address<-paste("Student Retention Challenge Data/Student Progress Data/",filename,sep="")
+  term_year_SP<-read.csv(address)
+  term_year_SP<-select(term_year_SP,-2:-5)
+  for (i in 2:13){
+    names(term_year_SP)[i]=paste(colnames(term_year_SP)[i],term,year,sep = "_")
+  }
+  return(term_year_SP)
+}
+
+###  read fall
+for (i in 2011:2016){
+  assign(paste("Fall_",i,"_SP",sep=""),read_sp_file(year=i,term="Fall",filename=paste0("Fall ",i,"_SP.csv")))
+  
+}
+### read spring & summer
+for (i in 2012:2017){
+  assign(paste("Spring_",i,"_SP",sep=""),read_sp_file(year=i,term="Spring",filename=paste0("Spring ",i,"_SP.csv")))
+  assign(paste("Sum_",i,"_SP",sep=""),read_sp_file(year=i,term="sum",filename=paste0("Sum ",i,".csv")))
+}
+```
+
+## merge training set
+
+```{r}
+df_train<-merge(x=df_label,y=df_financial,by="StudentID",all.x=TRUE)
+df_train<-merge(x=df_train,y=df_static,by="StudentID",all.x=TRUE)
+## merge based on Fall, Spring, Summer
+## first merge Fall 2011
+df_train <- merge(x = df_train, y = Fall_2011_SP, by = "StudentID", all.x = TRUE)
+## next merge 2012:2016 Spring, Summer, Fall
+for(i in 2012:2016) {
+  df_train <- merge(x = df_train, y = get(paste0("Spring_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  df_train <- merge(x = df_train, y = get(paste0("Sum_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  df_train <- merge(x = df_train, y = get(paste0("Fall_", i, "_SP")), by = "StudentID", all.x = TRUE)
+}
+## last merge Spring and Summer of 2017
+df_train <- merge(x = df_train, y = Spring_2017_SP, by = "StudentID", all.x = TRUE)
+df_train <- merge(x = df_train, y = Sum_2017_SP, by = "StudentID", all.x = TRUE)
+```
+
+## merge test set
+
+```{r}
+df_test<-merge(x=df_test,y=df_financial,by="StudentID",all.x=TRUE)
+df_test<-merge(x=df_test,y=df_static,by="StudentID",all.x=TRUE)
+## merge based on Fall, Spring, Summer
+## first merge Fall 2011
+df_test <- merge(x = df_test, y = Fall_2011_SP, by = "StudentID", all.x = TRUE)
+## next merge 2012:2016 Spring, Summer, Fall
+for(i in 2012:2016) {
+  df_test <- merge(x = df_test, y = get(paste0("Spring_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  df_test <- merge(x = df_test, y = get(paste0("Sum_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  df_test <- merge(x = df_test, y = get(paste0("Fall_", i, "_SP")), by = "StudentID", all.x = TRUE)
+}
+## last merge Spring and Summer of 2017
+df_test <- merge(x = df_test, y = Spring_2017_SP, by = "StudentID", all.x = TRUE)
+df_test <- merge(x = df_test, y = Sum_2017_SP, by = "StudentID", all.x = TRUE)
+```
+
+## split out data to finance, progress and statics
+
+```{r}
+finance_train<-df_train[,1:34]
+progress_train<-df_train[,-(5:66)]
+static_train<-df_train[,c(1:4,35:66)]
+
+finance_test<-df_test[,1:33]
+progress_test<-df_test[,-(4:65)]
+static_test<-df_test[,c(1:3,34:65)]
+```
+
+## output files
+
+```{r}
+write.csv(progress_test,file="output data/progress_test.csv",row.names = FALSE)
+write.csv(finance_test,file="output data/financial_test.csv",row.names = FALSE)
+write.csv(static_test,file="output data/static_test.csv",row.names = FALSE)
+
+write.csv(progress_train,file="output data/progress_train.csv",row.names = FALSE)
+write.csv(finance_train,file="output data/financial_train.csv",row.names = FALSE)
+write.csv(static_train,file="output data/static_train.csv",row.names = FALSE)
+```
+
+# 2. Progress train data clean
+
+```{r}
+progress_train<-read.csv("output data/progress_train.csv")
+financial_train<-read.csv("output data/financial_train.csv")
+static_train<-read.csv("output data/static_train.csv")
+
+progress_train_clean<-progress_train
+```
+
+## 1. check if na rows
+
+```{r}
+for (i in 0:nrow(progress_train)){
+  if (sum(is.na(progress_train[i,]))>218){
+    print(i)
+  }
+}
+```
+
+It shows that there are no rows with whole role as missing values.
+
+We also want to check if cohort has missing values.
+
+```{r}
+sum(is.na(progress_train_clean[,"cohort"]))
+```
+
+There are also some plot preparation.
+
+```{r}
+progress_train_plot<-progress_train_clean
+progress_train_plot$Dropout = factor(progress_train_plot$Dropout)
+```
+
+## 2. Complete_Dev_Math & Complete_Dev_English
+
+In the data set, 0 means students are required to take the course but didn't, 1 means they complete it, and -1 means the information is missing. So we decided to create two other variables for Math and English to put on data: 1 means students finished, 0 means otherwise.
+
+```{r}
+progress_train_clean$complete_DevMath=0
+progress_train_clean$complete_DevEnglish=0
+col_DevMath<-grep("CompleteDevMath", colnames(progress_train_clean))
+col_DevEnglish<-grep("CompleteDevEnglish", colnames(progress_train_clean))
+
+progress_train_clean[,col_DevMath][is.na(progress_train_clean[,col_DevMath])] <- "-1"
+progress_train_clean[,col_DevEnglish][is.na(progress_train_clean[,col_DevEnglish])] <- "-1"
+
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_DevMath){
+    if(progress_train_clean[i,j]==1){
+      progress_train_clean[i,"complete_DevMath"]=1
+    }
+  }
+  for (k in col_DevEnglish){
+    if(progress_train_clean[i,k]==1){
+      progress_train_clean[i,"complete_DevEnglish"]=1
+    }
+  }
+}
+```
+
+## 3. Major
+
+We change all the missing values in Complete1 and Complete 2 to 0, and CompleteCIP1 to -2.
+
+```{r}
+col_complete12<-grep("Complete1|Complete2", colnames(progress_train_clean))
+col_completeCIP<-grep("CompleteCIP", colnames(progress_train_clean))
+progress_train_clean[,col_complete12][is.na(progress_train_clean[,col_complete12])] <- "0"
+progress_train_clean[,col_completeCIP][is.na(progress_train_clean[,col_completeCIP])] <- "-2"
+```
+
+We also create three more variables as `final_Completed1`, `final_Completed2`, `final_CompleteCIP1`, and `final_CompleteCIP2`.
+
+```{r}
+###### final major
+progress_train_clean$final_Complete1<-0
+col_complete1<-grep("Complete1", colnames(progress_train_clean))
+
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_complete1){
+    if(progress_train_clean[i,j]>0){
+      progress_train_clean[i,"final_Complete1"]=progress_train_clean[i,j]
+    }
+  }
+}
+
+progress_train_clean$final_Complete2<-0
+col_complete2<-grep("Complete2", colnames(progress_train_clean))
+
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_complete2){
+    if(progress_train_clean[i,j]>0){
+      progress_train_clean[i,"final_Complete2"]=progress_train_clean[i,j]
+    }
+  }
+}
+
+progress_train_clean$final_CompleteCIP1<-0
+col_completeCIP1<-grep("CompleteCIP1", colnames(progress_train_clean))
+
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_completeCIP1){
+    if(progress_train_clean[i,j]>0){
+      progress_train_clean[i,"final_CompleteCIP1"]=progress_train_clean[i,j]
+    }
+  }
+}
+
+progress_train_clean$final_CompleteCIP2<-0
+col_completeCIP2<-grep("CompleteCIP2", colnames(progress_train_clean))
+
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_completeCIP2){
+    if(progress_train_clean[i,j]>0){
+      progress_train_clean[i,"final_CompleteCIP2"]=progress_train_clean[i,j]
+    }
+  }
+}
+
+progress_train_plot<-progress_train_clean
+ggplot(progress_train_plot, aes(x = final_Complete1, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggplot(progress_train_plot, aes(x = final_CompleteCIP1, fill = Dropout)) +geom_bar(alpha = 0.3)
+```
+
+## 4. TransferIntent
+
+We replace all the missing values in `TransferIntent` to -1.
+
+```{r}
+col_TransferIntent<-grep("TransferIntent", colnames(progress_train_clean))
+progress_train_clean[,col_TransferIntent][is.na(progress_train_clean[,col_TransferIntent])] <- "-1"
+```
+
+## 5. DegreeTypeSought
+
+We replace all the missing values in `DegreeTypeSought` to -1.
+
+```{r}
+col_DegreeTypeSought<-grep("DegreeTypeSought", colnames(progress_train_clean))
+progress_train_clean[,col_DegreeTypeSought][is.na(progress_train_clean[,col_DegreeTypeSought])] <- "-1"
+```
+
+## 6. GPA
+
+We created another variable called `final_gpa` to store the students's GPA that comes from a date where its CIP is not 0. If the student has `cum_gpa` as 0, delete this student. We replace all the missing values to -999.
+
+```{r}
+col_GPA<-grep(pattern="GPA", colnames(progress_train_clean))
+progress_train_clean[,col_GPA][is.na(progress_train_clean[,col_GPA])] <- "-999"
+
+col_CumGPA_all<-grep(pattern="CumGPA", colnames(progress_train_clean))
+col_CumGPA_all
+#add a column of final GPA
+progress_train_clean$final_GPA<-0
+for (i in 1:nrow(progress_train_clean)){
+  for (j in col_CumGPA_all){
+   if(progress_train_clean[i,j]>0){
+     progress_train_clean[i,"final_GPA"]<-progress_train_clean[i,j]
+   }
+  }
+}
+```
+
+## Output Progress train clean files
+
+```{r}
+write.csv(progress_train_clean,file="output data/progress_train_clean.csv",row.names = FALSE)
+```
+
+## Plot
+
+```{r}
+progress_train_plot<-progress_train_clean
+progress_train_plot$Dropout = factor(progress_train_plot$Dropout)
+progress_train_plot$final_GPA<-as.numeric(progress_train_plot$final_GPA)
+# progress_train_plot$first_term_GPA<-as.numeric(progress_train_plot$first_term_GPA)
+
+ggplot(progress_train_plot, aes(x = final_GPA, fill = Dropout)) +geom_density(alpha = 0.3)
+# ggplot(progress_train_plot, aes(x = first_term_GPA, fill = Dropout)) +geom_density(alpha = 0.3)
+```
+
+# 3. Progress test data clean
+
+For test, we did the same thing as to train.
+
+```{r}
+progress_test<-read.csv("output data/progress_test.csv")
+financial_test<-read.csv("output data/financial_test.csv")
+static_test<-read.csv("output data/static_test.csv")
+
+progress_test_clean<-progress_test
+```
+
+## 1. check if na rows
+
+```{r}
+for (i in 0:nrow(progress_test)){
+  if (sum(is.na(progress_test[i,]))>218){
+    print(i)
+  }
+}
+```
+
+It shows that there are no rows with whole role as missing values.
+
+We also want to check if cohort has missing values.
+
+```{r}
+sum(is.na(progress_test_clean[,"cohort"]))
+```
+
+Some plots.
+
+```{r}
+progress_test_plot<-progress_test_clean
+```
+
+## 2. Complete_Dev_Math & Complete_Dev_English
+
+In the data set, 0 means students are required to take the course but didn't, 1 means they complete it, and -1 means the information is missing. So we decided to create two other variables for Math and English to put on data: 1 means students finished, 0 means otherwise.
+
+```{r}
+progress_test_clean$complete_DevMath=0
+progress_test_clean$complete_DevEnglish=0
+col_DevMath<-grep("CompleteDevMath", colnames(progress_test_clean))
+col_DevEnglish<-grep("CompleteDevEnglish", colnames(progress_test_clean))
+
+progress_test_clean[,col_DevMath][is.na(progress_test_clean[,col_DevMath])] <- "-1"
+progress_test_clean[,col_DevEnglish][is.na(progress_test_clean[,col_DevEnglish])] <- "-1"
+
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_DevMath){
+    if(progress_test_clean[i,j]==1){
+      progress_test_clean[i,"complete_DevMath"]=1
+    }
+  }
+  for (k in col_DevEnglish){
+    if(progress_test_clean[i,k]==1){
+      progress_test_clean[i,"complete_DevEnglish"]=1
+    }
+  }
+}
+```
+
+## 3. Major
+
+We change all the missing values in Complete1 and Complete 2 to 0, and CompleteCIP1 to -2.
+
+```{r}
+col_complete12<-grep("Complete1|Complete2", colnames(progress_test_clean))
+col_completeCIP<-grep("CompleteCIP", colnames(progress_test_clean))
+progress_test_clean[,col_complete12][is.na(progress_test_clean[,col_complete12])] <- "0"
+progress_test_clean[,col_completeCIP][is.na(progress_test_clean[,col_completeCIP])] <- "-2"
+```
+
+We also create three more variables as `final_Completed1`, `final_Completed2`, `final_CompleteCIP1`, and `final_CompleteCIP2`.
+
+```{r}
+###### final major
+progress_test_clean$final_Complete1<-0
+col_complete1<-grep("Complete1", colnames(progress_test_clean))
+
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_complete1){
+    if(progress_test_clean[i,j]>0){
+      progress_test_clean[i,"final_Complete1"]=progress_test_clean[i,j]
+    }
+  }
+}
+
+progress_test_clean$final_Complete2<-0
+col_complete2<-grep("Complete2", colnames(progress_test_clean))
+
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_complete2){
+    if(progress_test_clean[i,j]>0){
+      progress_test_clean[i,"final_Complete2"]=progress_test_clean[i,j]
+    }
+  }
+}
+
+progress_test_clean$final_CompleteCIP1<-0
+col_completeCIP1<-grep("CompleteCIP1", colnames(progress_test_clean))
+
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_completeCIP1){
+    if(progress_test_clean[i,j]>0){
+      progress_test_clean[i,"final_CompleteCIP1"]=progress_test_clean[i,j]
+    }
+  }
+}
+
+progress_test_clean$final_CompleteCIP2<-0
+col_completeCIP2<-grep("CompleteCIP2", colnames(progress_test_clean))
+
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_completeCIP2){
+    if(progress_test_clean[i,j]>0){
+      progress_test_clean[i,"final_CompleteCIP2"]=progress_test_clean[i,j]
+    }
+  }
+}
+```
+
+## 4. TransferIntent
+
+We replace all the missing values in `TransferIntent` to -1.
+
+```{r}
+col_TransferIntent<-grep("TransferIntent", colnames(progress_test_clean))
+progress_test_clean[,col_TransferIntent][is.na(progress_test_clean[,col_TransferIntent])] <- "-1"
+```
+
+## 5. DegreeTypeSought
+
+We replace all the missing values in `DegreeTypeSought` to -1.
+
+```{r}
+col_DegreeTypeSought<-grep("DegreeTypeSought", colnames(progress_test_clean))
+progress_test_clean[,col_DegreeTypeSought][is.na(progress_test_clean[,col_DegreeTypeSought])] <- "-1"
+```
+
+## 6. GPA
+
+We created another variable called `final_gpa` to store the students's GPA that comes from a date where its CIP is not 0. If the student has `cum_gpa` as 0, delete this student. We replace all the missing values to -999.
+
+```{r}
+col_GPA<-grep(pattern="GPA", colnames(progress_test_clean))
+progress_test_clean[,col_GPA][is.na(progress_test_clean[,col_GPA])] <- "-999"
+
+col_CumGPA_all<-grep(pattern="CumGPA", colnames(progress_test_clean))
+
+#add a column of final GPA
+progress_test_clean$final_GPA<-0
+for (i in 1:nrow(progress_test_clean)){
+  for (j in col_CumGPA_all){
+    if(progress_test_clean[i,j]>0){
+      progress_test_clean[i,"final_GPA"]<-progress_test_clean[i,j]
+    }
+  }
+}
+```
+
+## Output Progress train clean files
+
+```{r}
+write.csv(progress_test_clean,file="output data/progress_test_clean.csv",row.names = FALSE)
+```
+
+# 4. Finance & Static train data clean
+
+First, we read the data.
+
+```{r}
+finance_train <- read.csv("output data/financial_train.csv")
+static_train <- read.csv("output data/static_train.csv")
+
+finance_train[finance_train==""] <- NA
+```
+
+## 1. Loan, Grant
+
+We replace all the na values in `Loan` and `Grant` to.
+
+```{r}
+finance_train[, 11:34][is.na(finance_train[, 11:34])] <- 0
+colnames(finance_train)
+```
+
+## 2. Marital.Status, Highest Grade Level, Housing.
+
+We also replace some missing values in the front columns to "Unknown".
+
+```{r}
+finance_train$Marital.Status<-finance_train$Marital.Status %>% replace_na("Unknown")
+finance_train$Father.s.Highest.Grade.Level<-finance_train$Father.s.Highest.Grade.Level %>% replace_na('Unknown')
+finance_train$Mother.s.Highest.Grade.Level<-finance_train$Mother.s.Highest.Grade.Level %>% replace_na('Unknown')
+finance_train$Housing<-finance_train$Housing %>% replace_na('Unknown')
+```
+
+## 3. Income
+
+We replace some missing values of `income` to 0.
+
+```{r}
+finance_train[,c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income")][is.na(finance_train[,c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income")])] <- 0
+```
+
+## Output files.
+
+```{r}
+colnames(static_train)
+static_train<-subset(static_train,select = -c(Zip,Campus,Address1,Address2,City,HSGPAWtd,FirstGen,DualHSSummerEnroll))
+
+#Delete all the rows with missing State
+static_train$State[is.na(static_train$State)] <- 0
+static_train <- static_train[!(static_train$State=="0"),]
+# static_train
+
+write.csv(finance_train,file="output data/finance_train_clean.csv",row.names = FALSE)
+write.csv(static_train,file="output data/static_train_clean.csv",row.names = FALSE)
+```
+
+# 5. Finance & Static test data clean
+
+For the test set data, we almost do the same thing as train set.
+
+First, we read the data.
+
+```{r}
+finance <- read.csv("output data/financial_test.csv")
+static <- read.csv("output data/static_test.csv")
+
+finance[finance == ""] <- NA
+```
+
+## 1. Loan, Grant
+
+We replace all the na values in `Loan` and `Grant` to.
+
+```{r}
+finance[, 10:33][is.na(finance[, 10:33])] <- 0
+colnames(finance)
+```
+
+## 2. Marital.Status, Highest Grade Level, Housing.
+
+We also replace some missing values in the front columns to "Unknown".
+
+```{r}
+finance$Marital.Status <- finance$Marital.Status %>% replace_na("Unknown")
+finance$Father.s.Highest.Grade.Level <- finance$Father.s.Highest.Grade.Level %>% replace_na('Unknown')
+finance$Mother.s.Highest.Grade.Level <- finance$Mother.s.Highest.Grade.Level %>% replace_na('Unknown')
+finance$Housing <- finance$Housing %>% replace_na('Unknown')
+```
+
+## 3. Income
+
+We replace some missing values of `income` to 0.
+
+```{r}
+finance[,c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income")][is.na(finance[,c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income")])] <- 0
+```
+
+## Output files.
+
+```{r}
+colnames(static)
+static<-subset(static,select = -c(Zip,Campus,Address1,Address2,City,HSGPAWtd,FirstGen,DualHSSummerEnroll))
+
+#Delete all the rows with missing State
+static$State[is.na(static$State)] <- 0
+static <-static[!(static$State=="0"),]
+# static
+
+write.csv(finance,file="output data/finance_test_clean.csv",row.names = FALSE)
+write.csv(static,file="output data/static_test_clean.csv",row.names = FALSE)
+```
+
+# 6. Final Merge
+
+Finally, we merge all of our files together, which progress train merges with finance & static train, progress test merges with finance & static test.
+
+And because `cohort` and `cohort.Term` seem to be duplicated all the time, so we want to delete them when we are merging files.
+
+```{r}
+df_label<-read.csv("Student Retention Challenge Data/DropoutTrainLabels.csv")
+df_test<-read.csv("Student Retention Challenge Data/Test Data/TestIDs.csv")
+
+finance_test_clean<-read.csv("output data/finance_test_clean.csv")
+finance_test_clean$StudentID <- as.numeric(finance_test_clean$StudentID)
+
+static_test_clean<-read.csv("output data/static_test_clean.csv")
+static_test_clean <- static_test_clean %>% select(-c(cohort, cohort.term))
+progress_test_clean<-read.csv("output data/progress_test_clean.csv")
+progress_test_clean <- progress_test_clean %>% select(-c(cohort, cohort.term))
+
+finance_train_clean<-read.csv("output data/finance_train_clean.csv")
+finance_train_clean$StudentID <- as.numeric(finance_train_clean$StudentID)
+finance_train_clean <- finance_train_clean %>% select(-c(Dropout))
+
+static_train_clean<-read.csv("output data/static_train_clean.csv")
+static_train_clean <- static_train_clean %>% select(-c(Dropout,cohort, cohort.term))
+progress_train_clean<-read.csv("output data/progress_train_clean.csv")
+progress_train_clean <- progress_train_clean %>% select(-c(Dropout, cohort, cohort.term))
+
+
+###### merge test set
+df_test_clean<-merge(x=df_test,y=finance_test_clean,by="StudentID",all.x=TRUE)
+df_test_clean<-merge(x=df_test_clean,y=static_test_clean,by="StudentID",all.x=TRUE)
+df_test_clean<-merge(x=df_test_clean,y=progress_test_clean,by="StudentID",all.x=TRUE)
+
+df_train_clean<-merge(x=df_label,y=finance_train_clean,by="StudentID",all.x=TRUE)
+df_train_clean<-merge(x=df_train_clean,y=static_train_clean,by="StudentID",all.x=TRUE)
+df_train_clean<-merge(x=df_train_clean,y=progress_train_clean,by="StudentID",all.x=TRUE)
+
+
+write.csv(df_test_clean,file="output data/df_test_clean.csv",row.names = FALSE)
+write.csv(df_train_clean,file="output data/df_train_clean.csv",row.names = FALSE)
+```

@@ -1,0 +1,330 @@
+---
+title: "midterm"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+## Data Wrangling
+
+<https://www.statology.org/merge-multiple-data-frames-in-r/>
+
+```{r}
+## 自动读文件夹里所有的文件，存成list
+submission_data <- lapply(Sys.glob("Student Retention Challenge Data/Sample Submission File/*.csv"), read.csv)
+submission_data <- as.data.frame(submission_data[1])
+# financialAid_data <- lapply(Sys.glob("Student Retention Challenge Data/Student Financial Aid data/*.csv"), read.csv) 跑不了
+progress_data <- lapply(Sys.glob("Student Retention Challenge Data/Student Progress data/*.csv"), read.csv)
+static_data <- lapply(Sys.glob("Student Retention Challenge Data/Student Static data/*.csv"), read.csv)
+### full join
+progressive_merge <- progress_data %>%
+  reduce(full_join, by = "StudentID")
+static_merge <- static_data %>% 
+  reduce(full_join, by = "StudentID")
+merge <- merge(progressive_merge, static_merge, by = "StudentID", all = T)
+dropout <- merge(merge, submission_data, by = "StudentID", all = T)
+```
+
+```{r}
+## 把所有文件放到一个list里
+Progress_data_list <- list.files(path = "Student Retention Challenge Data/Student Progress Data", pattern = NULL, all.files = F, full.names = F)
+```
+
+# run first
+
+```{r train dataframe}
+## read sample submission file
+dropoutLabel <- read.csv("DropoutTrainLabels.csv")
+
+
+## read financial aid file
+financial_data <- read_excel("Student Retention Challenge Data/Student Financial Aid Data/2011-2017_Cohorts_Financial_Aid_and_Fafsa_Data.xlsx")
+## change financial data name [1] to "StudentID"
+names(financial_data)[1] = "StudentID"
+## Financial Data中studentID是character，需要转成numeric
+financial_data$StudentID <- as.numeric(financial_data$StudentID)
+
+## read static data
+static_data <- lapply(Sys.glob("Student Retention Challenge Data/Student Static Data/*.csv"), read.csv)
+static_data <- static_data %>% bind_rows()
+## delete cohort and cohort terms
+static_data <- static_data %>% select(-c(Cohort, CohortTerm))
+
+## read progress data
+read_sp_file <- function(year, term, filename) {
+  address <- paste("Student Retention Challenge Data/Student Progress Data/", filename, sep = "")
+  term_year_SP <- read.csv(address)
+  ## delete Cohort, CohortTerm, Term, and Academic Year
+  term_year_SP <- term_year_SP %>% 
+    select(-c(Cohort, CohortTerm, Term, AcademicYear))
+  ## 把每个变量名标准化，都改成_Term_Year
+  for (i in 2:13) {
+    names(term_year_SP)[i] = paste(colnames(term_year_SP)[i], term, year, sep = "_")
+  }
+  return(term_year_SP)
+}
+## read fall
+for (i in 2011:2016) {
+  assign(paste("Fall_", i, "_SP", sep = ""), 
+         read_sp_file(year = i, term = "Fall", filename = paste0("Fall ", i, "_SP.csv")))
+}
+
+## read spring and summer
+for (i in 2012:2017) { 
+  assign(paste("Spring_", i, "_SP", sep = ""), 
+         read_sp_file(year = i, term = "Spring", filename = paste0("Spring ", i, "_SP.csv")))  
+  assign(paste("Sum_", i, "_SP", sep = ""), 
+         read_sp_file(year = i, term = "Sum", filename = paste0("Sum ", i, ".csv")))  
+}
+
+## merge
+train <- merge(x = dropoutLabel, y = financial_data, by = "StudentID", all.x = TRUE)
+train <- merge(x = train, y = static_data, by = "StudentID", all.x = TRUE)
+
+#### merge以学期为单位
+# for(i in 2011:2016) {
+#   train <- merge(x = train, y = get(paste0("Fall_", i, "_SP")),
+#              by = "StudentID", all.x = TRUE)
+# }
+# for (i in 2012:2017) {
+#   train <- merge(x = train, y = get(paste0("Spring_", i, "_SP")), by = "StudentID", all.x = TRUE)
+# }
+# for (i in 2012:2017) {
+#   train <- merge(x = train, y = get(paste0("Sum_", i, "_SP")), by = "StudentID", all.x = TRUE)
+# }
+
+
+### merge以年为单位
+## 先merge2011 Fall
+train <- merge(x = train, y = Fall_2011_SP, by = "StudentID", all.x = T)
+## merge 2012:2016
+for(i in 2012:2016) {
+
+  train <- merge(x = train, y = get(paste0("Spring_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  train <- merge(x = train, y = get(paste0("Sum_", i, "_SP")), by = "StudentID", all.x = TRUE)
+  train <- merge(x = train, y = get(paste0("Fall_", i, "_SP")), by = "StudentID", all.x = TRUE)
+}
+## merge 2017 Sptring, Summer
+train <- merge(x = train, y = Spring_2017_SP, by = "StudentID", all.x = T)
+train <- merge(x = train, y = Sum_2017_SP, by = "StudentID", all.x = T)
+```
+
+```{r test}
+testLabel <- read.csv("Student Retention Challenge Data/Test Data/TestIDs.csv")
+test <- merge(x = testLabel, y = financial_data, by = "StudentID", all.x = TRUE)
+test <- merge(x = test, y = static_data, by = "StudentID", all.x = TRUE)
+for(i in 2011:2016) {
+  test <- merge(x = test, y = get(paste0("Fall_", i, "_SP")), 
+             by = "StudentID", all.x = TRUE)
+}
+for (i in 2012:2017) {
+  test <- merge(x = test, y = get(paste0("Spring_", i, "_SP")), by = "StudentID", all.x = TRUE)
+}
+for (i in 2012:2017) {
+  test <- merge(x = test, y = get(paste0("Sum_", i, "_SP")), by = "StudentID", all.x = TRUE)
+}
+```
+
+# date clean
+
+0.  df_progress
+
+```{r}
+progress <- train[, -(5:66)]
+```
+
+1.  从cohort到最后为NA的直接删除
+
+```{r}
+# which(is.na(progress))
+# write.csv(progress, file = "progress.csv")
+
+
+table <- c()
+for(i in 1:12261) {
+  ## tf is true if there is a value, not na
+  tf <- FALSE
+  for(j in 5:220) {
+    if(!is.na(progress[i, j])) {
+      tf <- TRUE;
+    }
+    if(j == 220) {
+      table <- rbind(table, tf)
+    }
+  }
+}
+length(which(table == FALSE))
+table <- as.data.frame(table)
+progress <- progress %>% 
+  mutate(tf = table$V1) %>%
+  filter(tf == TRUE) %>%
+  select(-tf)
+```
+
+2.  Complete_Dev_Math & Complete_Dev_English (0是需要上没上，1需要上上完了，-1: Missing （信息确实）, -2: Doesn't Apply)：单独再列两个variables：有1就是上过，没有1就变成0
+
+```{r}
+colnames(progress)
+## 把CompleteDevMath 和 CompleteDevEnglish 从后往前排，如果有1就1， 没1就0
+
+## 先删
+for(i in 2011: 2016) {
+  progress[paste0("CompleteDevMath_Fall_", i)][is.na(progress[paste0("Complete1_Fall_", i)])] <- -1
+  progress[paste0("CompleteDevEnglish_Fall_", i)][is.na(progress[paste0("Complete2_Fall_", i)])] <- -1
+}
+for(i in 2012: 2017) {
+  progress[paste0("CompleteDevMath_Spring_", i)][is.na(progress[paste0("Complete1_Spring_", i)])] <- -1
+  progress[paste0("CompleteDevEnglish_Spring_", i)][is.na(progress[paste0("Complete2_Spring_", i)])] <- -1
+  progress[paste0("CompleteDevMath_Sum_", i)][is.na(progress[paste0("Complete1_Sum_", i)])] <- -1
+  progress[paste0("CompleteDevEnglish_Sum_", i)][is.na(progress[paste0("Complete2_Sum_", i)])] <- -1
+}
+
+math <- progress %>% 
+  select(contains("CompleteDevMath"))
+eng <- progress %>%
+  select(contains("CompleteDevEnglish"))
+
+mathlist <- c()
+
+for(i in 1:nrow(math)) {
+  panduan <- 0
+  for(j in 1:ncol(math)){
+    if(math[i, j] == 1) {
+      panduan <- 1
+      # mathlist = append(mathlist, panduan )
+      break
+    } else if(math[i, j] == 0 & j == ncol(math)) {
+      panduan <- 0
+      # mathlist = append(mathlist, panduan )
+
+    } else if (math[i, j] == 0 ){
+      panduan <- 0
+    } else if(math[i, j] == -1 | -2) {
+      panduan <- 0
+
+    }
+  }
+  mathlist = append(mathlist, panduan)
+}
+
+englist <- c()
+
+for(i in 1:nrow(eng)) {
+  panduan <- 0
+  for(j in 1:ncol(eng)){
+    if(eng[i, j] == 1) {
+      panduan <- 1
+      break
+    } else if(eng[i, j] == 0 & j == ncol(eng)) {
+      panduan <- 0
+    } else if (eng[i, j] == 0 ){
+      panduan <- 0
+    } else if(eng[i, j] == -1 | -2) {
+      panduan <- 0
+
+    }
+  }
+  englist = append(englist, panduan)
+}
+
+progress <- progress %>%
+  mutate(Complete_Dev_Math = mathlist, 
+         Complete_Dev_English = englist)
+```
+
+3.  Major (不看了！！！）：-- clean 最后一个学期的major1和major2如果一样，就把major2变成0；major1&major2只保留前面两位数 -- 新创两个：finalmajor1 & finalmajor2 (找到最后一个\>0的value在哪，在complete1之前）
+
+```{r}
+
+```
+
+4.  Complete1 & complete2 把NA变成0
+
+```{r}
+# progress <- progress %>%
+#   select(contains(c("Complete1", "Complete2"))) %>%
+#   replace(is.na(.), 0)
+
+for(i in 2011: 2016) {
+  progress[paste0("Complete1_Fall_", i)][is.na(progress[paste0("Complete1_Fall_", i)])] <- 0
+  progress[paste0("Complete2_Fall_", i)][is.na(progress[paste0("Complete2_Fall_", i)])] <- 0
+}
+for(i in 2012: 2017) {
+  progress[paste0("Complete1_Spring_", i)][is.na(progress[paste0("Complete1_Spring_", i)])] <- 0
+  progress[paste0("Complete2_Spring_", i)][is.na(progress[paste0("Complete2_Spring_", i)])] <- 0
+  progress[paste0("Complete1_Sum_", i)][is.na(progress[paste0("Complete1_Sum_", i)])] <- 0
+  progress[paste0("Complete2_Sum_", i)][is.na(progress[paste0("Complete2_Sum_", i)])] <- 0
+}
+```
+
+5.  CompleteCIP1 把NA变成-2
+
+```{r}
+# progress <- progress %>% 
+#   select(contains("CompleteCIP1")) %>% 
+#   replace(is.na(.), 0)
+
+
+for(i in 2011: 2016) {
+  progress[paste0("CompleteCIP1_Fall_", i)][is.na(progress[paste0("CompleteCIP1_Fall_", i)])] <- -2
+}
+for(i in 2012: 2017) {
+  progress[paste0("CompleteCIP1_Spring_", i)][is.na(progress[paste0("CompleteCIP1_Spring_", i)])] <- -2
+  progress[paste0("CompleteCIP1_Sum_", i)][is.na(progress[paste0("CompleteCIP1_Sum_", i)])] <- -2
+}
+```
+
+6.  TransferIntent 把NA变成-1
+
+```{r}
+for(i in 2011: 2016) {
+  progress[paste0("TransferIntent_Fall_", i)][is.na(progress[paste0("TransferIntent_Fall_", i)])] <- -1
+}
+for(i in 2012: 2017) {
+  progress[paste0("TransferIntent_Spring_", i)][is.na(progress[paste0("TransferIntent_Spring_", i)])] <- -1
+  progress[paste0("TransferIntent_Sum_", i)][is.na(progress[paste0("TransferIntent_Sum_", i)])] <- -1
+}
+```
+
+7.  DegreeTypeSought: 把NA变成-1
+
+```{r}
+for(i in 2011: 2016) {
+  progress[paste0("DegreeTypeSought_Fall_", i)][is.na(progress[paste0("DegreeTypeSought_Fall_", i)])] <- -1
+}
+for(i in 2012: 2017) {
+  progress[paste0("DegreeTypeSought_Spring_", i)][is.na(progress[paste0("DegreeTypeSought_Spring_", i)])] <- -1
+  progress[paste0("DegreeTypeSought_Sum_", i)][is.na(progress[paste0("DegreeTypeSought_Sum_", i)])] <- -1
+}
+```
+
+8.  TermGPA: 找cip不为零的学期创一个final_gpa的variable，如果cip不为零的学期cum_gpa=0则直接删除此人数据
+
+```{r}
+
+```
+
+# 徐祯版---供参考
+
+```{r}
+###################################################### plot
+progress_train_plot <- progress
+progress_train_plot$Dropout = factor(progress_train_plot$Dropout)
+progress_train_plot$final_GPA<-as.numeric(progress_train_plot$final_GPA)
+progress_train_plot$first_term_GPA<-as.numeric(progress_train_plot$first_term_GPA)
+
+ggplot(progress_train_plot, aes(x = final_GPA, fill = Dropout)) +geom_density(alpha = 0.3)
+ggplot(progress_train_plot, aes(x = first_term_GPA, fill = Dropout)) +geom_density(alpha = 0.3)
+```
+
+## 我的 for TransferIntent
+
+```{r}
+progress_plot <- progress
+progress_plot$Dropout = factor(progress_plot$Dropout)
+progress_plot$tran
+```

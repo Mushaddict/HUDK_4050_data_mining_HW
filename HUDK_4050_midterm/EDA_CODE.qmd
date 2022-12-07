@@ -1,0 +1,782 @@
+---
+title: "EDA-STRUCTURE-ALL"
+format: html
+editor: visual
+---
+
+# 1. Data Wrangling
+
+## 1.1Reading & Merging
+
+```{r}
+#install.packages("dlookr")
+library(tidyverse)
+library(dlookr)
+library(tidyverse)
+library(dplyr) 
+library(readxl)
+library(ggplot2)
+#install.packages("ggpubr")
+library(ggpubr)
+library(caret)
+#install.packages("GGally")
+library(GGally)
+
+test<-read.csv("output data/df_test_clean.csv")
+train<-read.csv("output data/df_train_clean.csv")
+test_id <- test[,1] #test里的id
+train_id <- train[,1] #train里的id
+dropput_train <- train[,1:2] #train里的id和dropoutlabel
+df <- bind_rows(select(train,-Dropout),test)
+test_id<-as.data.frame(test_id)
+names(test_id) <- "StudentID"
+```
+
+备注：
+
+-   train
+
+-   test
+
+-   df (train+test)
+
+## 1.2Variable concatenation
+
+**Variables such as major, GPA are recorded by year. These variables can not be analysis among all students because they enrolled in different years. So we first transformed them into variables unrelated to a specific year.**
+
+**This operation will be applied to both training and testing data sets**
+
+*`备注：df数据集，以下这些数据的生成在之前的代码中，后续统一归入这部分`*
+
+*`complete DevMath, complete_DevEnglish , final_Complete1 ,final_Complete2, final_CompleteCIP1 , final_CompleteCIP2, final GPA`*
+
+### **Major**
+
+Since there are major variables repeatedly for each semester, we decided to use the major1 and majors2 of the FIRST and LAST semester only.
+
+```{r}
+################################      Major     ###############################
+
+
+####################### cohort_year ############################
+for (i in 1:nrow(df)){
+  df[i,"cohort_year"]<-substring((df[i,"cohort"]),1,4)
+}
+
+########   first term Major1     #########
+
+col_Major1<-grep("Major1", colnames(df))
+df[,col_Major1][is.na(df[,col_Major1])] <- "-1"
+df[,"first_term_Major1"]<-0
+  
+for (i in 1:nrow(df)){
+  if (df[i,"cohort.term"]==1){
+    df[i,"first_term_Major1"]<-df[i,paste("Major1","Fall",df[i,"cohort_year"],sep="_")]
+  }
+  else if(df[i,"cohort.term"]==3){
+    if(df[i,paste("Major1","Fall",df[i,"cohort_year"],sep="_")]>0){
+      df[i,"first_term_Major1"]<-df[i,paste("Major1","Fall",df[i,"cohort_year"],sep="_")]
+    }
+    else
+      df[i,"first_term_Major1"]<-df[i,paste("Major1","Spring",as.numeric(df[i,"cohort_year"])+1,sep="_")]
+  }
+}
+
+########   first term Major2     #########
+df[,"first_term_Major2"]<-0
+col_Major2<-grep("Major2", colnames(df))
+df[,col_Major2][is.na(df[,col_Major2])] <- "0"
+
+for (i in 1:nrow(df)){
+  if (df[i,"cohort.term"]==1){
+    df[i,"first_term_Major2"]<-df[i,paste("Major2","Fall",df[i,"cohort_year"],sep="_")]
+  }
+  else if(df[i,"cohort.term"]==3){
+    if(df[i,paste("Major2","Fall",df[i,"cohort_year"],sep="_")]>0){
+      df[i,"first_term_Major2"]<-df[i,paste("Major2","Fall",df[i,"cohort_year"],sep="_")]
+    }
+    else
+      df[i,"first_term_Major2"]<-df[i,paste("Major2","Spring",as.numeric(df[i,"cohort_year"])+1,sep="_")]
+  }
+}
+
+########      final_majorOne     #########
+col_final_majorOne<-grep("Major1", colnames(df))
+df[,col_final_majorOne][is.na(df[,col_final_majorOne])] <- "-1"
+
+df$final_majorOne <- -1
+
+for(i in 1:nrow(df)){
+  for(j in col_final_majorOne){
+    if(df[i,j]>=0){
+      df[i,"final_majorOne"]=df[i,j]
+    }
+  }
+}
+
+########      final_majorTwo     #########
+
+col_final_majorTwo<-grep("Major2", colnames(df))
+df[,col_final_majorTwo][is.na(df[,col_final_majorTwo])] <- "-1"
+
+df$final_majorTwo <- -1
+
+for(i in 1:nrow(df)){
+  for(j in col_final_majorTwo){
+    if(df[i,j]>=0){
+      df[i,"final_majorTwo"]=df[i,j]
+    }
+  }
+}
+
+# drop orignally related variables
+df <- df[ , !(grepl( "Major1_|Major2_", names(df)))]
+
+df <- df[ , !(grepl( "Complete1_|Complete2_|CompleteCIP1_|CompleteCIP2_", names(df)))]
+
+df <- df[ , !(grepl( "TermGPA|CumGPA", names(df)))]
+
+df <- df[ , !(grepl( "CompleteDevMath_|CompleteDevEnglish_", names(df)))]
+
+
+```
+
+### **TransferIntent and DegreeTypeSought**
+
+We also want to extract the final TransferIntent and DegreeTypeSought of the last semeste for each student as well as whether they once have TransferIntent.
+
+```{r}
+########    final_transferIt ###################
+
+col_final_transferIt<-grep("TransferIntent", colnames(df))
+df[,col_final_transferIt][is.na(df[,col_final_transferIt])] <- "-1"
+df$final_transferIt <- -1
+
+for (i in 1:nrow(df)){
+  for (j in col_final_transferIt){
+    if(df[i,j]>=0){
+      df[i,"final_transferIt"]=df[i,j]
+    }
+  }
+}
+###################  final_degreeSought  #############################
+
+col_final_degreeSought<-grep("DegreeTypeSought", colnames(df))
+df[,col_final_degreeSought][is.na(df[,col_final_degreeSought])] <- "-1"
+df$final_degreeSought <- -1
+for (i in 1:nrow(df)){
+  for (j in col_final_degreeSought){
+    if(df[i,j]>=1){
+      df[i,"final_degreeSought"]=df[i,j]
+    }
+  }
+}
+
+###################### once_TransferIntent  ##############################
+
+col_TransferIntent<-grep("TransferIntent", colnames(df))
+df[,col_TransferIntent][is.na(df[,col_TransferIntent])] <- "-2"
+df[,"once_TransferIntent"]=0
+for (i in 1:nrow(df)){
+  for (j in col_TransferIntent){
+    if(df[i,j]>0){
+      df[i,"once_TransferIntent"]=1
+    }
+  }
+}
+
+
+
+# drop orignally related variables
+df <- df[ , !(grepl( "TransferIntent_|DegreeTypeSought_", names(df)))]
+
+```
+
+### **Loan\|Work.Study\|Grant\|Scholarship**
+
+We have extracted the total amount of each subsidy obtained by students during their college years.
+
+```{r}
+######      Loan|Work.Study|Grant|Scholarship      ###########
+
+for (i in 1:nrow(df)){
+  df$total_Loan[i]<-sum(df[i,grep("\\.Loan", colnames(df))])
+}
+
+for (i in 1:nrow(df)){
+  df$total_Scholarship[i]<-sum(df[i,grep("\\.Scholarship", colnames(df))])
+}
+
+for (i in 1:nrow(df)){
+  df$total_Work_Study[i]<-sum(df[i,grep("\\.Work\\.Study", colnames(df))])
+}
+
+for (i in 1:nrow(df)){
+  df$total_Grant[i]<-sum(df[i,grep("\\.Grant", colnames(df))])
+}
+
+df <- df[ , !(grepl( "\\.Loan|\\.Work.Study|\\.Grant|\\.Scholarship", names(df)))]
+```
+
+We now look at the their distribution: Based on the plots, we can see that after log transformation, the distribution of is less skewed. As a result, we need to do the log transformation on those four variables.
+
+```{r}
+plot_normality(df,total_Loan)
+plot_normality(df,total_Scholarship)
+plot_normality(df,total_Work_Study)
+plot_normality(df,total_Grant)
+
+df$total_Loan <- log10(df$total_Loan)
+df$total_Loan[df$total_Loan=="-Inf"] <- 0 
+df$total_Scholarship <- log10(df$total_Scholarship)
+df$total_Scholarship[df$total_Scholarship=="-Inf"] <- 0 
+df$total_Work_Study <- log10(df$total_Work_Study)
+df$total_Work_Study[df$total_Work_Study=="-Inf"] <- 0 
+df$total_Grant <- log10(df$total_Grant)
+df$total_Grant[df$total_Grant=="-Inf"] <- 0 
+```
+
+### **Race**
+
+Instead of using seven separate race indicators (which are perfectly correlated), we decided to add a new variable called race to indicate a student's race directly and drop seven indicators.
+
+```{r}
+################################      Race     #############################
+df$race <- ifelse(df$Hispanic==1,"Hispanic", ifelse(df$AmericanIndian==1,"AmericanIndian", ifelse(df$Asian==1,"Asian",ifelse(df$Black==1,"Black", ifelse(df$NativeHawaiian==1,"NativeHawaiian",ifelse(df$White==1,"White",ifelse(df$TwoOrMoreRace==1,"TwoOrMoreRace","nonresident")))))))
+df[which(df$Asian==-1),"race"] <- "Unknown"
+
+# drop original seven race indicators
+df <- df %>% select(-c(Hispanic,AmericanIndian,Asian,Black,NativeHawaiian,White,TwoOrMoreRace))
+```
+
+### **Income**
+
+We found a negative value in income and we assume that minus sign is due to a mistake. So we first took the absolute value. And according to the table, each income variable has half of the values = 0, we decide to add these two together as an overall income.
+
+```{r}
+###### abs
+df$Adjusted.Gross.Income<-abs(df$Adjusted.Gross.Income)
+df$Parent.Adjusted.Gross.Income<-abs(df$Parent.Adjusted.Gross.Income)
+
+###### overall_income  #############
+df$overall_income <- apply(select(df,c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income)), 1, sum)
+df$overall_income <- abs(df$overall_income)
+#df <- df %>% select(-c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income))
+```
+
+Same as financial aid, we look at the distribution: Based on the plots, we can see that after log transformation, the distribution of is less skewed. As a result, we need to do the log transformation.
+
+```{r}
+plot_normality(df,overall_income)
+df$overall_income <- log10(df$overall_income)
+df$overall_income[df$overall_income=="-Inf"] <- 0 
+```
+
+## 1.3 Create variables
+
+In this session, we generated some variables based on our perceptual intuition
+
+### Age group by Birth year and cohort term
+
+By combining the column of Birth year and cohort term, we can get the age when students start their cohort term in the university. Different age people might have different cerebral function developed level, or deteriorated condition. Especially the students provided comes from a wide range of age group, from 15 to over 60 when they have their first cohort term. But the difference will be more distinguished in comparing different age group than comparing similar ages, so students are divided as different age group by 10 year difference, which is also the difference of generation.
+
+（连续变量是否要转换成类别变量）
+
+```{r}
+#######################generate enrollment age ############################
+del<-which(is.na(df$"BirthYear"),arr.ind = TRUE)
+df<-df[-del,]
+for (i in 1:nrow(df)){
+  df[i,"enrolled_age"]<-as.numeric(df[i,"cohort_year"])-as.numeric(df[i,"BirthYear"])
+  if(as.numeric(df[i,"cohort_year"])-as.numeric(df[i,"BirthYear"])>100){
+    print(i)
+  }
+}
+
+# df$enrolled_age[df$enrolled_age>=15 & df$enrolled_age<25] <- 1
+# df$enrolled_age[df$enrolled_age>=25 & df$enrolled_age<35] <- 2
+# df$enrolled_age[df$enrolled_age>=35 & df$enrolled_age<45] <- 3
+# df$enrolled_age[df$enrolled_age>=45 & df$enrolled_age<55] <- 4
+# df$enrolled_age[df$enrolled_age>=55] <- 5
+
+```
+
+### Parent's education level(原先已经是类别变量了，这部分得结合可视化的图看一下 )
+
+Distinguish the parent's highest degree level between accepted higher education and not accepted higher education.
+
+```{r}
+# df$mother_edu[df$Mother.s.Highest.Grade.Level == "College"] <- 2 # df$mother_edu[df$Mother.s.Highest.Grade.Level == "High School"] <-1 # df$mother_edu[df$Mother.s.Highest.Grade.Level == "Middle School"] <- 1 # df$mother_edu[df$Mother.s.Highest.Grade.Level == "Unknown"] <- -999 # sum(is.na(df$mother_edu)) #  # df$father_edu[df$Father.s.Highest.Grade.Level == "College"] <- 2 
+# 
+#  df$father_edu[df$Father.s.Highest.Grade.Level == "High School"] <-1 # df$father_edu[df$Father.s.Highest.Grade.Level == "Middle School"] <- 1 # df$father_edu[df$Father.s.Highest.Grade.Level == "Unknown"] <- -999 # sum(is.na(df$father_edu))
+```
+
+### Valid credit transfer (有缺失值，而且数值本来应该是0～1，但是很多-90多，先注释掉)
+
+Create a column of valid credit students transferred based on the overall credit they attempted to transfer.
+
+```{r}
+# df$valid_transfer <- df$NumColCredAcceptTransfer/df$NumColCredAttemptTransfer
+# df$valid_transfer[which(is.na(df$valid_transfer))] <- 0
+# sum(is.na(train_EDA$valid_transfer))
+```
+
+## 
+
+## 1.4 Floor and factors
+
+```{r}
+
+##### floor major
+ 
+for (i in c("final_majorOne","final_majorTwo","first_term_Major1","first_term_Major2")){
+  df[,i] <- as.numeric(df[,i])
+  df[,i] <- floor(df[,i])
+}
+
+##### factor 影响可视化， 先注释掉
+
+# # code categorical variables into factors
+# df$cohort <- factor(df$cohort)
+# df$cohort.term <- factor(df$cohort.term, levels=c(1:7), labels=c("Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7"))
+# df$Marital.Status <- factor(df$Marital.Status)
+# df$Father.s.Highest.Grade.Level <- factor(df$Father.s.Highest.Grade.Level)
+# df$Mother.s.Highest.Grade.Level <- factor(df$Mother.s.Highest.Grade.Level)
+# df$Housing <- factor(df$Housing)
+# df$Gender <- factor(df$Gender, levels=c(1,2,3,-1), labels=c("Male","Female","Other","Missing"))
+# df$HSDip <- factor(df$HSDip, levels=c(0,1,2,3,4,-1), labels=c("None","HighSchoolDiploma","GED","AdultHighSchoolDiploma","Allother","Missing"))
+# df$EnrollmentStatus <- factor(df$EnrollmentStatus,levels=c(1,2,-1),labels=c("EnteringFreshmen","EnteringTransfer","Missing"))
+# df$HighDeg <- factor(df$HighDeg,levels=c(0,1,2,3,4,5,-1),labels=c("None","CertificateUndergrad","Associates","Bachelor","HigherTthanBachelor","Anyother","Missing"))
+# df$MathPlacement <- factor(df$MathPlacement,levels=c(0,1,-1), labels=c("ready","notready","Missing"))
+# df$EngPlacement <- factor(df$EngPlacement,levels=c(0,1,-1), labels=c("ready","notready","Missing"))
+# df$GatewayEnglishStatus <- factor(df$GatewayEnglishStatus,levels=c(0,1,-1), labels=c("notrequired","required","Missing"))
+# df$GatewayMathStatus <- factor(df$GatewayMathStatus,levels=c(0,1,-1), labels=c("notrequired","required","Missing"))
+# df$complete_DevEnglish <- factor(df$complete_DevEnglish,levels=c(0,1),labels=c("notcomplete","complete"))
+# df$complete_DevMath <- factor(df$complete_DevMath,levels=c(0,1),labels=c("notcomplete","complete"))
+# df$race <- factor(df$race)
+# df$final_degreeSought <- factor(df$final_degreeSought, levels=c(1,2,3,4,5,6,-1), labels=c("Nondegree","Lessthan1year","1-2year","2-4 year","Associate","Bachelor","Missing"))
+# df$BirthMonth <- factor(df$BirthMonth)
+# df$State <- factor(df$State)
+# 
+# 
+# df$final_MajorOne <- factor(df$final_majorOne)
+# df$final_MajorTwo <- factor(df$final_majorTwo)
+# df$final_first_term_Major1 <- factor(df$first_term_Major1)
+# df$final_first_term_Major2 <- factor(df$first_term_Major2)
+# 
+# 
+# df$final_Complete1 <- factor(df$final_Complete1)
+# df$final_Complete2 <- factor(df$final_Complete2)
+# df$final_CompleteCIP1 <- factor(df$final_CompleteCIP1)
+# df$final_CompleteCIP2 <- factor(df$final_CompleteCIP2)
+
+
+#df$Dropout = factor(df$Dropout,levels = c(0,1),labels = c("Grad", "dropout"))
+```
+
+## 1.5 Check NA and DOESN'T APPLY proporation
+
+Examine which variables have too many missing values (more than 50% )or doesn't apply condition according to the code book.
+
+```{r}
+observations <- nrow(df)
+
+#######################  Continuous Variables  #######################
+for (i in c("HSGPAUnwtd","NumColCredAttemptTransfer","NumColCredAcceptTransfer","CumLoanAtEntry")){
+  if (sum(df[,i]==-1)/observations>0.5){
+  print(paste("na/unknown ratio of",i,sum(df[,i]==-1)/observations))
+  }
+}
+
+for (i in c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income","overall_income")){
+  if (sum(df[,i]==-1)/observations>0.5){
+  print(paste("na/unknown ratio of",i,sum(df[,i]==0)/observations))
+  }
+}
+
+
+#######################  Discrete variable  #######################
+observations <- nrow(df)
+for (i in c("Marital.Status","Father.s.Highest.Grade.Level","Mother.s.Highest.Grade.Level","Housing","State","Gender","race")){
+  if (sum(df[,i]=="Unknown")/observations>0.5){
+  print(paste("na/unknown ratio of",i,sum(df[,i]=="Unknown")/observations))
+  }
+}
+
+for (i in c("HSDip","EnrollmentStatus","MathPlacement","EngPlacement","GatewayMathStatus","GatewayEnglishStatus")){
+  if (sum(df[,i]=="missing")/observations>0.5){
+  print(paste("na/unknown ratio of",i,sum(df[,i]=="missing")/observations))
+  }
+}
+
+for (i in c("HSDipYr","HighDeg","complete_DevMath","complete_DevEnglish","final_degreeSought","final_transferIt","once_TransferIntent","first_term_Major1","first_term_Major2","final_majorOne","final_majorTwo")){
+  if (sum(df[,i]==-1)/observations>0.5){
+  print(paste("na/unknown ratio of",i,sum(df[,i]==-1)/observations))
+  }
+}
+
+################## drop  ##################
+df <- df %>% select(-HSGPAUnwtd)
+df <- df %>% select(-CumLoanAtEntry)
+df <- df %>% select(-final_transferIt)
+```
+
+#### For Continuous variables have too many missing values, we decide to drop them:
+
+1.  Over 58% of students have missing variable CumLoanAtEntry value.
+2.  Over 70% of students have missing variable HSGPAUnwtd value.
+
+#### For Discrete variables have too many missing values, we would keep them temporarily until we test whether those NA has potential meaning (for example, whether the dropout rate of students recorded as na in some variables is significantly different from that of students with values)（在train中检测）
+
+1.  According to our calculations, over 72% of students have missing variable HSDipYr value.
+
+2.  Over 98% of students have missing variable first_term_major2 value.
+
+Also, variable final_transferIt only contains -1, which refers to missing values, so we drop this feature.
+
+## 1.6 Check variables of near zero variance
+
+If a variable has very little change or variation, it's like a constant and not useful for prediction so we would like to drop them.
+
+```{r}
+########## variables of near zero variance
+colnames(df)[nearZeroVar(df)]
+
+########## drop them
+df <- select(df,-colnames(df)[nearZeroVar(df)][1:9])
+```
+
+11 variables with low variances are：
+
+"State", "HSDip", "final_Complete2", "final_CompleteCIP1", "final_CompleteCIP2", "first_term_Major2","final_majorTwo" , "final_degreeSought", "once_TransferIntent", "total_Scholarship", "total_Work_Study"
+
+类别可以删除，连续变量"total_Scholarship", "total_Work_Study" 或许先不删除，转换成类别变量？？
+
+## 1.7 Extract train data set for EDA
+
+```{r}
+train_EDA <- left_join(dropput_train, df, by="StudentID")
+train_EDA$Dropout <- factor(train_EDA$Dropout)
+```
+
+# 2. Exploratory Data Analysis & Feature Engineering
+
+## 2.1 Interval & Ratio Level Measures（Continuous Variables）:
+
+## variables overview：
+
+|                              | Static                    | Progress       |
+|------------------------------|---------------------------|----------------|
+| Adjusted.Gross.Income        | BirthYear,                | final_GPA      |
+| Parent.Adjusted.Gross.Income | HSDipYr                   | valid_transfer |
+| overall_income               | NumColCredAcceptTransfer  |                |
+| Scholarship                  | NumColCredAttemptTransfer |                |
+| Work.Study                   | enrolled_age              |                |
+| Grant                        | RegistrationDate          |                |
+| Loan                         |                           |                |
+
+## Correlation test
+
+Firstly, we conducted a correlation test （这部分其实有点问题，ggcorr只能做`"pearson"` `"kendall"` or `"spearman"`）的相关性，但是均不适用于二分变量的相关行检验。
+
+```{r}
+#Continuous_V_list<-list("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income","overall_income","total_Scholarship","total_Work_Study","total_Grant","total_Loan","BirthYear","HSDipYr","NumColCredAcceptTransfer","NumColCredAttemptTransfer","final_GPA")
+
+ggcorr(train_EDA[,c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income","overall_income","total_Scholarship","total_Work_Study","total_Grant","total_Loan","BirthYear","HSDipYr","NumColCredAcceptTransfer","NumColCredAttemptTransfer","final_GPA")] %>% mutate(dropout=as.integer(train_EDA$Dropout)), method = c("pairwise", "spearman"),    
+    nbreaks = 6,
+    label = TRUE,
+    label_size = 3,
+    color = "grey50")
+
+
+```
+
+## Income
+
+```{r}
+
+######  Adjusted.Gross.Income, Parent.Adjusted.Gross.Income, overall_income
+
+###normal distribution test
+ks.test(scale(train_EDA$Adjusted.Gross.Income),"pnorm")
+qqnorm(train_EDA$Adjusted.Gross.Income)
+
+ks.test(scale(train_EDA$Parent.Adjusted.Gross.Income),"pnorm")
+qqnorm(train_EDA$Parent.Adjusted.Gross.Income)
+
+ks.test(scale(train_EDA$overall_income),"pnorm")
+qqnorm(train_EDA$overall_income)
+
+####  Mann-Whitney U test
+wilcox.test(train_EDA$Parent.Adjusted.Gross.Income~train_EDA$Dropout)
+wilcox.test(train_EDA$Adjusted.Gross.Income~train_EDA$Dropout)
+wilcox.test(train_EDA$overall_income~train_EDA$Dropout)
+
+for(i in c("Adjusted.Gross.Income","Parent.Adjusted.Gross.Income","overall_income")){
+print(ggplot(train_EDA, aes(x = get(i), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train_EDA, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+```
+
+### **Analysis and Main Results:**
+
+None of these three variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these three variables are significantly correlated with dropout.
+
+So all these three variables are left and could be further selected (Parent.Adjusted.Gross.Income and Adjusted.Gross.Income, or overall_income) in the model
+
+### **Involved variables:**
+
+-   Adjusted.Gross.Income & Parent.Adjusted.Gross.Income \| overall_income (newly generated)
+
+## Financial aids:
+
+```{r}
+####################Loan|Work.Study|Grant|Scholarship #####################
+
+############  normal distribution test
+ks.test(scale(train_EDA$total_Loan),"pnorm")
+qqnorm(train_EDA$total_Loan)
+
+ks.test(scale(train_EDA$total_Work_Study),"pnorm")
+qqnorm(train_EDA$total_Work_Study)
+
+ks.test(scale(train_EDA$total_Scholarship),"pnorm")
+qqnorm(train_EDA$total_Scholarship)
+
+ks.test(scale(train_EDA$total_Grant),"pnorm")
+qqnorm(train_EDA$total_Grant)
+
+####  Mann-Whitney U test
+wilcox.test(train_EDA$total_Loan~train_EDA$Dropout)
+wilcox.test(train_EDA$total_Scholarship~train_EDA$Dropout)
+wilcox.test(train_EDA$total_Work_Study~train_EDA$Dropout)
+wilcox.test(train_EDA$total_Grant~train_EDA$Dropout)
+
+##### plot
+for(i in c("total_Loan","total_Scholarship","total_Work_Study","total_Grant")){
+print(ggplot(train_EDA, aes(x = (get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train_EDA, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+```
+
+### **Analysis and Main Results:**
+
+None of these four variables are normally distributed, so Wilcoxon rank sum test was conducted and results show that all these three variables are significantly correlated with dropout.
+
+So all these four variables are left and could be further selected (Loan\|Work.Study\|Grant\|Scholarship) in the model
+
+### **Involved variables:**
+
+-   Loan
+
+-   Work.Study
+
+-   Grant
+
+-   Scholarship
+
+## BirthYear, HSDipYr, enrolled_age
+
+```{r}
+############  normal distribution test
+ks.test(scale(train_EDA$BirthYear),"pnorm")
+qqnorm(train_EDA$BirthYear)
+
+ks.test(scale(train_EDA$HSDipYr),"pnorm")
+qqnorm(train_EDA$HSDipYr)
+
+ks.test(scale(train_EDA$enrolled_age),"pnorm")
+qqnorm(train_EDA$enrolled_age)
+
+####  Mann-Whitney U test
+wilcox.test(train_EDA$BirthYear~train_EDA$Dropout)
+wilcox.test(train_EDA$HSDipYr~train_EDA$Dropout)
+wilcox.test(train_EDA$enrolled_age~train_EDA$Dropout)
+
+sum(is.na(train_EDA$enrolled_age))
+
+for(i in c("BirthYear","HSDipYr","enrolled_age")){
+print(ggplot(train_EDA, aes(x = (get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train_EDA, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+
+```
+
+### **Analysis and Main Results:**
+
+None of them are normally distributed, so Wilcoxon rank sum test was conducted and results show that BirthYear is significantly correlated with dropout while the correlation between HSDipYr,enrolled_age and dropout is not significant at 0.001 level
+
+So BirthYear will be involved and could be further selected in the model.
+
+### **Involved variables:**
+
+-   BirthYear
+
+```{r}
+# df<-df[,-"enrolled_age","HSDipYr")]
+df <- df %>% select(-c(enrolled_age, HSDipYr))
+```
+
+## NumColCredAcceptTransfer & NumColCredAttemptTransfer
+
+```{r}
+############  normal distribution test
+ks.test(scale(train_EDA$NumColCredAcceptTransfer),"pnorm")
+qqnorm(train_EDA$NumColCredAcceptTransfer)
+
+ks.test(scale(train_EDA$NumColCredAttemptTransfer),"pnorm")
+qqnorm(train_EDA$NumColCredAttemptTransfer)
+
+####  Mann-Whitney U test
+wilcox.test(train_EDA$NumColCredAttemptTransfer~train_EDA$Dropout)
+wilcox.test(train_EDA$NumColCredAttemptTransfer~train_EDA$Dropout)
+
+
+for(i in c("NumColCredAcceptTransfer","NumColCredAttemptTransfer")){
+print(ggplot(train_EDA, aes(x = (get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train_EDA, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+
+```
+
+### **Analysis and Main Results:**
+
+Nither NumColCredAcceptTransfer nor NumColCredAttemptTransfer is normally distributed, so Wilcoxon rank sum test was conducted and results show that they are significantly correlated with dropout.
+
+So they will be involved and could be further selected in the model.
+
+### **Involved variables:**
+
+-   NumColCredAcceptTransfer
+
+-   NumColCredAttemptTransfer
+
+## Final Gpa and valid_transfer
+
+```{r}
+
+############  normal distribution test
+ks.test(train_EDA$final_GPA,"pnorm")
+qqnorm(train_EDA$final_GPA)
+
+# ks.test(train_EDA$valid_transfer,"pnorm")
+# qqnorm(train_EDA$valid_transfer)
+
+
+####  Mann-Whitney U test
+wilcox.test(train_EDA$final_GPA~train_EDA$Dropout)
+# wilcox.test(train_EDA$valid_transfer~train_EDA$Dropout)
+
+for(i in c("final_GPA")){
+print(ggplot(train_EDA, aes(x = (get(i)), fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+print(ggplot(data = train_EDA, mapping = aes(x = get(i), fill =Dropout)) +xlab(i)+ ylab("perc") + geom_histogram(position="fill",alpha = 0.3))
+}
+
+
+```
+
+### **Analysis and Main Results:**
+
+Final Gpa is not normally distributed, so Wilcoxon rank sum test was conducted and result show that they Final Gpa is significantly correlated with dropout.
+
+So this will be involved and could be further selected in the model.
+
+### **Involved variables:**
+
+-   Final_Gpa
+
+-   valid_transfer
+
+## 2.2Interval & Ratio level variables（Discrete variable）:
+
+### Variables overview：
+
+| Finance                      | Static                | Progress                 |
+|------------------------------|-----------------------|--------------------------|
+| Marital.Status               | BirthMonth            | CompleteDevMath /English |
+| Father.s.Highest.Grade.Level | Gender                | final_Complete1          |
+| Mother.s.Highest.Grade.Level | Race                  | first_term_Major1        |
+| Housing                      | EnrollmentStatus      | final_majorOne           |
+|                              | HighDeg               |                          |
+|                              | Math/EngPlacement     |                          |
+|                              | GatewayMath/EngStatus |                          |
+
+```{r}
+var <- list("Marital.Status", "Father.s.Highest.Grade.Level", "Mother.s.Highest.Grade.Level", "Housing", "Gender", "BirthMonth", "HSDipYr", "EnrollmentStatus", "HighDeg", "MathPlacement", "EngPlacement", "GatewayMathStatus", "GatewayEnglishStatus", "complete_DevMath", "complete_DevEnglish", "final_Complete1", "first_term_Major1", "final_majorOne", "race")
+
+drop <- c()
+for (i in var) {
+  count <- ggplot(data.frame(train_EDA[, i]), aes(x = train_EDA[, i], fill = train_EDA$Dropout)) + geom_bar(alpha = 0.3) + xlab(i)
+  perc <- ggplot(data.frame(train_EDA[, i]), aes(x = train_EDA[, i], fill = train_EDA$Dropout)) + geom_bar(alpha = 0.3, position = "fill") + xlab(i) + ylab("Perc")
+  print(ggarrange(count, perc, labels = c("count", "perc"), ncol = 1, nrow = 2))
+  
+  print(i)
+  assign(i , with(train_EDA, table(Dropout, get(i))))
+  table <- chisq.test(get(i))
+  print(chisq.test(get(i)))
+  
+  if(is.na(table$p.value)) {
+    next
+  }
+  if(table$p.value >0.001) {
+    drop <- append(drop, i)
+  }
+}
+print(drop)
+```
+
+### Analysis and Main Result
+
+During the chi square test, there are 4 variables having p-value\>0.001, which means they are not significant at 0.001 level, so we have to delete them. These four are: `Mother.s.Highest.Grade.Level`, `Gender`, `BirthMonth`, and `Complete_Devmath`.
+
+### Involved variables:
+
+-   Marital.Status,
+
+-   Father.s.Highest.Grade.Level,
+
+-   Housing,
+
+-   EnrollmentStatus,
+
+-   HighDeg,
+
+-   MathPlacement,
+
+-   EngPlacement,
+
+-   GatewayMathStatus,
+
+-   GatewayEnglishStatus,
+
+-   complete_DevEnglish,
+
+-   final_Complete1,
+
+-   first_term_Major1,
+
+-   final_majorOne,
+
+-   race
+
+# Conlusions based on EDA
+
+### Involved variables:
+
+```{r}
+df<-df %>% select(-c(Mother.s.Highest.Grade.Level,Gender,BirthMonth))
+colnames(df)
+```
+
+```{r}
+train_AFTER_EDA <- left_join(dropput_train, df, by="StudentID")
+test_AFTER_EDA <- left_join(test_id, df, by="StudentID")
+train_AFTER_EDA$Dropout <- factor(train_EDA$Dropout)
+de<-which(is.na(train_AFTER_EDA$"BirthYear"),arr.ind = TRUE)
+train_AFTER_EDA<-train_AFTER_EDA[-de,]
+
+
+write.csv(train_AFTER_EDA,file="output data/train_AFTER_EDA.csv",row.names = FALSE)
+write.csv(test_AFTER_EDA,file="output data/test_AFTER_EDA.csv",row.names = FALSE)
+write.csv(df,file="output data/df_AFTER_EDA.csv",row.names = FALSE)
+```

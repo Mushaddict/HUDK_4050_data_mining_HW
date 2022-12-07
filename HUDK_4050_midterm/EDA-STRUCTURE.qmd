@@ -1,0 +1,503 @@
+---
+title: "EDA-STRUCTURE"
+format: html
+editor: visual
+---
+
+# Reading data
+
+```{r}
+#install.packages("dlookr")
+library(tidyverse)
+library(dlookr)
+library(tidyverse)
+library(dplyr) 
+library(readxl)
+library(ggplot2)
+#install.packages("ggpubr")
+library(ggpubr)
+
+test<-read.csv("output data/df_test_clean.csv")
+train<-read.csv("output data/df_train_clean.csv")
+test_id <- test[,1] #test里的id
+train_id <- train[,1] #train里的id
+dropput_train <- train[,1:2] #train里的id和dropoutlabel
+df <- bind_rows(select(train,-Dropout),test)
+```
+
+# EDA & FEATURE ENGINEERING
+
+# progress
+
+## Nominal & Ordinal variables
+
+```{r}
+train$Dropout = factor(train$Dropout,levels = c(0,1),labels = c("Grad", "dropout"))
+
+
+#######################generate cohort year ############################
+for (i in 1:nrow(train)){
+  train[i,"cohort_year"]<-substring((train[i,"cohort"]),1,4)
+}
+
+###### first term Major
+col_Major1<-grep("Major1", colnames(train))
+
+train[,col_Major1][is.na(train[,col_Major1])] <- "0"
+
+for (i in 1:nrow(train)){
+  if (train[i,"cohort.term"]==1){
+    train[i,"first_term_Major"]<-train[i,paste("Major1","Fall",train[i,"cohort_year"],sep="_")]
+  }
+  else if(train[i,"cohort.term"]==3){
+    if(train[i,paste("Major1","Fall",train[i,"cohort_year"],sep="_")]>0){
+      train[i,"first_term_Major"]<-train[i,paste("Major1","Fall",train[i,"cohort_year"],sep="_")]
+    }
+    else
+      train[i,"first_term_Major"]<-train[i,paste("Major1","Spring",as.numeric(train[i,"cohort_year"])+1,sep="_")]
+  }
+}
+
+##plot
+perc<-ggplot(data = train, mapping = aes(x = first_term_Major, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(train, mapping=aes(x =first_term_Major, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+###################### major 2 ##############################
+col_major2<-grep("Major2", colnames(train))
+train[,col_major2][is.na(train[,col_major2])] <- "-2"
+train[,"Major2"]=0
+for (i in 1:nrow(train)){
+  for (j in col_major2){
+    if(train[i,j]>0){
+      train[i,"Major2"]=1
+    }
+  }
+}
+##plot
+perc<-ggplot(data = train, mapping = aes(x = Major2, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(train, mapping=aes(x = Major2, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+
+###################### TransferIntent  ##############################
+col_TransferIntent<-grep("TransferIntent", colnames(train))
+train[,col_TransferIntent][is.na(train[,col_TransferIntent])] <- "-2"
+train[,"TransferIntent"]=0
+for (i in 1:nrow(train)){
+  for (j in col_major2){
+    if(train[i,j]>0){
+      train[i,"TransferIntent"]=1
+    }
+  }
+}
+##plot
+perc<-ggplot(data = train, mapping = aes(x = TransferIntent, fill =Dropout)) + 
+ylab("perc") + geom_bar(position="fill",alpha = 0.3)
+count<-ggplot(train, mapping=aes(x = TransferIntent, fill = Dropout)) +geom_bar(alpha = 0.3)
+ggarrange(perc, count, labels = c("perc", "count"),ncol = 1, nrow = 2)
+
+
+
+```
+
+### Analysis: (**XINCHANG**)
+
+## (last semaster) Major fields
+
+Students might have different performance in different major fields because the workload type will be different; for example, Business students might focus on case study and exams, History majors student might spend most time on reading and paper, and Computer Science students learn programming a lot. Different content might have effects the academic performance or whether students will dropout based on different reasons, such as too stressful or the major is not what they want to learn.
+
+So based on the CIP (the classification of instructional programs), we catalog the majors students learning in their last semester with the related fields for further modeling.
+
+```{r}
+major <- train[,grepl("Major1",names(train))]
+major[is.na(major)]=-1
+train[,grepl("Major1",names(train))]<-major
+
+col_final_majorOne<-grep("Major1", colnames(train))
+train[,col_final_majorOne][is.na(train[,col_final_majorOne])] <- "-999"
+
+train$final_majorOne <- -1
+
+for(i in 1:nrow(train)){
+  for(j in col_final_majorOne){
+    if(train[i,j]>=0){
+      train[i,"final_majorOne"]=train[i,j]
+    }
+  }
+}
+
+train$final_majorOne[train$final_majorOne>=54] <- "History"
+train$final_majorOne[train$final_majorOne<54 & train$final_majorOne>= 52] <- "Business"
+train$final_majorOne[train$final_majorOne<52 & train$final_majorOne>= 51] <- "Health"
+train$final_majorOne[train$final_majorOne<51 & train$final_majorOne>= 50] <- "Visual and Performancing Arts"
+train$final_majorOne[train$final_majorOne<50 & train$final_majorOne>= 49] <- "Transprtation and materials moving"
+train$final_majorOne[train$final_majorOne<49 & train$final_majorOne>= 48] <- "Preceision Production"
+train$final_majorOne[train$final_majorOne<48 & train$final_majorOne>= 45] <- "Social Sciences"
+train$final_majorOne[train$final_majorOne<45 & train$final_majorOne>= 43] <- "Security and Protective Services"
+train$final_majorOne[train$final_majorOne<43 & train$final_majorOne>= 42] <- "Psychology"
+train$final_majorOne[train$final_majorOne<42 & train$final_majorOne>= 40] <- "Physical Sciences"
+train$final_majorOne[train$final_majorOne<40 & train$final_majorOne>= 38] <- "Philosophy and Religious Studies"
+train$final_majorOne[train$final_majorOne<38 & train$final_majorOne>= 27] <- "Mathematics and Statistics"
+train$final_majorOne[train$final_majorOne<27 & train$final_majorOne>= 26] <- "Biological and Biomeidical sciences"
+train$final_majorOne[train$final_majorOne<26 & train$final_majorOne>= 24] <- "Other"
+train$final_majorOne[train$final_majorOne<24 & train$final_majorOne>= 23] <-"English"
+train$final_majorOne[train$final_majorOne<23 & train$final_majorOne>= 13] <-"Education"
+train$final_majorOne[train$final_majorOne<13 & train$final_majorOne>= 11] <-"Computer Science"
+train$final_majorOne[train$final_majorOne<11 & train$final_majorOne>= 9] <- "Communication"
+train$final_majorOne[train$final_majorOne<9 & train$final_majorOne>= 5] <- "Culture"
+train$final_majorOne[train$final_majorOne == 0] <- "Other"
+train$final_majorOne[train$final_majorOne == -1] <- "Other"
+sum(is.na(train$final_majorOne))
+
+```
+
+### Main results:
+
+When divided into two groups( white&Asian and others ), the correlation is not significant ar 0.001 level
+
+### Involved variables:
+
+-   enrollment_age
+
+-   first_term_Major
+
+-   Major2
+
+-   TransferIntent
+
+-   complete_DevMath
+
+-   complete_DevEnglish
+
+-   final_GPA
+
+## Interval & Ratio variables
+
+```{r}
+
+#######################generate cohort year ############################
+for (i in 1:nrow(train)){
+  train[i,"cohort_year"]<-substring((train[i,"cohort"]),1,4)
+}
+
+#######################generate enrollment age ############################
+train<-train[-which(is.na(train[,"BirthYear"]),arr.ind = TRUE),]
+
+for (i in 1:nrow(train)){
+  train[i,"enrollment_age"]<-as.numeric(train[i,"cohort_year"])-as.numeric(train[i,"BirthYear"])
+}
+
+print(ggplot(train, aes(x =enrollment_age, fill = Dropout)) +xlab(i)+geom_density(alpha = 0.3))
+
+
+########################## #Correlation between final_GPA and Dropout############
+#Correlation between final_GPA and Dropout
+ggplot(train) + aes(x = final_GPA, y = Dropout) + geom_density(colour = "#0c4c8a") + theme_minimal()
+```
+
+**yaxuan**
+
+## Valid credit transfer
+
+Create a column of valid credit students transferred based on the overall credit they attempted to transfer.
+
+```{r}
+train$valid <- train$NumColCredAcceptTransfer/train$NumColCredAttemptTransfer
+train$valid[is.na(train$valid)]<-0
+```
+
+## Valid credit transfer
+
+Create a column of valid credit students transferred based on the overall credit they attempted to transfer.
+
+```{r}
+train$valid <- train$NumColCredAcceptTransfer/train$NumColCredAttemptTransfer
+train$valid[is.na(train$valid)]<-0
+```
+
+### Main results
+
+### Involved variables
+
+```{r}
+################################      Major     ###############################
+#Since there are major variables repeatedly for each semester, we decided to use the major1 and majors of the last semester only, and drop original major variables. According to the codebook, -1 represents missing values, so we change all NA into -1.
+major <- df[ , grepl( "Major1|Major2", names(df))]
+major[is.na(major)] = -1
+df[ , grepl( "Major1|Major2", names(df))] <- major
+
+df$final_MajorOne <- -1
+major1<-grep("Major1", colnames(df))
+for (i in 1:nrow(df)){
+  for (j in major1){
+    if(df[i,j]>=0){
+      df[i,"final_MajorOne"]=df[i,j]
+    }
+  }
+}
+
+df$final_MajorTwo <- -1
+major2<-grep("Major2", colnames(df))
+for (i in 1:nrow(df)){
+  for (j in major2){
+    if(df[i,j]>=0){
+      df[i,"final_MajorTwo"]=df[i,j]
+    }
+  }
+}
+
+
+
+# drop orignal major related variables
+df <- df[ , !(grepl( "Major1|Major2", names(df)))]
+
+################################      Race     ###############################################
+# Instead of using seven separate race indicators (which are perfectly correlated), we decided to add a new variable called race to indicate a student's race directly and drop seven indicators.
+df$race <- ifelse(df$Hispanic==1,"Hispanic", ifelse(df$AmericanIndian==1,"AmericanIndian", ifelse(df$Asian==1,"Asian",ifelse(df$Black==1,"Black", ifelse(df$NativeHawaiian==1,"NativeHawaiian",ifelse(df$White==1,"White",ifelse(df$TwoOrMoreRace==1,"TwoOrMoreRace","nonresident")))))))
+df[which(df$Asian==-1),"race"] <- "Unknown"
+# drop original seven race indicators
+df <- df %>% select(-c(Hispanic,AmericanIndian,Asian,Black,NativeHawaiian,White,TwoOrMoreRace))
+
+################################      TransferIntent and DegreeTypeSought      ###############################################
+# We also want to extract the final TransferIntent and DegreeTypeSought of the last semeste for each student.
+transfer <- df[ , grepl( "TransferIntent", names(df))]
+transfer[is.na(transfer)] = -1
+df[ , grepl( "TransferIntent", names(df))] <- transfer
+
+df$final_transferIt <- -1
+transfer<-grep("TransferIntent", colnames(df))
+for (i in 1:nrow(df)){
+  for (j in transfer){
+    if(df[i,j]>=0){
+      df[i,"final_transferIt"]=df[i,j]
+    }
+  }
+}
+
+degree_type <- df[ , grepl( "DegreeTypeSought", names(df))]
+degree_type[is.na(degree_type)] = -1
+df[ , grepl( "DegreeTypeSought", names(df))] <- degree_type
+
+df$final_degreeSought <- -1
+degree_type<-grep("DegreeTypeSought", colnames(df))
+for (i in 1:nrow(df)){
+  for (j in degree_type){
+    if(df[i,j]>=1){
+      df[i,"final_degreeSought"]=df[i,j]
+    }
+  }
+}
+# drop orignal TransferIntent and DegreeTypeSought variables
+df <- df[ , !(grepl( "TransferIntent|DegreeTypeSought", names(df)))]
+
+################################      Loan|Work.Study|Grant|Scholarship      ###############################################
+# 这个你们可以看看是改成这几个的sum，可能difference会更明显？我目前是把它变成indicate 0（没有赞助）和1（有赞助）
+df$financial_aid <- 0
+df[rowSums(df[,grepl( "Loan|Work.Study|Grant|Scholarship", names(df))])>0,"financial_aid"] <- 1
+df <- df[ , !(grepl( "Loan|Work.Study|Grant|Scholarship", names(df)))]
+```
+
+## Exploratory Data Analysis & Feature Engineering
+
+### Univariate data EDA
+
+**Extract train data set**
+
+**Examine which variables have too many missing values or doesn't apply condition according to the code book.**
+
+```{r}
+
+unique(df$final_transferIt)
+
+```
+
+Also, variable final_transferIt only contains -1, which refers to missing values, so we drop this feature.
+
+**Check if a certain variable has the same values for the vast majority**
+
+```{r}
+## 这一部分drop feature用的把df变了，然后检查用的是train 
+
+#same values for all 
+train %>% group_by(final_degreeSought) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+
+
+df <- select(df,-final_degreeSought)
+#same values for the vast majority 93%
+train %>% group_by(final_MajorTwo) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+df <- select(df,-final_MajorTwo)
+
+# 100% have 0 values
+train %>% group_by(final_Complete2) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+df <- select(df,-final_Complete2)
+
+# 100% have 0 values
+train %>% group_by(final_CompleteCIP2) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+df <- select(df,-final_CompleteCIP2)
+
+#97%
+train %>% group_by(HSDip) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+df <- select(df,-HSDip)
+```
+
+We now look at the numerical variables and see their distribution.
+
+Extract train data set （# 把traindataset再从df里提出来，因为df上面drop了一下features）
+
+```{r}
+train <- left_join(dropput_train, df, by="StudentID")
+train$Dropout <- factor(train$Dropout)
+## 跑到了这里
+```
+
+The numerical variables we have are: Adjusted_income, Parent.Adjusted.Gross.Income, BirthYear, NumColCredAttempTransfer,NumColcredAccepTransfer, and final_GPA.
+
+```{r}
+train %>% group_by(Adjusted.Gross.Income) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+train %>% group_by(Parent.Adjusted.Gross.Income) %>% summarise(Percentage=n()/nrow(.)*100) %>% arrange(desc(Percentage))
+
+# Change train dataset
+train$overall_income <- apply(select(train,c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income)), 1, sum)
+train$overall_income <- abs(train$overall_income)
+train <- train %>% select(-c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income))
+
+# Change big dataset (which contains test and train)
+df$overall_income <- apply(select(df,c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income)), 1, sum)
+df$overall_income <- abs(df$overall_income)
+df <- df %>% select(-c(Adjusted.Gross.Income,Parent.Adjusted.Gross.Income))
+```
+
+According to the table, each income variable has half of the values = 0, we decide to add these two together as an overall income.
+
+```{r}
+#compugte statistics of all numerical variables in dataset
+data_desciption <- describe(train[,-1]) #without studentID
+# Check skewness speicifcally
+data_desciption %>% select(described_variables, skewness) %>% filter (!is.na(skewness)) %>% arrange(desc(abs(skewness)))
+```
+
+Based on te data desciption table, we can see that overall_income has a large positive skewness.
+
+```{r}
+sum(train$overall_income==0)
+plot_normality(train,overall_income)
+```
+
+Based on the plots, we can see that after log transformation, the distribution of is less skewed. As a result, we may need to do the log transformation on overall_income
+
+```{r}
+df$overall_income <- log(df$overall_income)
+df$overall_income[df$overall_income=="-Inf"] <- 0 
+```
+
+### Bivariate data EDA
+
+Numerica variables:
+
+```{r}
+library(GGally)
+ggcorr(train[,-1] %>% mutate(numdropout=as.integer(Dropout)), method = c("pairwise", "spearman"),    
+    nbreaks = 6,
+    label = TRUE,
+    label_size = 3,
+    color = "grey50")
+
+df <- df %>% select(-c(BirthYear,NumColCredAttemptTransfer,NumColCredAcceptTransfer))
+```
+
+We can see that BirthYear, NumColCredAttemptTransfer, and NumColCredAccept has low correlation with drop-out, so we drop these features. Low correlation with verall income may due to high skewness, after log transformation may be better.
+
+Categorical Variables: We are testing varisbles that we think may not be associated with Dropout
+
+```{r}
+#categorical <- select(train,-c(overall_income,final_GPA,NumColCredAttemptTransfer,NumColCredAcceptTransfer,BirthYear,RegistrationDate,StudentID))
+      
+chisq.test(train$Dropout,train$cohort.term)
+chisq.test(train$Dropout,train$cohort)
+chisq.test(train$Dropout,train$Marital.Status)
+chisq.test(train$Dropout,train$Father.s.Highest.Grade.Level)
+chisq.test(train$Dropout,train$Mother.s.Highest.Grade.Level) #p-value = 0.001312
+chisq.test(train$Dropout,train$Housing)
+chisq.test(train$Dropout,train$Gender) #p-value = 0.003014
+chisq.test(train$Dropout,train$BirthMonth) #p-value = 0.09476
+chisq.test(train$Dropout,train$EnrollmentStatus)
+chisq.test(train$Dropout,train$HighDeg)
+chisq.test(train$Dropout,train$MathPlacement)
+chisq.test(train$Dropout,train$EngPlacement)
+chisq.test(train$Dropout,train$complete_DevMath) #p-value = 0.004163
+chisq.test(train$Dropout,train$complete_DevEnglish)
+chisq.test(train$Dropout,train$final_Complete1)
+chisq.test(train$Dropout,train$final_CompleteCIP1)
+chisq.test(train$Dropout,train$final_MajorOne)
+chisq.test(train$Dropout,train$race)
+
+df <- df %>% select(-c(Mother.s.Highest.Grade.Level,Gender,BirthMonth,complete_DevMath))
+```
+
+Based on chi-sqaure test, we can see that Mother.s.Highest.Grade.Level, Gender, BirthMonth, complete_DevMath have relatively high chi-suare signifiance, so we drop these features.
+
+### Conlusions based on EDA
+
+Since we are predicting a binary outcome (dropout), we need to use classification methods. First, we'are gonna use Multiple Logistic Regression with multiple predictors. We consider LR since LR can estimate regression coefficients, which are good for interpretation. Secondly, we're gonna use K Nearest Neighbors, which is a completely non-parametric approach: no assumptions are made about the shape of the decision boundary. The majority of our predictors are factors, and our target variable is a binary variable, so it's hard to examine the desicison boundary. Thirdly, we'are also gonna use decision tree, which is very easy to explain to people. Since we're predicting educational outcome, it is important that we can offer simple explanations and visualization to people. Lastly, we're gonna use bagging ensemble model, which improves performance in almost all cases if algorithm is unstable like decision trees.
+
+## Models
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+# MODEL PREPARATION
+
+#### LIN:
+
+Turn Existing categorical variables into factors (如果model可以自动识别categorical的话，感觉也不用分类？)
+
+```{r}
+# code categorical variables into factors
+df$cohort <- factor(df$cohort)
+df$cohort.term <- factor(df$cohort.term, levels=c(1:7), labels=c("Term 1","Term 2","Term 3","Term 4","Term 5","Term 6","Term 7"))
+df$Marital.Status <- factor(df$Marital.Status)
+df$Father.s.Highest.Grade.Level <- factor(df$Father.s.Highest.Grade.Level)
+df$Mother.s.Highest.Grade.Level <- factor(df$Mother.s.Highest.Grade.Level)
+df$Housing <- factor(df$Housing)
+df$Gender <- factor(df$Gender, levels=c(1,2,3,-1), labels=c("Male","Female","Other","Missing"))
+df$HSDip <- factor(df$HSDip, levels=c(0,1,2,3,4,-1), labels=c("None","HighSchoolDiploma","GED","AdultHighSchoolDiploma","Allother","Missing"))
+df$EnrollmentStatus <- factor(df$EnrollmentStatus,levels=c(1,2,-1),labels=c("EnteringFreshmen","EnteringTransfer","Missing"))
+df$HighDeg <- factor(df$HighDeg,levels=c(0,1,2,3,4,5,-1),labels=c("None","CertificateUndergrad","Associates","Bachelor","HigherTthanBachelor","Anyother","Missing"))
+df$MathPlacement <- factor(df$MathPlacement,levels=c(0,1,-1), labels=c("ready","notready","Missing"))
+df$EngPlacement <- factor(df$EngPlacement,levels=c(0,1,-1), labels=c("ready","notready","Missing"))
+df$GatewayEnglishStatus <- factor(df$GatewayEnglishStatus,levels=c(0,1,-1), labels=c("notrequired","required","Missing"))
+df$GatewayMathStatus <- factor(df$GatewayMathStatus,levels=c(0,1,-1), labels=c("notrequired","required","Missing"))
+df$complete_DevEnglish <- factor(df$complete_DevEnglish,levels=c(0,1),labels=c("notcomplete","complete"))
+df$complete_DevMath <- factor(df$complete_DevMath,levels=c(0,1),labels=c("notcomplete","complete"))
+df$race <- factor(df$race)
+df$financial_aid <- factor(df$financial_aid,levels=c(0,1),labels=c("noaid","aid"))
+df$final_degreeSought <- factor(df$final_degreeSought, levels=c(1,2,3,4,5,6,-1), labels=c("Nondegree","Lessthan1year","1-2year","2-4 year","Associate","Bachelor","Missing"))
+df$BirthMonth <- factor(df$BirthMonth)
+df$State <- factor(df$State)
+df$final_MajorOne <- floor(df$final_MajorOne)
+df$final_MajorTwo <- floor(df$final_MajorTwo)
+df$final_MajorOne <- factor(df$final_MajorOne)
+df$final_MajorTwo <- factor(df$final_MajorTwo)
+df$final_Complete1 <- factor(df$final_Complete1)
+df$final_Complete2 <- factor(df$final_Complete2)
+df$final_CompleteCIP1 <- factor(df$final_CompleteCIP1)
+df$final_CompleteCIP2 <- factor(df$final_CompleteCIP2)
+```
