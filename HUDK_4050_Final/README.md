@@ -1,5 +1,7 @@
 数据都从Kaggle上来：[Sign Language Digits Dataset](https://www.kaggle.com/datasets/ardamavi/sign-language-digits-dataset?select=Y.npy)
 
+https://gist.github.com/ardamavi/a7d06ff8a315308771c70006cf494d69
+
 #### Turkey Ankara Ayrancı Anadolu High School's Sign Language Digits Dataset
 
 This dataset is prepared by our school students.
